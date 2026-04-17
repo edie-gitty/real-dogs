@@ -3,25 +3,1831 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Real Dogs — Coming Soon</title>
+  <title>Real Dogs — Handcrafted Pupcakes for Every Dog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Fraunces:ital,wght@0,400;0,600;1,400;1,600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
+    :root {
+      --parchment: #F0E6D3;
+      --parchment-light: #F7EFE0;
+      --magenta: #C4006A;
+      --wine: #8B1A52;
+      --gold: #C8920A;
+      --teal: #00B4A6;
+      --plum: #1E0A2E;
+      --ink: #2A1810;
+      --muted: #7A6B5C;
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)' opacity='0.5'/%3E%3C/svg%3E");
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
       margin: 0;
-      min-height: 100vh;
+      padding: 0;
+      background: var(--parchment);
+      color: var(--ink);
+      font-family: 'Nunito', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: var(--grain);
+      opacity: 0.055;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: multiply;
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      position: relative;
+      z-index: 10;
+      padding: 1rem 1.25rem;
       display: flex;
       align-items: center;
-      justify-content: center;
-      background: #fff8f0;
-      font-family: Georgia, serif;
+      justify-content: space-between;
+      background: var(--parchment);
+      border-bottom: 1px solid rgba(139, 26, 82, 0.1);
     }
-    h1 { font-size: 3rem; color: #c0392b; margin: 0; }
-    p { color: #888; font-size: 1.2rem; text-align: center; }
+
+    .logo {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.75rem;
+      color: var(--wine);
+      letter-spacing: -0.01em;
+      text-decoration: none;
+    }
+    .logo-dot { color: var(--magenta); }
+
+    .nav-mobile {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--plum);
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+    }
+
+    .nav-desktop {
+      display: none;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nav-desktop a {
+      color: var(--plum);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .nav-desktop a:hover { color: var(--magenta); }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      padding: 2rem 1.25rem 3rem;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -20%;
+      width: 140%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(200, 146, 10, 0.12) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      color: var(--magenta);
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-title {
+      font-family: 'Abril Fatface', serif;
+      font-size: clamp(2.25rem, 7vw, 3.75rem);
+      line-height: 1.05;
+      color: var(--plum);
+      margin: 0 0 1rem;
+      letter-spacing: -0.02em;
+    }
+    .hero-title .accent {
+      background: linear-gradient(135deg, var(--magenta) 0%, var(--wine) 50%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-style: italic;
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+    }
+
+    .hero-subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 36rem;
+      margin: 0 0 2rem;
+    }
+
+    /* ========== QUIZ WIDGET ========== */
+    .quiz-widget {
+      background: var(--parchment-light);
+      border: 2px solid var(--wine);
+      border-radius: 20px;
+      padding: 1.75rem 1.5rem;
+      box-shadow: 0 10px 30px -12px rgba(30, 10, 46, 0.2), 0 4px 0 var(--wine);
+      position: relative;
+    }
+
+    .quiz-widget-label {
+      display: inline-block;
+      background: var(--magenta);
+      color: var(--parchment-light);
+      padding: 0.25rem 0.75rem;
+      border-radius: 100px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .quiz-widget h2 {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.5rem;
+      line-height: 1.15;
+      color: var(--plum);
+      margin: 0 0 0.5rem;
+    }
+
+    .quiz-widget p {
+      color: var(--muted);
+      margin: 0 0 1.25rem;
+      font-size: 0.95rem;
+    }
+
+    .quiz-widget-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .input-label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--wine);
+      margin-bottom: -0.25rem;
+    }
+
+    .quiz-input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border: 2px solid rgba(139, 26, 82, 0.2);
+      border-radius: 12px;
+      background: var(--parchment);
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--ink);
+      transition: border-color 0.2s;
+    }
+    .quiz-input:focus {
+      outline: none;
+      border-color: var(--magenta);
+    }
+
+    .btn-primary {
+      padding: 1rem 1.5rem;
+      background: var(--magenta);
+      color: var(--parchment-light);
+      border: none;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      box-shadow: 0 4px 0 var(--wine);
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-align: center;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 5px 0 var(--wine); }
+    .btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--wine); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: 0 4px 0 var(--wine); }
+
+    .btn-secondary {
+      padding: 0.85rem 1.25rem;
+      background: transparent;
+      color: var(--wine);
+      border: 2px solid var(--wine);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .browse-link {
+      display: block;
+      text-align: center;
+      color: var(--teal);
+      text-decoration: underline;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    /* ========== STICKY CTA ========== */
+    .sticky-cta {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--plum);
+      color: var(--parchment-light);
+      padding: 0.9rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      z-index: 100;
+      transform: translateY(100%);
+      transition: transform 0.3s;
+      box-shadow: 0 -4px 16px rgba(30, 10, 46, 0.2);
+    }
+    .sticky-cta.visible { transform: translateY(0); }
+    .sticky-cta-text {
+      font-weight: 600;
+      font-size: 0.9rem;
+      flex: 1;
+    }
+    .sticky-cta button {
+      background: var(--magenta);
+      color: var(--parchment-light);
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* ========== MODAL (QUIZ TAKEOVER) ========== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--parchment);
+      z-index: 1000;
+      display: none;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-overlay::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: var(--grain);
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .modal-header {
+      position: sticky;
+      top: 0;
+      background: var(--parchment);
+      border-bottom: 1px solid rgba(139, 26, 82, 0.15);
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 10;
+    }
+    .modal-title {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.25rem;
+      color: var(--wine);
+      margin: 0;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--plum);
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      line-height: 1;
+    }
+
+    .progress-bar-wrap {
+      background: var(--parchment);
+      padding: 0 1.25rem 0.75rem;
+      position: sticky;
+      top: 54px;
+      z-index: 9;
+    }
+    .progress-bar {
+      height: 6px;
+      background: rgba(139, 26, 82, 0.15);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--magenta), var(--gold));
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+    .progress-label {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+      font-weight: 600;
+    }
+
+    .modal-body {
+      flex: 1;
+      padding: 1.25rem 1.25rem 12rem;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .question-panel {
+      background: var(--parchment-light);
+      border-radius: 16px;
+      padding: 1.5rem 1.25rem;
+      border: 1px solid rgba(139, 26, 82, 0.12);
+    }
+
+    .question-number {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--magenta);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .question-title {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      color: var(--plum);
+      margin: 0 0 1rem;
+    }
+
+    .question-helper {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 0 0 1rem;
+    }
+
+    /* Options (radio/checkbox cards) */
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .option-card {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.9rem 1rem;
+      background: var(--parchment);
+      border: 2px solid rgba(139, 26, 82, 0.18);
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--plum);
+      transition: all 0.15s;
+      min-height: 52px;
+    }
+    .option-card:hover { border-color: var(--magenta); }
+    .option-card.selected {
+      border-color: var(--magenta);
+      background: rgba(196, 0, 106, 0.08);
+    }
+    .option-card input { display: none; }
+    .option-card .check {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 2px solid var(--wine);
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+    .option-card.selected .check {
+      background: var(--magenta);
+      border-color: var(--magenta);
+    }
+    .option-card.selected .check::after {
+      content: "✓";
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .option-card .option-sub {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 0.85rem;
+      display: block;
+    }
+    .option-card .option-main { flex: 1; }
+
+    /* Info badge */
+    .info-badge {
+      background: linear-gradient(135deg, rgba(0, 180, 166, 0.15), rgba(200, 146, 10, 0.15));
+      border: 1px dashed var(--teal);
+      border-radius: 12px;
+      padding: 0.85rem 1rem;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--ink);
+      display: flex;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    /* ========== PROFILE CARD ========== */
+    .profile-card {
+      background: var(--plum);
+      color: var(--parchment-light);
+      border-radius: 16px;
+      padding: 1.25rem;
+      position: relative;
+      overflow: hidden;
+      display: none; /* hidden on mobile; shown on desktop via breakpoint */
+    }
+    .profile-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, rgba(196, 0, 106, 0.35), transparent 60%);
+      pointer-events: none;
+    }
+    .profile-card-inner { position: relative; }
+
+    .profile-card-title {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin: 0 0 0.75rem;
+      letter-spacing: 0.02em;
+    }
+    .profile-card-name {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.5rem;
+      margin: 0 0 1rem;
+      color: var(--gold);
+    }
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      border-top: 1px solid rgba(247, 239, 224, 0.12);
+      font-size: 0.85rem;
+    }
+    .profile-row:first-of-type { border-top: none; }
+    .profile-label { opacity: 0.7; flex-shrink: 0; }
+    .profile-value {
+      text-align: right;
+      font-weight: 600;
+      color: var(--parchment-light);
+    }
+    .profile-value.pending { opacity: 0.3; }
+
+    .profile-total-box {
+      background: rgba(247, 239, 224, 0.08);
+      border-radius: 10px;
+      padding: 0.75rem;
+      margin-top: 1rem;
+    }
+    .profile-total-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      opacity: 0.7;
+      margin-bottom: 0.35rem;
+    }
+    .profile-total-value {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.25rem;
+      color: var(--gold);
+    }
+
+    /* ========== MOBILE PROFILE SHEET ========== */
+    .profile-sheet-toggle {
+      position: fixed;
+      bottom: 72px; left: 0; right: 0;
+      background: var(--plum);
+      color: var(--parchment-light);
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      z-index: 12;
+      border-top: 2px solid var(--gold);
+      font-size: 0.9rem;
+      font-weight: 600;
+      box-shadow: 0 -4px 16px rgba(30, 10, 46, 0.25);
+    }
+    .profile-sheet-toggle .sheet-handle-bar {
+      width: 36px; height: 4px;
+      background: rgba(247, 239, 224, 0.4);
+      border-radius: 100px;
+      position: absolute;
+      top: 6px; left: 50%;
+      transform: translateX(-50%);
+    }
+    .sheet-summary-line {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
+      padding-top: 0.35rem;
+    }
+    .sheet-summary-dog { color: var(--gold); font-weight: 700; }
+    .sheet-caret {
+      transition: transform 0.3s;
+      font-size: 0.8rem;
+      padding-top: 0.35rem;
+    }
+    .profile-sheet-toggle.open .sheet-caret { transform: rotate(180deg); }
+
+    .profile-sheet-toggle.updated {
+      animation: sheetPulse 0.6s ease-out;
+    }
+    @keyframes sheetPulse {
+      0%   { background: var(--plum); }
+      30%  { background: var(--magenta); box-shadow: 0 0 0 4px rgba(196, 0, 106, 0.4), 0 -4px 16px rgba(30, 10, 46, 0.25); }
+      100% { background: var(--plum); }
+    }
+    .profile-sheet-toggle.updated .sheet-summary-dog {
+      animation: dogBounce 0.5s ease-out;
+    }
+    @keyframes dogBounce {
+      0%, 100% { transform: scale(1); }
+      50%      { transform: scale(1.1); color: var(--gold); }
+    }
+
+    .profile-sheet-overlay {
+      position: fixed; inset: 0;
+      background: rgba(30, 10, 46, 0.5);
+      z-index: 13;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .profile-sheet-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .profile-sheet {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--plum);
+      color: var(--parchment-light);
+      border-radius: 20px 20px 0 0;
+      padding: 1.5rem 1.25rem 6rem;
+      max-height: 75vh;
+      overflow-y: auto;
+      z-index: 14;
+      transform: translateY(100%);
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      box-shadow: 0 -10px 40px rgba(30, 10, 46, 0.4);
+    }
+    .profile-sheet.open { transform: translateY(0); }
+    .profile-sheet .sheet-header {
+      position: sticky;
+      top: 0;
+      margin: -1.5rem -1.25rem 1rem;
+      padding: 0.75rem 1.25rem 0.85rem;
+      background: var(--plum);
+      border-radius: 20px 20px 0 0;
+      border-bottom: 1px solid rgba(247, 239, 224, 0.12);
+      z-index: 2;
+      text-align: center;
+    }
+    .profile-sheet .sheet-grip {
+      width: 40px; height: 4px;
+      background: rgba(247, 239, 224, 0.4);
+      border-radius: 100px;
+      margin: 0 auto 0.5rem;
+    }
+    .profile-sheet .sheet-title {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--gold);
+      margin: 0;
+    }
+
+    /* ========== NAVIGATION BUTTONS ========== */
+    .modal-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      background: var(--parchment);
+      border-top: 1px solid rgba(139, 26, 82, 0.15);
+      padding: 0.9rem 1.25rem;
+      display: flex;
+      gap: 0.75rem;
+      z-index: 11;
+      box-shadow: 0 -4px 16px rgba(30, 10, 46, 0.08);
+    }
+    .modal-nav button { flex: 1; }
+
+    /* ========== DOG LIBRARY ========== */
+    .dog-library {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .dog-card {
+      background: var(--parchment);
+      border: 2px solid rgba(139, 26, 82, 0.18);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .dog-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .dog-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--magenta));
+      display: grid;
+      place-items: center;
+      color: var(--parchment);
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .dog-name {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.1rem;
+      color: var(--plum);
+      margin: 0;
+    }
+    .dog-breed {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .dog-story-link {
+      color: var(--teal);
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-decoration: underline;
+      align-self: flex-start;
+    }
+    .qty-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: space-between;
+      background: var(--parchment-light);
+      border-radius: 10px;
+      padding: 0.4rem;
+    }
+    .qty-btn {
+      width: 36px; height: 36px;
+      background: var(--wine);
+      color: var(--parchment-light);
+      border: none;
+      border-radius: 8px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+    .qty-btn:disabled { background: rgba(139, 26, 82, 0.3); }
+    .qty-value {
+      flex: 1;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* ========== DISCOUNT NUDGE ========== */
+    .discount-nudge {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      position: sticky;
+      top: 90px;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      z-index: 8;
+    }
+    .discount-nudge-intro {
+      background: linear-gradient(135deg, rgba(200, 146, 10, 0.15), rgba(196, 0, 106, 0.1));
+      border: 1px solid rgba(200, 146, 10, 0.35);
+    }
+    .discount-nudge-active {
+      background: linear-gradient(135deg, rgba(196, 0, 106, 0.12), rgba(200, 146, 10, 0.18));
+      border: 1px solid var(--magenta);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .discount-nudge-unlocked {
+      background: linear-gradient(135deg, rgba(0, 180, 166, 0.15), rgba(200, 146, 10, 0.18));
+      border: 1px solid var(--teal);
+    }
+    .discount-nudge-max {
+      background: linear-gradient(135deg, var(--gold), var(--magenta));
+      color: var(--parchment-light);
+      border: none;
+    }
+    .discount-nudge-max .nudge-sub { opacity: 0.9; }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(196, 0, 106, 0.2); }
+      50% { box-shadow: 0 0 0 6px rgba(196, 0, 106, 0); }
+    }
+
+    .nudge-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .nudge-text {
+      flex: 1;
+      font-size: 0.9rem;
+      line-height: 1.3;
+    }
+    .nudge-text strong { display: block; }
+    .nudge-sub {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      margin-top: 0.2rem;
+    }
+    .nudge-progress {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 3px;
+      background: rgba(0,0,0,0.06);
+    }
+    .nudge-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--magenta), var(--gold));
+      transition: width 0.3s ease;
+    }
+
+    /* ========== FILE UPLOAD ========== */
+    .upload-zone {
+      display: block;
+      width: 100%;
+      border: 2px dashed var(--magenta);
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      background: rgba(196, 0, 106, 0.04);
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .upload-zone input { display: none; }
+    .upload-zone-icon { font-size: 2rem; }
+    .upload-zone-label {
+      font-weight: 700;
+      color: var(--wine);
+      margin-top: 0.5rem;
+    }
+    .upload-zone-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .upload-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+    .upload-thumb {
+      aspect-ratio: 1;
+      background: var(--parchment-light);
+      border: 2px solid rgba(139, 26, 82, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
+    }
+    .upload-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .upload-thumb.selected { border-color: var(--magenta); border-width: 3px; }
+    .upload-thumb .select-indicator {
+      position: absolute;
+      top: 4px; right: 4px;
+      background: var(--magenta);
+      color: white;
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    /* ========== RECOMMENDATION PANEL ========== */
+    .recommendation {
+      text-align: center;
+    }
+    .rec-celebration {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      color: var(--magenta);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .rec-title {
+      font-family: 'Abril Fatface', serif;
+      font-size: 2rem;
+      color: var(--plum);
+      margin: 0 0 1rem;
+    }
+    .rec-summary {
+      text-align: left;
+      background: var(--parchment-light);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--gold);
+    }
+    .rec-summary ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .rec-summary li {
+      padding: 0.25rem 0;
+      font-size: 0.9rem;
+    }
+    .rec-summary li::before {
+      content: "✓ ";
+      color: var(--teal);
+      font-weight: 700;
+    }
+    .rec-product {
+      background: linear-gradient(135deg, var(--plum), var(--wine));
+      color: var(--parchment-light);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+    .rec-product-name {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.3rem;
+      color: var(--gold);
+      margin: 0 0 0.5rem;
+    }
+    .rec-product-price {
+      font-family: 'Abril Fatface', serif;
+      font-size: 2rem;
+      margin: 0.5rem 0;
+    }
+    .rec-breakdown {
+      font-size: 0.85rem;
+      opacity: 0.85;
+      border-top: 1px solid rgba(247, 239, 224, 0.2);
+      padding-top: 0.75rem;
+      margin-top: 0.75rem;
+    }
+    .rec-reason {
+      font-family: 'Fraunces', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 0.95rem;
+      margin-top: 0.75rem;
+      line-height: 1.4;
+    }
+
+    /* ========== TEXTAREA / DATE / PHONE ========== */
+    .form-field { margin-bottom: 1rem; }
+    .form-field label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--wine);
+      margin-bottom: 0.35rem;
+    }
+    .form-field input[type="text"],
+    .form-field input[type="tel"],
+    .form-field input[type="email"],
+    .form-field input[type="date"] {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 2px solid rgba(139, 26, 82, 0.2);
+      border-radius: 10px;
+      background: var(--parchment);
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    .form-field input:focus {
+      outline: none;
+      border-color: var(--magenta);
+    }
+
+    .ig-follow-box {
+      background: rgba(0, 180, 166, 0.08);
+      border: 1px dashed var(--teal);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 0.75rem;
+    }
+    .ig-follow-box h4 {
+      margin: 0 0 0.35rem;
+      font-size: 0.95rem;
+      color: var(--wine);
+    }
+    .ig-handle {
+      font-family: 'Abril Fatface', serif;
+      font-size: 1.25rem;
+      color: var(--magenta);
+    }
+
+    /* ========== DESKTOP ENHANCEMENTS ========== */
+    @media (min-width: 768px) {
+      .nav-mobile { display: none; }
+      .nav-desktop { display: flex; }
+
+      .hero { padding: 4rem 2rem 5rem; }
+      .hero-inner { max-width: 900px; }
+
+      .quiz-widget {
+        padding: 2.5rem 2rem;
+      }
+      .quiz-widget h2 { font-size: 2rem; }
+      .quiz-widget-form { flex-direction: row; align-items: flex-end; }
+      .quiz-widget-form .form-field,
+      .quiz-widget-form .input-group { flex: 1; margin-bottom: 0; }
+      .quiz-widget-form .btn-primary { flex: 0 0 auto; min-width: 180px; }
+
+      .modal-body {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 2rem;
+        max-width: 1100px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 2rem 2rem 8rem;
+      }
+
+      .profile-card {
+        position: sticky;
+        top: 90px;
+        align-self: start;
+        max-height: calc(100vh - 180px);
+        overflow-y: auto;
+        display: block !important;
+      }
+      .profile-sheet-toggle,
+      .profile-sheet,
+      .profile-sheet-overlay { display: none !important; }
+
+      .question-panel { padding: 2rem; }
+      .question-title { font-size: 1.85rem; }
+
+      .dog-library { grid-template-columns: 1fr 1fr; }
+
+      .modal-nav {
+        max-width: 1100px;
+        margin: 0 auto;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .modal-nav button { flex: 0 0 auto; min-width: 160px; }
+      .modal-nav { justify-content: space-between; }
+    }
+
+    @media (min-width: 1024px) {
+      .hero-title { font-size: 4rem; }
+      .dog-library { grid-template-columns: repeat(2, 1fr); }
+    }
   </style>
 </head>
 <body>
-  <div>
-    <h1>Real Dogs 🐾</h1>
-    <p>Something delicious is coming soon.</p>
+
+  <header class="header">
+    <a href="/" class="logo">Real Dogs<span class="logo-dot">.</span></a>
+    <nav class="nav-desktop">
+      <a href="#shop">Shop</a>
+      <a href="#dogs">Meet the Dogs</a>
+      <a href="#about">About</a>
+      <a href="#cart">Cart (0)</a>
+    </nav>
+    <button class="nav-mobile" aria-label="Menu">☰</button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Handcrafted pupcakes, made with love</div>
+      <h1 class="hero-title">Every dog deserves their <span class="accent">moment of fame.</span></h1>
+      <p class="hero-subtitle">Personalised pupcakes, featuring your pup's face or one of our Real Dogs. Tell us about your dog and we'll match them with the perfect treat.</p>
+
+      <div class="quiz-widget" id="quizWidget">
+        <span class="quiz-widget-label">🐾 Start Here</span>
+        <h2>Find the perfect pupcake for your pup</h2>
+        <p>Answer a few quick questions and we'll recommend the right cupcake based on your dog's size, dietary needs, and the occasion.</p>
+        <form class="quiz-widget-form" id="startForm" onsubmit="return startQuiz(event)">
+          <div class="input-group" style="flex:1;">
+            <label class="input-label" for="dogNameStart">What's your dog's name?</label>
+            <input type="text" class="quiz-input" id="dogNameStart" placeholder="e.g. Felix" required autocomplete="off">
+          </div>
+          <button type="submit" class="btn-primary">Take the Quiz →</button>
+        </form>
+        <a href="#shop" class="browse-link">Or browse all pupcakes →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sticky CTA -->
+  <div class="sticky-cta" id="stickyCta">
+    <div class="sticky-cta-text">🐾 Find the perfect pupcake</div>
+    <button onclick="openQuizFromSticky()">Take Quiz →</button>
   </div>
+
+  <!-- Quiz Modal -->
+  <div class="modal-overlay" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <h2 class="modal-title" id="modalTitle">Pupcake Matchmaker</h2>
+      <button class="modal-close" onclick="closeQuiz()" aria-label="Close">✕</button>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
+      <div class="progress-label" id="progressLabel">Question 1 of 11</div>
+    </div>
+
+    <div class="modal-body">
+      <div class="question-area">
+        <div class="question-panel" id="questionPanel"></div>
+      </div>
+      <aside class="profile-card">
+        <div class="profile-card-inner" id="profileCard"></div>
+      </aside>
+    </div>
+
+    <!-- Mobile profile sheet toggle (hidden on desktop) -->
+    <div class="profile-sheet-toggle" id="profileSheetToggle" onclick="toggleProfileSheet()">
+      <div class="sheet-handle-bar"></div>
+      <div class="sheet-summary-line">
+        <span>🐕</span>
+        <span class="sheet-summary-dog" id="sheetSummaryDog">Your pup</span>
+        <span id="sheetSummaryExtra"></span>
+      </div>
+      <span class="sheet-caret">▲</span>
+    </div>
+
+    <div class="profile-sheet-overlay" id="profileSheetOverlay" onclick="toggleProfileSheet()"></div>
+    <div class="profile-sheet" id="profileSheet">
+      <div class="sheet-header" onclick="toggleProfileSheet()">
+        <div class="sheet-grip"></div>
+        <div class="sheet-title">Tap to close</div>
+      </div>
+      <div id="profileCardMobile"></div>
+    </div>
+
+    <div class="modal-nav">
+      <button class="btn-secondary" id="backBtn" onclick="prevQuestion()">← Back</button>
+      <button class="btn-primary" id="nextBtn" onclick="nextQuestion()">Next →</button>
+    </div>
+  </div>
+
+<script>
+  // ============ STATE ============
+  const state = {
+    dogName: '',
+    dogSize: '',
+    allergies: [],
+    recipe: '',
+    occasion: '',
+    wantsCustom: null,
+    photos: [],
+    selectedPhoto: null,
+    randomSelections: {},
+    mobile: '',
+    contactPref: '',
+    instagramHandle: '',
+    followsRealDogs: false,
+    storyPermission: '',
+    marketingPermission: '',
+    orderDate: '',
+    email: '',
+    currentStep: 0
+  };
+
+  // ============ STEP DEFINITIONS ============
+  const steps = [
+    { id: 'name',       render: renderName,        validate: () => state.dogName.trim().length >= 1 },
+    { id: 'size',       render: renderSize,        validate: () => !!state.dogSize },
+    { id: 'allergies',  render: renderAllergies,   validate: () => state.allergies.length > 0 },
+    { id: 'recipe',     render: renderRecipe,      validate: () => !!state.recipe },
+    { id: 'occasion',   render: renderOccasion,    validate: () => !!state.occasion },
+    { id: 'custom',     render: renderCustom,      validate: () => state.wantsCustom !== null },
+    { id: 'photoOrDogs',render: renderPhotoOrDogs, validate: validatePhotoOrDogs },
+    { id: 'contact',    render: renderContact,     validate: validateContact },
+    { id: 'story',      render: renderStory,       validate: () => !!state.storyPermission },
+    { id: 'marketing',  render: renderMarketing,   validate: () => !!state.marketingPermission },
+    { id: 'orderDate',  render: renderOrderDate,   validate: () => !!state.orderDate },
+    { id: 'email',      render: renderEmail,       validate: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email) },
+    { id: 'result',     render: renderResult,      validate: () => true, isResult: true }
+  ];
+
+  const TOTAL_Q = 12; // excluding result step
+
+  // ============ DOG LIBRARY ============
+  const dogs = [
+    { slug: 'bailey', name: 'Bailey',  breed: 'Golden Retriever', initial: 'B' },
+    { slug: 'luna',   name: 'Luna',    breed: 'Siberian Husky',   initial: 'L' },
+    { slug: 'max',    name: 'Max',     breed: 'Dachshund',        initial: 'M' },
+    { slug: 'bella',  name: 'Bella',   breed: 'Labrador',         initial: 'B' },
+    { slug: 'cooper', name: 'Cooper',  breed: 'Border Collie',    initial: 'C' },
+    { slug: 'zoe',    name: 'Zoe',     breed: 'French Bulldog',   initial: 'Z' }
+  ];
+
+  // ============ CONTROL ============
+  function startQuiz(e) {
+    if (e) e.preventDefault();
+    const name = document.getElementById('dogNameStart').value.trim();
+    if (!name) return false;
+    state.dogName = name;
+    state.currentStep = 1; // skip name step
+    openModal();
+    render();
+    return false;
+  }
+
+  function openQuizFromSticky() {
+    if (!state.dogName) {
+      state.currentStep = 0;
+    }
+    openModal();
+    render();
+  }
+
+  function openModal() {
+    document.getElementById('quizModal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeQuiz() {
+    document.getElementById('quizModal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  function nextQuestion() {
+    const step = steps[state.currentStep];
+    if (!step.validate()) {
+      alert('Please answer to continue.');
+      return;
+    }
+    if (state.currentStep < steps.length - 1) {
+      state.currentStep++;
+      render();
+      document.querySelector('.modal-overlay').scrollTop = 0;
+    }
+  }
+  function prevQuestion() {
+    if (state.currentStep > 0) {
+      state.currentStep--;
+      render();
+    } else {
+      closeQuiz();
+    }
+  }
+
+  function render() {
+    const step = steps[state.currentStep];
+    document.getElementById('questionPanel').innerHTML = step.render();
+    renderProfile();
+    updateProgress();
+    updateNavButtons();
+  }
+
+  function updateProgress() {
+    const stepsCompleted = state.currentStep;
+    const pct = Math.min(100, (stepsCompleted / TOTAL_Q) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    const qNum = Math.min(state.currentStep + 1, TOTAL_Q);
+    const step = steps[state.currentStep];
+    document.getElementById('progressLabel').textContent = step.isResult
+      ? 'Quiz Complete!'
+      : `Question ${qNum} of ${TOTAL_Q}`;
+  }
+
+  function updateNavButtons() {
+    const step = steps[state.currentStep];
+    const nextBtn = document.getElementById('nextBtn');
+    const backBtn = document.getElementById('backBtn');
+    if (step.isResult) {
+      nextBtn.style.display = 'none';
+      backBtn.textContent = '← Modify Answers';
+    } else {
+      nextBtn.style.display = '';
+      nextBtn.textContent = state.currentStep === steps.length - 2 ? 'See My Recommendation →' : 'Next →';
+      backBtn.textContent = state.currentStep === 0 ? '← Close' : '← Back';
+    }
+  }
+
+  // ============ QUESTION RENDERERS ============
+  function renderName() {
+    return `
+      <div class="question-number">Question 1 of ${TOTAL_Q}</div>
+      <h3 class="question-title">What's your dog's name?</h3>
+      <div class="form-field">
+        <input type="text" value="${escapeHtml(state.dogName)}" oninput="state.dogName=this.value;acknowledgeUpdate()" placeholder="e.g. Felix" autofocus>
+      </div>
+    `;
+  }
+
+  function renderSize() {
+    return `
+      <div class="question-number">Question 2 of ${TOTAL_Q}</div>
+      <h3 class="question-title">How big is ${escapeHtml(state.dogName)}?</h3>
+      <div class="options-grid">
+        ${optionCard('dogSize', 'small', 'Small', 'Under 10kg', state.dogSize === 'small')}
+        ${optionCard('dogSize', 'large', 'Large', '10kg and above', state.dogSize === 'large')}
+      </div>
+    `;
+  }
+
+  function renderAllergies() {
+    const list = [
+      ['gluten-free','Gluten-free'],
+      ['dairy-free','Dairy-free'],
+      ['nut-free','Nut-free'],
+      ['vegan','Vegan'],
+      ['egg-free','Egg-free'],
+      ['soy-free','Soy-free'],
+      ['none','No allergies']
+    ];
+    return `
+      <div class="question-number">Question 3 of ${TOTAL_Q}</div>
+      <h3 class="question-title">Does ${escapeHtml(state.dogName)} have any dietary needs?</h3>
+      <p class="question-helper">Select all that apply.</p>
+      <div class="options-grid">
+        ${list.map(([val,label]) => optionCardMulti('allergies', val, label, state.allergies.includes(val))).join('')}
+      </div>
+      <div class="info-badge">
+        <span>🌱</span><div>All our pupcakes are <strong>vegetarian and meat-free</strong>. Made with love, baked with care.</div>
+      </div>
+    `;
+  }
+
+  function renderRecipe() {
+    return `
+      <div class="question-number">Question 4 of ${TOTAL_Q}</div>
+      <h3 class="question-title">Which recipe sounds best?</h3>
+      <p class="question-helper">Recipes are placeholders — final flavours coming soon.</p>
+      <div class="options-grid">
+        ${optionCard('recipe', 'classic-vanilla',  'Classic Vanilla', 'Light, sweet and simple', state.recipe==='classic-vanilla')}
+        ${optionCard('recipe', 'peanut-butter',    'Peanut Butter Paws', 'Rich and nutty', state.recipe==='peanut-butter')}
+        ${optionCard('recipe', 'carob-chip',       'Carob Chip', 'Chocolate-style, dog-safe', state.recipe==='carob-chip')}
+        ${optionCard('recipe', 'pumpkin-spice',    'Pumpkin Spice', 'Seasonal and warming', state.recipe==='pumpkin-spice')}
+      </div>
+    `;
+  }
+
+  function renderOccasion() {
+    return `
+      <div class="question-number">Question 5 of ${TOTAL_Q}</div>
+      <h3 class="question-title">What's the occasion?</h3>
+      <div class="options-grid">
+        ${optionCard('occasion', 'birthday',    '🎂 Birthday', `It's ${escapeHtml(state.dogName)}'s special day`, state.occasion==='birthday')}
+        ${optionCard('occasion', 'gift',        '🎁 Gift for a Furriend', 'Sending love to another dog', state.occasion==='gift')}
+        ${optionCard('occasion', 'sweet-treat', '🧁 Mid-week Sweet Treat', 'Just because', state.occasion==='sweet-treat')}
+        ${optionCard('occasion', 'other',       '✨ Other', 'Tell us more at checkout', state.occasion==='other')}
+      </div>
+    `;
+  }
+
+  function renderCustom() {
+    return `
+      <div class="question-number">Question 6 of ${TOTAL_Q}</div>
+      <h3 class="question-title">Customise with ${escapeHtml(state.dogName)}'s face?</h3>
+      <p class="question-helper">Upload photos and we'll use AI to put ${escapeHtml(state.dogName)} on their cupcake. $5 one-time art fee. Reorder anytime for free!</p>
+      <div class="options-grid">
+        ${optionCard('custom', 'yes', `✨ Yes! Put ${escapeHtml(state.dogName)} on the cupcake`, '+$1 per cupcake + $5 one-time art fee', state.wantsCustom === true)}
+        ${optionCard('custom', 'no',  '🐕 No, use one of the Real Dogs', 'Pick from our featured pups', state.wantsCustom === false)}
+      </div>
+    `;
+  }
+
+  function renderPhotoOrDogs() {
+    if (state.wantsCustom) return renderPhotoUpload();
+    return renderDogLibrary();
+  }
+
+  function renderPhotoUpload() {
+    const thumbs = state.photos.map((p, i) => `
+      <div class="upload-thumb ${state.selectedPhoto === i ? 'selected' : ''}" onclick="selectPhoto(${i})">
+        <img src="${p.url}" alt="">
+        ${state.selectedPhoto === i ? '<div class="select-indicator">✓</div>' : ''}
+      </div>
+    `).join('');
+
+    return `
+      <div class="question-number">Question 7 of ${TOTAL_Q}</div>
+      <h3 class="question-title">Upload photos of ${escapeHtml(state.dogName)}</h3>
+      <p class="question-helper">Upload up to 3 photos. We'll pick the best one and generate ${escapeHtml(state.dogName)}'s cupcake with AI.</p>
+      <label class="upload-zone" for="photoInput">
+        <div class="upload-zone-icon">📸</div>
+        <div class="upload-zone-label">Tap to upload photos</div>
+        <div class="upload-zone-sub">JPG/PNG · Max 5MB each · Up to 3</div>
+        <input type="file" id="photoInput" accept="image/*" multiple onchange="handlePhotos(event)">
+      </label>
+
+      <div class="info-badge">
+        <span>💡</span>
+        <div>
+          <strong>Tips:</strong> Well-lit photos, clear view of ${escapeHtml(state.dogName)}'s face.
+          Try different backgrounds (solid colour, outdoors, or decorated).
+        </div>
+      </div>
+
+      ${state.photos.length ? `<div class="upload-preview">${thumbs}</div><p style="font-size:0.8rem;color:var(--muted);margin-top:0.5rem;">Tap a photo to choose your favourite.</p>` : ''}
+    `;
+  }
+
+  function renderDogLibrary() {
+    const cards = dogs.map(d => {
+      const qty = state.randomSelections[d.slug] || 0;
+      return `
+        <div class="dog-card">
+          <div class="dog-card-header">
+            <div class="dog-avatar">${d.initial}</div>
+            <div>
+              <div class="dog-name">${d.name}</div>
+              <div class="dog-breed">${d.breed}</div>
+            </div>
+          </div>
+          <a href="/dogs/${d.slug}" class="dog-story-link" onclick="event.preventDefault()">Read ${d.name}'s story →</a>
+          <div class="qty-controls">
+            <button class="qty-btn" onclick="changeQty('${d.slug}', -1)" ${qty === 0 ? 'disabled' : ''}>−</button>
+            <div class="qty-value">${qty}</div>
+            <button class="qty-btn" onclick="changeQty('${d.slug}', 1)">+</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="question-number">Question 7 of ${TOTAL_Q}</div>
+      <h3 class="question-title">Pick your Real Dogs</h3>
+      <p class="question-helper">Add any of our featured dogs to ${escapeHtml(state.dogName)}'s order. Mix and match!</p>
+      ${renderDiscountNudge()}
+      <div class="dog-library">${cards}</div>
+    `;
+  }
+
+  function renderDiscountNudge() {
+    const total = Object.values(state.randomSelections).reduce((a,b)=>a+b,0);
+    const size = state.dogSize || 'large';
+    const prices = { small: { 1:7, 6:6, 12:5 }, large: { 1:10, 6:9, 12:8 } };
+    const p = prices[size];
+
+    if (total === 0) {
+      return `
+        <div class="discount-nudge discount-nudge-intro">
+          <div class="nudge-icon">💰</div>
+          <div class="nudge-text">
+            <strong>Save more when you add more!</strong>
+            <div class="nudge-sub">6 cupcakes = $${p[6]}/each · 12 cupcakes = $${p[12]}/each</div>
+          </div>
+        </div>
+      `;
+    }
+    if (total < 6) {
+      const need = 6 - total;
+      return `
+        <div class="discount-nudge discount-nudge-active">
+          <div class="nudge-icon">🎁</div>
+          <div class="nudge-text">
+            <strong>Add ${need} more to unlock 6-pack pricing!</strong>
+            <div class="nudge-sub">Drop from $${p[1]} to $${p[6]} each (save $${(p[1]-p[6])*6})</div>
+          </div>
+          <div class="nudge-progress"><div class="nudge-progress-fill" style="width:${(total/6)*100}%"></div></div>
+        </div>
+      `;
+    }
+    if (total < 12) {
+      const need = 12 - total;
+      return `
+        <div class="discount-nudge discount-nudge-unlocked">
+          <div class="nudge-icon">✨</div>
+          <div class="nudge-text">
+            <strong>6-pack price unlocked! Add ${need} more for the best deal.</strong>
+            <div class="nudge-sub">12-pack drops to $${p[12]} each (save $${(p[6]-p[12])*12} extra)</div>
+          </div>
+          <div class="nudge-progress"><div class="nudge-progress-fill" style="width:${(total/12)*100}%"></div></div>
+        </div>
+      `;
+    }
+    return `
+      <div class="discount-nudge discount-nudge-max">
+        <div class="nudge-icon">🎉</div>
+        <div class="nudge-text">
+          <strong>Maximum discount unlocked!</strong>
+          <div class="nudge-sub">You're paying just $${p[12]} per cupcake. Woof!</div>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderContact() {
+    return `
+      <div class="question-number">Question 8 of ${TOTAL_Q}</div>
+      <h3 class="question-title">How can we reach you?</h3>
+      <p class="question-helper">We'll only contact you about your order or ${escapeHtml(state.dogName)}'s story.</p>
+
+      <div class="form-field">
+        <label>Mobile number</label>
+        <input type="tel" value="${escapeHtml(state.mobile)}" placeholder="+61 400 000 000" oninput="state.mobile=this.value;acknowledgeUpdate()">
+      </div>
+
+      <label style="font-weight:700;font-size:0.85rem;color:var(--wine);display:block;margin-bottom:0.5rem;">Preferred DM method</label>
+      <div class="options-grid">
+        ${optionCard('contactPref', 'whatsapp',  '💬 WhatsApp',  "We'll use your mobile number", state.contactPref==='whatsapp')}
+        ${optionCard('contactPref', 'instagram', '📸 Instagram', 'We can DM you on Insta', state.contactPref==='instagram')}
+      </div>
+
+      <div class="ig-follow-box" style="margin-top:1rem;">
+        <h4>📸 Add your Instagram (optional)</h4>
+        <p style="margin:0.25rem 0 0.75rem;font-size:0.85rem;color:var(--muted);">
+          ${state.contactPref === 'instagram'
+            ? 'Required for Instagram DMs.'
+            : `Share your handle and we'll tag ${escapeHtml(state.dogName)} when we post pupcakes!`}
+        </p>
+        <div class="form-field" style="margin-bottom:0.75rem;">
+          <input type="text" value="${escapeHtml(state.instagramHandle)}" placeholder="@yourhandle" oninput="state.instagramHandle=this.value;acknowledgeUpdate()">
+        </div>
+        <div style="background:rgba(247,239,224,0.5);border-radius:10px;padding:0.75rem;">
+          <p style="margin:0 0 0.5rem;font-size:0.9rem;"><strong>Follow us</strong> at <span class="ig-handle">@realdogs</span></p>
+          <a href="https://instagram.com/realdogs" target="_blank" rel="noopener" style="display:inline-block;background:var(--magenta);color:var(--parchment-light);padding:0.5rem 0.9rem;border-radius:8px;font-weight:700;font-size:0.85rem;text-decoration:none;margin-bottom:0.5rem;">Open Instagram →</a>
+          <label style="display:flex;gap:0.5rem;align-items:center;cursor:pointer;font-size:0.9rem;">
+            <input type="checkbox" ${state.followsRealDogs ? 'checked' : ''} onchange="state.followsRealDogs=this.checked;acknowledgeUpdate();render()">
+            I've followed @realdogs
+          </label>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderStory() {
+    return `
+      <div class="question-number">Question 9 of ${TOTAL_Q}</div>
+      <h3 class="question-title">Publish ${escapeHtml(state.dogName)}'s Real Dog Story?</h3>
+      <p class="question-helper">We'll email you to chat about ${escapeHtml(state.dogName)}'s story and use AI to help write it. Then ${escapeHtml(state.dogName)} gets their own page with a QR code!</p>
+      <div class="options-grid">
+        ${optionCard('storyPermission', 'yes',   `📖 Yes, make ${escapeHtml(state.dogName)} famous!`, "We'll email to chat about the story", state.storyPermission==='yes')}
+        ${optionCard('storyPermission', 'maybe', '🤔 Maybe, tell me more', 'Send info first', state.storyPermission==='maybe')}
+        ${optionCard('storyPermission', 'no',    '🚫 No thanks', 'Just ordering cupcakes', state.storyPermission==='no')}
+      </div>
+    `;
+  }
+
+  function renderMarketing() {
+    return `
+      <div class="question-number">Question 10 of ${TOTAL_Q}</div>
+      <h3 class="question-title">Can we feature ${escapeHtml(state.dogName)} in our marketing?</h3>
+      <p class="question-helper">We'd love to share ${escapeHtml(state.dogName)} in our marketing or on products. Where possible, we'll link back to ${escapeHtml(state.dogName)}'s Real Dog Story via QR codes.</p>
+      <div class="options-grid">
+        ${optionCard('marketingPermission', 'yes', `✨ Yes, ${escapeHtml(state.dogName)} is a star`, 'Use photos & link to story', state.marketingPermission==='yes')}
+        ${optionCard('marketingPermission', 'no',  '🔒 No, keep it private', "Just for our order", state.marketingPermission==='no')}
+      </div>
+    `;
+  }
+
+  function renderOrderDate() {
+    const today = new Date();
+    const min = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000);
+    const minStr = min.toISOString().slice(0,10);
+    return `
+      <div class="question-number">Question 11 of ${TOTAL_Q}</div>
+      <h3 class="question-title">When do you need your order?</h3>
+      <p class="question-helper">We need at least 2 weeks' notice so everything's baked fresh.</p>
+      <div class="form-field">
+        <label>Required by</label>
+        <input type="date" min="${minStr}" value="${escapeHtml(state.orderDate)}" oninput="state.orderDate=this.value;acknowledgeUpdate()">
+      </div>
+    `;
+  }
+
+  function renderEmail() {
+    return `
+      <div class="question-number">Question 12 of ${TOTAL_Q}</div>
+      <h3 class="question-title">Last thing — what's your email?</h3>
+      <p class="question-helper">We'll save ${escapeHtml(state.dogName)}'s profile so you can reorder easily, and follow up about the story if you opted in.</p>
+      <div class="form-field">
+        <input type="email" value="${escapeHtml(state.email)}" placeholder="you@example.com" oninput="state.email=this.value;acknowledgeUpdate()">
+      </div>
+    `;
+  }
+
+  function renderResult() {
+    const rec = computeRecommendation();
+    return `
+      <div class="recommendation">
+        <div class="rec-celebration">✨ Quiz complete! ✨</div>
+        <h2 class="rec-title">Perfect for ${escapeHtml(state.dogName)}</h2>
+
+        <div class="rec-summary">
+          <ul>
+            <li>${state.dogSize === 'small' ? 'Small' : 'Large'} cupcakes</li>
+            <li>${state.allergies.filter(a=>a!=='none').map(a => a.replace('-',' ')).join(', ') || 'Standard recipe'}</li>
+            <li>Recipe: ${state.recipe.replace('-',' ')}</li>
+            <li>Occasion: ${state.occasion.replace('-',' ')}</li>
+            <li>${state.wantsCustom ? `Custom photo of ${escapeHtml(state.dogName)}` : `${rec.totalCupcakes} Real Dogs selected`}</li>
+            <li>Needed by: ${state.orderDate}</li>
+          </ul>
+        </div>
+
+        <div class="rec-product">
+          <div class="rec-product-name">${rec.name}</div>
+          <div class="rec-product-price">$${rec.price.toFixed(2)}</div>
+          <div class="rec-breakdown">${rec.breakdown}</div>
+          <div class="rec-reason">"${rec.reason}"</div>
+        </div>
+
+        <button class="btn-primary" style="width:100%;" onclick="addToCart()">Add to Cart →</button>
+        <button class="btn-secondary" style="width:100%;margin-top:0.5rem;" onclick="closeQuiz()">Browse All Products</button>
+      </div>
+    `;
+  }
+
+  // ============ HELPERS ============
+  function optionCard(field, value, label, sub, selected) {
+    return `
+      <label class="option-card ${selected ? 'selected' : ''}" onclick="selectOption('${field}', '${value}')">
+        <div class="check"></div>
+        <div class="option-main">
+          <div>${label}</div>
+          ${sub ? `<span class="option-sub">${sub}</span>` : ''}
+        </div>
+      </label>
+    `;
+  }
+  function optionCardMulti(field, value, label, selected) {
+    return `
+      <label class="option-card ${selected ? 'selected' : ''}" onclick="toggleMulti('${field}', '${value}')">
+        <div class="check"></div>
+        <div class="option-main"><div>${label}</div></div>
+      </label>
+    `;
+  }
+
+  function selectOption(field, value) {
+    if (field === 'custom') {
+      state.wantsCustom = (value === 'yes');
+    } else {
+      state[field] = value;
+    }
+    acknowledgeUpdate();
+    render();
+  }
+  function toggleMulti(field, value) {
+    const arr = state[field];
+    if (value === 'none') {
+      state[field] = arr.includes('none') ? [] : ['none'];
+    } else {
+      state[field] = arr.filter(v => v !== 'none');
+      const i = state[field].indexOf(value);
+      if (i >= 0) state[field].splice(i,1); else state[field].push(value);
+    }
+    acknowledgeUpdate();
+    render();
+  }
+
+  function handlePhotos(e) {
+    const files = Array.from(e.target.files).slice(0, 3);
+    state.photos = [];
+    state.selectedPhoto = null;
+    files.forEach((f, i) => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        state.photos.push({ name: f.name, url: ev.target.result });
+        if (state.photos.length === files.length) {
+          state.selectedPhoto = 0;
+          render();
+        }
+      };
+      reader.readAsDataURL(f);
+    });
+  }
+  function selectPhoto(i) { state.selectedPhoto = i; render(); }
+
+  function changeQty(slug, delta) {
+    const cur = state.randomSelections[slug] || 0;
+    const next = Math.max(0, cur + delta);
+    if (next === 0) delete state.randomSelections[slug];
+    else state.randomSelections[slug] = next;
+    acknowledgeUpdate();
+    render();
+  }
+
+  function validatePhotoOrDogs() {
+    if (state.wantsCustom) return state.photos.length > 0 && state.selectedPhoto !== null;
+    return Object.values(state.randomSelections).reduce((a,b)=>a+b,0) > 0;
+  }
+  function validateContact() {
+    if (!state.mobile.trim()) return false;
+    if (!state.contactPref) return false;
+    if (state.contactPref === 'instagram') {
+      return state.instagramHandle.trim().length > 0 && state.followsRealDogs;
+    }
+    return true;
+  }
+
+  // ============ RECOMMENDATION LOGIC ============
+  function computeRecommendation() {
+    const size = state.dogSize;
+    const custom = state.wantsCustom;
+    let qty;
+    if (custom) {
+      qty = 1; // default to single for custom; could let user pick
+    } else {
+      qty = Object.values(state.randomSelections).reduce((a,b)=>a+b,0);
+    }
+    const tier = qty >= 12 ? 12 : qty >= 6 ? 6 : 1;
+
+    const prices = {
+      small: { 1: 7,  6: 6,  12: 5 },
+      large: { 1: 10, 6: 9,  12: 8 }
+    };
+
+    const base = prices[size][tier];
+    let total = base * qty;
+    if (custom) total += qty * 1 + 5;
+
+    const tierLabel = tier === 12 ? '12-pack' : tier === 6 ? '6-pack' : 'single';
+    const name = `${size === 'small' ? 'Small' : 'Large'} ${custom ? 'Custom' : 'Classic'} Pupcake${qty > 1 ? ' ('+qty+'-pack)' : ''}`;
+
+    const breakdown = custom
+      ? `${qty} × $${base} base + $${qty} custom markup + $5 art fee`
+      : `${qty} × $${base} (${tierLabel} pricing)`;
+
+    const reasons = {
+      birthday: `${state.dogName} deserves to be the star of the party!`,
+      gift:     `A thoughtful gift for another pup — they'll remember this.`,
+      'sweet-treat': `A little midweek magic for ${state.dogName}.`,
+      other:    `Handcrafted with love for ${state.dogName}.`
+    };
+
+    return {
+      name,
+      price: total,
+      totalCupcakes: qty,
+      breakdown,
+      reason: reasons[state.occasion] || reasons.other
+    };
+  }
+
+  function addToCart() {
+    try { localStorage.setItem('realdogs_profile', JSON.stringify(state)); } catch(e) {}
+    alert(`Added to cart! (Cart integration coming soon — ${state.dogName}'s order has been saved.)`);
+  }
+
+  // ============ PROFILE CARD ============
+  function renderProfile() {
+    const rec = (state.dogSize && (state.wantsCustom === false ? Object.keys(state.randomSelections).length : true))
+      ? computeRecommendation() : null;
+
+    const field = (label, value, pending = false) => `
+      <div class="profile-row">
+        <div class="profile-label">${label}</div>
+        <div class="profile-value ${pending ? 'pending' : ''}">${value || '—'}</div>
+      </div>
+    `;
+
+    const allergyTxt = state.allergies.length
+      ? (state.allergies.includes('none') ? 'None' : state.allergies.map(a=>a.replace('-',' ')).join(', '))
+      : '';
+
+    const contactTxt = state.contactPref
+      ? (state.contactPref === 'instagram'
+          ? `IG ${state.instagramHandle || '…'}`
+          : 'WhatsApp')
+      : '';
+
+    const selectionText = state.wantsCustom === true
+      ? (state.photos.length ? `${state.photos.length} photo${state.photos.length>1?'s':''} uploaded` : 'Pending upload')
+      : state.wantsCustom === false
+        ? (Object.keys(state.randomSelections).length
+            ? Object.entries(state.randomSelections).map(([s,q])=>{
+                const d = dogs.find(d=>d.slug===s);
+                return `${d?.name} × ${q}`;
+              }).join(', ')
+            : '')
+        : '';
+
+    const profileHtml = `
+      <div class="profile-card-title">Building profile for</div>
+      <div class="profile-card-name">${escapeHtml(state.dogName) || 'Your pup'}</div>
+
+      ${field('Size',       state.dogSize ? (state.dogSize==='small'?'Small (<10kg)':'Large (10kg+)') : '', !state.dogSize)}
+      ${field('Allergies',  allergyTxt, !allergyTxt)}
+      ${field('Recipe',     state.recipe ? state.recipe.replace('-',' ') : '', !state.recipe)}
+      ${field('Occasion',   state.occasion ? state.occasion.replace('-',' ') : '', !state.occasion)}
+      ${field('Photo',      state.wantsCustom === null ? '' : (state.wantsCustom ? 'Custom upload' : 'Real Dogs'), state.wantsCustom === null)}
+      ${field('Selection',  selectionText, !selectionText)}
+      ${field('Contact',    contactTxt, !contactTxt)}
+      ${field('Story',      state.storyPermission, !state.storyPermission)}
+      ${field('Marketing',  state.marketingPermission, !state.marketingPermission)}
+      ${field('Needed by',  state.orderDate, !state.orderDate)}
+
+      ${rec && rec.totalCupcakes ? `
+        <div class="profile-total-box">
+          <div class="profile-total-label">Running total</div>
+          <div class="profile-total-value">${rec.totalCupcakes} cupcake${rec.totalCupcakes!==1?'s':''} · $${rec.price.toFixed(2)}</div>
+        </div>` : ''
+      }
+    `;
+
+    document.getElementById('profileCard').innerHTML = profileHtml;
+    const mobileEl = document.getElementById('profileCardMobile');
+    if (mobileEl) mobileEl.innerHTML = profileHtml;
+
+    // Update sheet summary pill
+    const summaryDog = document.getElementById('sheetSummaryDog');
+    const summaryExtra = document.getElementById('sheetSummaryExtra');
+    if (summaryDog) summaryDog.textContent = state.dogName || 'Your pup';
+    if (summaryExtra) {
+      summaryExtra.textContent = rec && rec.totalCupcakes
+        ? ` · ${rec.totalCupcakes} cupcakes · $${rec.price.toFixed(2)}`
+        : ' · tap to view profile';
+    }
+  }
+
+  function acknowledgeUpdate() {
+    const toggle = document.getElementById('profileSheetToggle');
+    if (!toggle) return;
+    toggle.classList.remove('updated');
+    void toggle.offsetWidth; // force reflow to restart animation
+    toggle.classList.add('updated');
+    clearTimeout(acknowledgeUpdate._t);
+    acknowledgeUpdate._t = setTimeout(() => toggle.classList.remove('updated'), 650);
+  }
+
+  function toggleProfileSheet() {
+    const sheet = document.getElementById('profileSheet');
+    const overlay = document.getElementById('profileSheetOverlay');
+    const toggle = document.getElementById('profileSheetToggle');
+    const open = sheet.classList.toggle('open');
+    overlay.classList.toggle('open', open);
+    toggle.classList.toggle('open', open);
+  }
+
+  // ============ UTIL ============
+  function escapeHtml(str) {
+    return (str || '').replace(/[&<>"']/g, c => ({
+      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    }[c]));
+  }
+
+  // ============ STICKY CTA ============
+  window.addEventListener('scroll', () => {
+    const widget = document.getElementById('quizWidget');
+    const rect = widget.getBoundingClientRect();
+    const sticky = document.getElementById('stickyCta');
+    if (rect.bottom < 0 && !document.getElementById('quizModal').classList.contains('active')) {
+      sticky.classList.add('visible');
+    } else {
+      sticky.classList.remove('visible');
+    }
+  });
+
+  // Initial profile render (in case modal opens before any interaction)
+  document.addEventListener('DOMContentLoaded', () => {
+    // just in case profile card is rendered
+  });
+</script>
 </body>
 </html>

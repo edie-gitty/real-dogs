@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Dogs — Full Site Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ─────────────────────────────── */
+    :root {
+      --parchment: #F0E6D3;
+      --parchment-dark: #E4D5BC;
+      --magenta: #C4006A;
+      --wine: #8B1A52;
+      --gold: #C8920A;
+      --teal: #00B4A6;
+      --plum: #1E0A2E;
+      --plum-mid: #2E1040;
+      --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--plum); }
+
+    /* Grain layer */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.045;
+      background-image: var(--grain);
+      background-size: 180px;
+    }
+
+    /* ── NAV ─── focus: parchment + magenta ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--parchment);
+      border-bottom: 2px solid rgba(196,0,106,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2.5rem;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      background: linear-gradient(135deg, var(--magenta), var(--wine));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--plum);
+      opacity: 0.6;
+      list-style: none;
+    }
+    .nav-links a { color: inherit; text-decoration: none; }
+    .nav-links a:hover { opacity: 1; color: var(--magenta); }
+    .nav-cta {
+      background: var(--magenta);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.85rem;
+      padding: 0.55rem 1.4rem;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── SECTION LABELS ── */
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    /* ══════════════════════════════════════════
+       SECTION 1: HERO
+       Focus: PARCHMENT base · MAGENTA dominant
+    ══════════════════════════════════════════ */
+    .hero {
+      background: var(--parchment);
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      padding: 5rem 2.5rem;
+    }
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 8% 40%, rgba(196,0,106,0.18) 0%, transparent 55%),
+        radial-gradient(ellipse at 90% 15%, rgba(139,26,82,0.14) 0%, transparent 48%),
+        radial-gradient(ellipse at 70% 85%, rgba(0,180,166,0.12) 0%, transparent 45%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 620px;
+    }
+    .hero .section-label { color: var(--magenta); }
+    .hero h1 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 8vw, 6.5rem);
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--magenta) 0%, var(--wine) 35%, var(--teal) 65%, var(--gold) 90%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 6s ease infinite;
+      margin-bottom: 1.25rem;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--plum);
+      opacity: 0.7;
+      line-height: 1.6;
+      max-width: 440px;
+      margin-bottom: 2rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--magenta);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.95rem;
+      padding: 0.9rem 2rem;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--plum);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.9rem 2rem;
+      border-radius: 3px;
+      border: 1.5px solid rgba(30,10,46,0.2);
+      cursor: pointer;
+    }
+    .hero-float {
+      position: absolute;
+      right: 5%;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10rem;
+      animation: float 4s ease-in-out infinite;
+      z-index: 2;
+      filter: drop-shadow(0 8px 24px rgba(196,0,106,0.2));
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--plum);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 2px;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ══════════════════════════════════════════
+       SECTION 2: SHOP / PUPCAKES
+       Focus: PLUM dark · TEAL accents
+    ══════════════════════════════════════════ */
+    .shop {
+      background: var(--plum);
+      padding: 5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .shop::before {
+      content: '';
+      position: absolute;
+      top: -150px; right: -150px;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,180,166,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .shop .section-label { color: var(--teal); }
+    .shop h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #fff;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .shop h2 span { color: var(--teal); }
+    .shop > p {
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 3rem;
+      font-size: 1rem;
+    }
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+    .product-card {
+      background: var(--plum-mid);
+      border: 1.5px solid rgba(0,180,166,0.15);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.2s;
+    }
+    .product-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--magenta), var(--teal), var(--gold));
+    }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-img {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      background: rgba(0,180,166,0.06);
+      position: relative;
+    }
+    .product-tag {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: var(--teal);
+      color: #fff;
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 2px;
+      text-transform: uppercase;
+    }
+    .product-body { padding: 1rem; }
+    .product-name {
+      font-weight: 800;
+      font-size: 0.95rem;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .product-desc {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.75rem;
+      line-height: 1.5;
+    }
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .product-price {
+      font-weight: 900;
+      font-size: 1rem;
+      color: var(--teal);
+    }
+    .add-btn {
+      background: var(--teal);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 900;
+      padding: 0.45rem 1rem;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+
+    /* ══════════════════════════════════════════
+       SECTION 3: DOG STORIES
+       Focus: WINE base · GOLD accents
+    ══════════════════════════════════════════ */
+    .stories {
+      background: var(--wine);
+      padding: 5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stories::after {
+      content: '';
+      position: absolute;
+      bottom: -100px; left: -100px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,146,10,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .stories .section-label { color: var(--gold); }
+    .stories h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: #fff;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .stories h2 em { font-style: italic; color: var(--gold); }
+    .stories > p { color: rgba(255,255,255,0.55); margin-bottom: 3rem; }
+    .story-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+    .story-card {
+      background: rgba(255,255,255,0.08);
+      border: 1.5px solid rgba(200,146,10,0.25);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    .story-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--magenta));
+    }
+    .story-img {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      background: rgba(200,146,10,0.08);
+    }
+    .story-body { padding: 1rem; }
+    .dog-name {
+      font-weight: 900;
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 0.15rem;
+    }
+    .dog-breed {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 0.6rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .dog-quote {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.5;
+      font-style: italic;
+      margin-bottom: 0.75rem;
+    }
+    .story-link {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--gold);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .qr-hint {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.3);
+      font-weight: 600;
+    }
+    .qr-box {
+      width: 20px; height: 20px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+    }
+
+    /* ══════════════════════════════════════════
+       SECTION 4: QUIZ / NEEDS ANALYSIS
+       Focus: TEAL dominant · PARCHMENT light
+    ══════════════════════════════════════════ */
+    .quiz {
+      background: var(--teal);
+      padding: 5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .quiz::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 350px; height: 350px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      pointer-events: none;
+    }
+    .quiz .section-label { color: rgba(30,10,46,0.6); }
+    .quiz h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--plum);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .quiz > p { color: rgba(30,10,46,0.6); margin-bottom: 3rem; font-size: 1rem; }
+    .quiz-card {
+      background: var(--parchment);
+      border-radius: 16px;
+      padding: 2.5rem;
+      max-width: 640px;
+      border: 1.5px solid rgba(30,10,46,0.1);
+      box-shadow: 4px 6px 0 rgba(30,10,46,0.1);
+    }
+    .quiz-q {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: var(--plum);
+      margin-bottom: 1.5rem;
+    }
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .quiz-opt {
+      background: #fff;
+      border: 1.5px solid rgba(0,180,166,0.25);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: var(--plum);
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .quiz-opt:hover, .quiz-opt.selected {
+      border-color: var(--teal);
+      background: rgba(0,180,166,0.08);
+    }
+    .quiz-opt span { display: block; font-size: 1.4rem; margin-bottom: 0.25rem; }
+    .quiz-next {
+      background: var(--plum);
+      color: #fff;
+      font-weight: 900;
+      font-size: 0.9rem;
+      padding: 0.85rem 2rem;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      width: 100%;
+    }
+    .quiz-step {
+      font-size: 0.7rem;
+      color: rgba(30,10,46,0.4);
+      font-weight: 700;
+      text-align: right;
+      margin-top: 1rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* ══════════════════════════════════════════
+       SECTION 5: ABOUT / BRAND STORY
+       Focus: PARCHMENT warm · MAGENTA + GOLD
+    ══════════════════════════════════════════ */
+    .about {
+      background: var(--parchment-dark);
+      padding: 5rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .about .section-label { color: var(--gold); }
+    .about h2 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--plum);
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+    .about h2 em { font-style: italic; color: var(--magenta); }
+    .about p {
+      color: rgba(30,10,46,0.65);
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .stat {
+      text-align: center;
+      background: #fff;
+      border-radius: 8px;
+      padding: 1.25rem 0.75rem;
+      border: 1.5px solid rgba(196,0,106,0.12);
+      box-shadow: 2px 3px 0 rgba(30,10,46,0.06);
+    }
+    .stat-num {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: var(--magenta);
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: rgba(30,10,46,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .about-visual {
+      background: var(--plum);
+      border-radius: 16px;
+      height: 380px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7rem;
+      position: relative;
+      overflow: hidden;
+      border: 1.5px solid rgba(196,0,106,0.2);
+    }
+    .about-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(196,0,106,0.2), transparent 60%),
+                  radial-gradient(circle at 70% 70%, rgba(0,180,166,0.15), transparent 50%);
+    }
+    .about-visual-text {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      right: 1.5rem;
+    }
+    .about-visual-text h3 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #fff;
+      margin-bottom: 0.25rem;
+    }
+    .about-visual-text p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.4;
+      margin: 0;
+    }
+    .gold-strip {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--magenta), var(--gold), var(--teal));
+    }
+
+    /* ══════════════════════════════════════════
+       SECTION 6: FOOTER
+       Focus: PLUM · ALL accent colours
+    ══════════════════════════════════════════ */
+    footer {
+      background: var(--plum);
+      padding: 4rem 2.5rem 2rem;
+      border-top: 3px solid rgba(0,180,166,0.2);
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    .footer-logo {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      background: linear-gradient(135deg, var(--magenta), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.75rem;
+    }
+    .footer-tagline {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+    .footer-socials { display: flex; gap: 0.75rem; }
+    .social-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.4rem 0.8rem;
+      border-radius: 50px;
+    }
+    .footer-col h4 {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .footer-col:nth-child(2) h4 { color: var(--teal); }
+    .footer-col:nth-child(3) h4 { color: var(--gold); }
+    .footer-col:nth-child(4) h4 { color: var(--magenta); }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 0.6rem;
+      cursor: pointer;
+    }
+    .footer-col ul li:hover { color: rgba(255,255,255,0.8); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.2);
+    }
+    .footer-stripe {
+      height: 3px;
+      background: linear-gradient(90deg, var(--magenta), var(--wine), var(--teal), var(--gold), var(--magenta));
+      background-size: 200%;
+      animation: shimmer 4s ease infinite;
+      margin-bottom: 3rem;
+      border-radius: 0;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(-50%); }
+      50% { transform: translateY(calc(-50% - 14px)); }
+    }
+
+    /* ── PALETTE LEGEND ── */
+    .palette-legend {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      background: var(--plum);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      z-index: 1000;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    .palette-legend p {
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 0.6rem;
+    }
+    .legend-dots { display: flex; gap: 0.5rem; }
+    .legend-dot {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.1);
+    }
+
+    /* ── SCROLL GUIDE ── */
+    .scroll-guide {
+      background: rgba(255,255,255,0.06);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 0.75rem 2.5rem;
+      display: flex;
+      gap: 1.5rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .scroll-guide a {
+      white-space: nowrap;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.25rem 0;
+    }
+    .sg-1 { color: var(--magenta); }
+    .sg-2 { color: var(--teal); }
+    .sg-3 { color: var(--gold); }
+    .sg-4 { color: var(--teal); }
+    .sg-5 { color: rgba(196,0,106,0.8); }
+
+    @media (max-width: 700px) {
+      .about-inner { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .hero-float { display: none; }
+      .quiz-options { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <div class="nav-logo">Real Dogs</div>
+  <ul class="nav-links">
+    <li><a href="#shop">Pupcakes</a></li>
+    <li><a href="#stories">Dog Stories</a></li>
+    <li><a href="#quiz">Find Your Fit</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <button class="nav-cta">Shop Now</button>
+</nav>
+
+<!-- Scroll section guide -->
+<div class="scroll-guide" style="background:var(--parchment);border-bottom:1px solid rgba(196,0,106,0.1)">
+  <a href="#hero" class="sg-1">① Hero — Parchment + Magenta</a>
+  <a href="#shop" class="sg-2">② Shop — Plum + Teal</a>
+  <a href="#stories" class="sg-3">③ Dog Stories — Wine + Gold</a>
+  <a href="#quiz" class="sg-4">④ Quiz — Teal dominant</a>
+  <a href="#about" class="sg-5">⑤ About — Parchment + Magenta</a>
+  <a href="#footer" style="color:rgba(255,255,255,0.4);background:var(--plum);padding:0.25rem 0.75rem;border-radius:3px">⑥ Footer — Plum + All</a>
+</div>
+
+<!-- ══ SECTION 1: HERO ══ -->
+<section class="hero" id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Pupcakes · Dog Stories · One of a Kind</div>
+    <div class="section-label">Welcome to</div>
+    <h1>Real<br>Dogs</h1>
+    <p>Handcrafted pupcakes featuring real dogs with real stories. Scan the packaging. Meet the dog. Fall in love.</p>
+    <div class="hero-btns">
+      <button class="btn-primary">Shop Pupcakes</button>
+      <button class="btn-ghost">🐾 Meet the Dogs</button>
+    </div>
+  </div>
+  <div class="hero-float">🐾</div>
+</section>
+
+<!-- ══ SECTION 2: SHOP ══ -->
+<section class="shop" id="shop">
+  <div class="section-label">Pupcakes</div>
+  <h2>Made for dogs who are <span>one of a kind</span></h2>
+  <p>Every pupcake features a real dog's portrait. Scan the QR to read their story.</p>
+  <div class="products">
+    <div class="product-card">
+      <div class="product-img">
+        🧁
+        <div class="product-tag">Bestseller</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">The Birthday Boof</div>
+        <div class="product-desc">Vanilla pupcake with peanut butter frosting. Decorated with your dog's portrait.</div>
+        <div class="product-footer">
+          <span class="product-price">$14.00</span>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">
+        🎂
+        <div class="product-tag">Party Pack</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">The Pack x6</div>
+        <div class="product-desc">Six pupcakes — mix of flavours. Ideal for dog birthdays or group gifts.</div>
+        <div class="product-footer">
+          <span class="product-price">$72.00</span>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🎁</div>
+      <div class="product-body">
+        <div class="product-name">Custom Portrait Box</div>
+        <div class="product-desc">Your dog's face on every pupcake. Tell us their story & we'll add their QR page.</div>
+        <div class="product-footer">
+          <span class="product-price">From $28.00</span>
+          <button class="add-btn">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div class="product-img">🐾</div>
+      <div class="product-body">
+        <div class="product-name">Build Your Box</div>
+        <div class="product-desc">Choose your flavours, sizes and occasion. We'll sort the rest.</div>
+        <div class="product-footer">
+          <span class="product-price">From $20.00</span>
+          <button class="add-btn">Build It</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 3: DOG STORIES ══ -->
+<section class="stories" id="stories">
+  <div class="section-label">The Real Dogs</div>
+  <h2>Every dog has a <em>story</em></h2>
+  <p>Scan any pupcake package to read the dog's story and follow their Instagram.</p>
+  <div class="story-grid">
+    <div class="story-card">
+      <div class="story-img">🐶</div>
+      <div class="story-body">
+        <div class="dog-name">Mochi</div>
+        <div class="dog-breed">Shiba Inu · 3 years</div>
+        <div class="dog-quote">"I live for zoomies and will absolutely steal your socks."</div>
+        <a href="#" class="story-link">Read Mochi's Story →</a>
+        <div class="qr-hint"><div class="qr-box">▦</div> Scan from packaging</div>
+      </div>
+    </div>
+    <div class="story-card">
+      <div class="story-img">🦮</div>
+      <div class="story-body">
+        <div class="dog-name">Butterscotch</div>
+        <div class="dog-breed">Golden Retriever · 7 years</div>
+        <div class="dog-quote">"Retired guide dog, full-time couch philosopher."</div>
+        <a href="#" class="story-link">Read Butter's Story →</a>
+        <div class="qr-hint"><div class="qr-box">▦</div> Scan from packaging</div>
+      </div>
+    </div>
+    <div class="story-card">
+      <div class="story-img">🐕</div>
+      <div class="story-body">
+        <div class="dog-name">Ruckus</div>
+        <div class="dog-breed">Bull Arab Mix · 5 years</div>
+        <div class="dog-quote">"Rescue dog turned beach bum. Lives in Queensland."</div>
+        <a href="#" class="story-link">Read Ruckus's Story →</a>
+        <div class="qr-hint"><div class="qr-box">▦</div> Scan from packaging</div>
+      </div>
+    </div>
+    <div class="story-card">
+      <div class="story-img">🐩</div>
+      <div class="story-body">
+        <div class="dog-name">Margaux</div>
+        <div class="dog-breed">Standard Poodle · 2 years</div>
+        <div class="dog-quote">"She looks fancy. She eats dirt. She contains multitudes."</div>
+        <a href="#" class="story-link">Read Margaux's Story →</a>
+        <div class="qr-hint"><div class="qr-box">▦</div> Scan from packaging</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 4: QUIZ ══ -->
+<section class="quiz" id="quiz">
+  <div class="section-label">Find Your Fit</div>
+  <h2>What does your dog need?</h2>
+  <p>Answer a few quick questions and we'll find the perfect pupcake for them.</p>
+  <div class="quiz-card">
+    <div class="quiz-q">How big is your dog? 🐾</div>
+    <div class="quiz-options">
+      <div class="quiz-opt" onclick="selectOpt(this)"><span>🐭</span>Tiny (under 5kg)</div>
+      <div class="quiz-opt" onclick="selectOpt(this)"><span>🐕</span>Small (5–15kg)</div>
+      <div class="quiz-opt" onclick="selectOpt(this)"><span>🦮</span>Medium (15–30kg)</div>
+      <div class="quiz-opt" onclick="selectOpt(this)"><span>🐻</span>Large (30kg+)</div>
+    </div>
+    <button class="quiz-next">Next Question →</button>
+    <div class="quiz-step">Step 1 of 5</div>
+  </div>
+</section>
+
+<!-- ══ SECTION 5: ABOUT ══ -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div>
+      <div class="section-label">Our Story</div>
+      <h2>Made with love for dogs that are <em>one of a kind</em></h2>
+      <p>Real Dogs started with one idea: every dog deserves a moment of fame. We handcraft pupcakes using dog-safe ingredients and print a real dog's portrait on every one.</p>
+      <p>Scan the QR code on the box and you'll land on that dog's story page — their personality, their quirks, their Instagram. It's a tiny portal into a dog's world.</p>
+      <div class="about-stats">
+        <div class="stat">
+          <span class="stat-num">100%</span>
+          <span class="stat-label">Dog Safe</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">🐾</span>
+          <span class="stat-label">Real Stories</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">AU</span>
+          <span class="stat-label">Made Here</span>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="gold-strip"></div>
+      🐶
+      <div class="about-visual-text">
+        <h3>Submit Your Dog's Story</h3>
+        <p>Want your dog on a pupcake? Tell us their story and they could be next.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 6: FOOTER ══ -->
+<footer id="footer">
+  <div class="footer-stripe"></div>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">Real Dogs</div>
+      <div class="footer-tagline">Handcrafted pupcakes for dogs who are one of a kind. Based in Australia.</div>
+      <div class="footer-socials">
+        <span class="social-pill">Instagram</span>
+        <span class="social-pill">TikTok</span>
+        <span class="social-pill">Facebook</span>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Pupcakes</h4>
+      <ul>
+        <li>Shop All</li>
+        <li>Birthday Boofs</li>
+        <li>Party Packs</li>
+        <li>Custom Orders</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Dog Stories</h4>
+      <ul>
+        <li>Browse Stories</li>
+        <li>Submit Your Dog</li>
+        <li>QR Code Help</li>
+        <li>#RealDogs</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Info</h4>
+      <ul>
+        <li>About Us</li>
+        <li>Ingredients</li>
+        <li>Delivery</li>
+        <li>Contact</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Real Dogs · realdogs.com.au · All rights reserved</div>
+    <div class="footer-copy">Made with 🐾 in Australia</div>
+  </div>
+</footer>
+
+<!-- Palette legend -->
+<div class="palette-legend">
+  <p>Palette</p>
+  <div class="legend-dots">
+    <div class="legend-dot" style="background:#F0E6D3" title="Parchment"></div>
+    <div class="legend-dot" style="background:#C4006A" title="Magenta"></div>
+    <div class="legend-dot" style="background:#8B1A52" title="Wine"></div>
+    <div class="legend-dot" style="background:#C8920A" title="Gold"></div>
+    <div class="legend-dot" style="background:#00B4A6" title="Teal"></div>
+    <div class="legend-dot" style="background:#1E0A2E" title="Plum"></div>
+  </div>
+</div>
+
+<script>
+  function selectOpt(el) {
+    document.querySelectorAll('.quiz-opt').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+</script>
+</body>
+</html>

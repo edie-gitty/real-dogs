@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Dogs — Logo & Type Exploration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bebas+Neue&family=Anton&family=Pacifico&family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Fraunces:ital,wght@0,900;1,900&family=DM+Sans:wght@400;500;700&family=Nunito:wght@900&family=Oswald:wght@700&family=Alfa+Slab+One&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --parchment: #F0E6D3;
+      --magenta: #C4006A;
+      --wine: #8B1A52;
+      --gold: #C8920A;
+      --teal: #00B4A6;
+      --plum: #1E0A2E;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #F5F0E8; font-family: 'DM Sans', sans-serif; color: var(--plum); }
+
+    header {
+      background: var(--plum);
+      padding: 2.5rem;
+      color: #fff;
+    }
+    header p { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.4rem; }
+    header h1 { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.8rem; }
+    header .sub { font-size: 0.85rem; color: rgba(255,255,255,0.4); margin-top: 0.3rem; }
+
+    .section {
+      padding: 3.5rem 2.5rem;
+      border-bottom: 1px solid rgba(30,10,46,0.08);
+    }
+    .section-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--plum);
+      margin-bottom: 0.3rem;
+    }
+    .section-desc {
+      font-size: 0.8rem;
+      color: rgba(30,10,46,0.45);
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    /* ── TYPEFACE GRID ── */
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+    .type-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem 1.75rem 1.5rem;
+      border: 1.5px solid rgba(30,10,46,0.08);
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+      position: relative;
+    }
+    .type-card:hover { border-color: var(--magenta); transform: translateY(-2px); }
+    .type-name-display {
+      display: block;
+      line-height: 1;
+      margin-bottom: 1rem;
+      color: var(--plum);
+    }
+    .type-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(30,10,46,0.07);
+    }
+    .type-font-name { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(30,10,46,0.35); }
+    .type-vibe { font-size: 0.68rem; color: rgba(30,10,46,0.4); }
+
+    /* COLOUR VARIATIONS for type card */
+    .var-magenta .type-name-display { color: var(--magenta); }
+    .var-gradient .type-name-display {
+      background: linear-gradient(135deg, var(--magenta), var(--wine), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .var-gold .type-name-display { color: var(--gold); }
+    .var-dark { background: var(--plum); border-color: transparent; }
+    .var-dark .type-name-display { color: #fff; }
+    .var-dark .type-meta { border-top-color: rgba(255,255,255,0.08); }
+    .var-dark .type-font-name, .var-dark .type-vibe { color: rgba(255,255,255,0.3); }
+    .var-teal { background: var(--teal); border-color: transparent; }
+    .var-teal .type-name-display { color: var(--plum); }
+    .var-teal .type-meta { border-top-color: rgba(30,10,46,0.12); }
+
+    /* ── ICON GRID ── */
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.25rem;
+    }
+    .icon-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      border: 1.5px solid rgba(30,10,46,0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .icon-card:hover { border-color: var(--magenta); transform: translateY(-2px); }
+    .icon-card svg { width: 90px; height: 90px; }
+    .icon-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(30,10,46,0.4); text-align: center; }
+
+    /* ── LOCKUP GRID ── */
+    .lockup-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .lockup-card {
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+      border: 1.5px solid rgba(30,10,46,0.08);
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+    .lockup-card:hover { border-color: var(--magenta); }
+    .lockup-card.bg-white { background: #fff; }
+    .lockup-card.bg-plum { background: var(--plum); border-color: transparent; }
+    .lockup-card.bg-parchment { background: var(--parchment); }
+    .lockup-card.bg-magenta { background: var(--magenta); border-color: transparent; }
+    .lockup-card.bg-teal { background: var(--teal); border-color: transparent; }
+    .lockup-card.bg-wine { background: var(--wine); border-color: transparent; }
+    .lockup-text { display: flex; flex-direction: column; }
+    .lockup-title { line-height: 1; margin-bottom: 0.2rem; }
+    .lockup-sub { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; opacity: 0.5; }
+
+    /* Stacked lockup */
+    .lockup-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .type-grid, .icon-grid, .lockup-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <p>Real Dogs · Identity System</p>
+  <h1>Typeface & Logo Exploration</h1>
+  <p class="sub">Type styles, standalone icons, and combined lockups. Click anything you like.</p>
+</header>
+
+<!-- ══════════════════════════════════
+     PART 1: TYPEFACE OPTIONS
+══════════════════════════════════ -->
+<section class="section">
+  <div class="section-tag">Part 01</div>
+  <div class="section-title">Wordmark Type Styles</div>
+  <p class="section-desc">"Real Dogs" written in different typefaces across a range of personalities — from bold editorial to warm and handcrafted. Each shown in the primary magenta and on different backgrounds.</p>
+
+  <div class="type-grid">
+
+    <!-- 1. Abril Fatface -->
+    <div class="type-card var-magenta">
+      <span class="type-name-display" style="font-family:'Abril Fatface',serif;font-size:3rem">Real Dogs</span>
+      <div class="type-meta">
+        <span class="type-font-name">Abril Fatface</span>
+        <span class="type-vibe">Bold · Editorial · Punchy</span>
+      </div>
+    </div>
+
+    <!-- 2. Abril Fatface on dark -->
+    <div class="type-card var-dark">
+      <span class="type-name-display" style="font-family:'Abril Fatface',serif;font-size:3rem">Real Dogs</span>
+      <div class="type-meta">
+        <span class="type-font-name">Abril Fatface · Dark</span>
+        <span class="type-vibe">Impactful · Premium</span>
+      </div>
+    </div>
+
+    <!-- 3. Bebas Neue -->
+    <div class="type-card var-gradient">
+      <span class="type-name-display" style="font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:0.05em">REAL DOGS</span>
+      <div class="type-meta">
+        <span class="type-font-name">Bebas Neue</span>
+        <span class="type-vibe">Condensed · Poster · Strong</span>
+      </div>
+    </div>
+
+    <!-- 4. Bebas with tagline -->
+    <div class="type-card var-dark">
+      <span class="type-name-display" style="font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:0.05em">REAL DOGS</span>
+      <div style="font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--teal);margin-top:-0.5rem;margin-bottom:0.75rem;font-weight:700">Pupcakes · Dog Stories · Australia</div>
+      <div class="type-meta">
+        <span class="type-font-name">Bebas Neue · With tagline</span>
+        <span class="type-vibe">Signage · Print</span>
+      </div>
+    </div>
+
+    <!-- 5. Playfair Display -->
+    <div class="type-card">
+      <span class="type-name-display" style="font-family:'Playfair Display',serif;font-size:2.8rem;font-style:italic;font-weight:900;color:var(--plum)">Real Dogs</span>
+      <div class="type-meta">
+        <span class="type-font-name">Playfair Display Italic</span>
+        <span class="type-vibe">Editorial · Elegant · Warm</span>
+      </div>
+    </div>
+
+    <!-- 6. Playfair on teal -->
+    <div class="type-card var-teal">
+      <span class="type-name-display" style="font-family:'Playfair Display',serif;font-size:2.8rem;font-style:italic;font-weight:900">Real Dogs</span>
+      <div class="type-meta">
+        <span class="type-font-name">Playfair · Teal</span>
+        <span class="type-vibe">Magazine · Lifestyle</span>
+      </div>
+    </div>
+
+    <!-- 7. Fraunces -->
+    <div class="type-card var-magenta">
+      <span class="type-name-display" style="font-family:'Fraunces',serif;font-size:3rem;font-style:italic;font-weight:900">Real Dogs</span>
+      <div class="type-meta">
+        <span class="type-font-name">Fraunces Italic</span>
+        <span class="type-vibe">Literary · Quirky · Warm</span>
+      </div>
+    </div>
+
+    <!-- 8. Pacifico -->
+    <div class="type-card">
+      <span class="type-name-display" style="font-family:'Pacifico',cursive;font-size:2.6rem;color:var(--gold)">Real Dogs</span>
+      <div class="type-meta">
+        <span class="type-font-name">Pacifico</span>
+        <span class="type-vibe">Friendly · Retro · Script</span>
+      </div>
+    </div>
+
+    <!-- 9. Anton condensed -->
+    <div class="type-card var-dark">
+      <span class="type-name-display" style="font-family:'Anton',sans-serif;font-size:4.5rem;letter-spacing:-0.01em;line-height:0.85">REAL<br>DOGS</span>
+      <div class="type-meta">
+        <span class="type-font-name">Anton — Stacked</span>
+        <span class="type-vibe">Headline · Stencil · Bold</span>
+      </div>
+    </div>
+
+    <!-- 10. Anton with magenta Dogs -->
+    <div class="type-card">
+      <span class="type-name-display" style="font-family:'Anton',sans-serif;font-size:4.5rem;letter-spacing:-0.01em;line-height:0.85">
+        <span style="color:var(--plum)">REAL</span><br>
+        <span style="color:var(--magenta)">DOGS</span>
+      </span>
+      <div class="type-meta">
+        <span class="type-font-name">Anton — Two Colour</span>
+        <span class="type-vibe">Impact · Graphic · Pop</span>
+      </div>
+    </div>
+
+    <!-- 11. Oswald stacked -->
+    <div class="type-card var-gradient">
+      <span class="type-name-display" style="font-family:'Oswald',sans-serif;font-size:3.5rem;letter-spacing:0.08em;text-transform:uppercase;line-height:0.85">REAL<br>DOGS</span>
+      <div class="type-meta">
+        <span class="type-font-name">Oswald — Stacked</span>
+        <span class="type-vibe">Modern · Condensed · Clean</span>
+      </div>
+    </div>
+
+    <!-- 12. Alfa Slab -->
+    <div class="type-card var-dark">
+      <span class="type-name-display" style="font-family:'Alfa Slab One',serif;font-size:2.6rem;color:#fff">Real Dogs</span>
+      <div class="type-meta">
+        <span class="type-font-name">Alfa Slab One</span>
+        <span class="type-vibe">Slab Serif · Western · Bold</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     PART 2: ICONS / SYMBOLS
+══════════════════════════════════ -->
+<section class="section">
+  <div class="section-tag">Part 02</div>
+  <div class="section-title">Icon & Symbol Options</div>
+  <p class="section-desc">Standalone marks that sit alongside the wordmark. Clean, printable, stamp-friendly. Shown in magenta — all work in any single colour or gradient.</p>
+
+  <div class="icon-grid">
+
+    <!-- 1. Organic Paw Print -->
+    <div class="icon-card">
+      <svg viewBox="0 0 120 120" fill="none">
+        <!-- Main pad -->
+        <ellipse cx="60" cy="82" rx="28" ry="24" fill="var(--magenta)"/>
+        <!-- Toe 1 far left -->
+        <ellipse cx="24" cy="57" rx="13" ry="15" transform="rotate(-15 24 57)" fill="var(--magenta)"/>
+        <!-- Toe 2 -->
+        <ellipse cx="44" cy="44" rx="13" ry="15" transform="rotate(-5 44 44)" fill="var(--magenta)"/>
+        <!-- Toe 3 -->
+        <ellipse cx="66" cy="42" rx="13" ry="15" transform="rotate(5 66 42)" fill="var(--magenta)"/>
+        <!-- Toe 4 far right -->
+        <ellipse cx="88" cy="52" rx="13" ry="15" transform="rotate(18 88 52)" fill="var(--magenta)"/>
+      </svg>
+      <div class="icon-label">Organic Paw</div>
+    </div>
+
+    <!-- 2. Paw in circle badge -->
+    <div class="icon-card">
+      <svg viewBox="0 0 120 120" fill="none">
+        <circle cx="60" cy="60" r="55" fill="var(--magenta)"/>
+        <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <!-- Paw inside scaled -->
+        <ellipse cx="60" cy="76" rx="20" ry="17" fill="white"/>
+        <ellipse cx="36" cy="54" rx="9" ry="11" transform="rotate(-15 36 54)" fill="white"/>
+        <ellipse cx="50" cy="44" rx="9" ry="11" transform="rotate(-5 50 44)" fill="white"/>
+        <ellipse cx="66" cy="43" rx="9" ry="11" transform="rotate(5 66 43)" fill="white"/>
+        <ellipse cx="82" cy="50" rx="9" ry="11" transform="rotate(18 82 50)" fill="white"/>
+      </svg>
+      <div class="icon-label">Paw Badge</div>
+    </div>
+
+    <!-- 3. Simple dog face -->
+    <div class="icon-card">
+      <svg viewBox="0 0 120 120" fill="none">
+        <!-- Ears floppy -->
+        <ellipse cx="28" cy="38" rx="18" ry="26" transform="rotate(-12 28 38)" fill="var(--wine)"/>
+        <ellipse cx="92" cy="38" rx="18" ry="26" transform="rotate(12 92 38)" fill="var(--wine)"/>
+        <!-- Head -->
+        <circle cx="60" cy="68" r="40" fill="var(--magenta)"/>
+        <!-- Snout -->
+        <ellipse cx="60" cy="82" rx="18" ry="13" fill="var(--wine)"/>
+        <!-- Nose -->
+        <ellipse cx="60" cy="75" rx="8" ry="6" fill="var(--plum)"/>
+        <!-- Eyes -->
+        <circle cx="46" cy="60" r="7" fill="white"/>
+        <circle cx="74" cy="60" r="7" fill="white"/>
+        <circle cx="47" cy="61" r="3.5" fill="var(--plum)"/>
+        <circle cx="75" cy="61" r="3.5" fill="var(--plum)"/>
+        <!-- Eye shine -->
+        <circle cx="49" cy="59" r="1.2" fill="white"/>
+        <circle cx="77" cy="59" r="1.2" fill="white"/>
+      </svg>
+      <div class="icon-label">Dog Face</div>
+    </div>
+
+    <!-- 4. Star badge -->
+    <div class="icon-card">
+      <svg viewBox="0 0 120 120" fill="none">
+        <!-- 6-point star/badge shape -->
+        <polygon points="60,5 73,42 112,42 82,66 93,103 60,82 27,103 38,66 8,42 47,42" fill="var(--magenta)"/>
+        <!-- Paw inside -->
+        <ellipse cx="60" cy="70" rx="13" ry="11" fill="white" opacity="0.9"/>
+        <ellipse cx="43" cy="54" rx="7" ry="8" transform="rotate(-15 43 54)" fill="white" opacity="0.9"/>
+        <ellipse cx="53" cy="47" rx="7" ry="8" transform="rotate(-5 53 47)" fill="white" opacity="0.9"/>
+        <ellipse cx="65" cy="46" rx="7" ry="8" transform="rotate(5 65 46)" fill="white" opacity="0.9"/>
+        <ellipse cx="76" cy="52" rx="7" ry="8" transform="rotate(18 76 52)" fill="white" opacity="0.9"/>
+      </svg>
+      <div class="icon-label">Star Badge</div>
+    </div>
+
+    <!-- 5. Dog silhouette (sitting) -->
+    <div class="icon-card">
+      <svg viewBox="0 0 120 130" fill="none">
+        <!-- Body -->
+        <ellipse cx="60" cy="95" rx="30" ry="28" fill="var(--magenta)"/>
+        <!-- Head -->
+        <circle cx="60" cy="52" r="26" fill="var(--magenta)"/>
+        <!-- Ear left floppy -->
+        <path d="M 34 40 Q 20 25 22 55 Q 30 58 34 55 Z" fill="var(--wine)"/>
+        <!-- Ear right floppy -->
+        <path d="M 86 40 Q 100 25 98 55 Q 90 58 86 55 Z" fill="var(--wine)"/>
+        <!-- Tail -->
+        <path d="M 88 80 Q 110 60 105 50 Q 100 45 96 52 Q 98 58 90 75 Z" fill="var(--magenta)"/>
+        <!-- Front leg left -->
+        <rect x="38" y="108" width="12" height="20" rx="6" fill="var(--magenta)"/>
+        <!-- Front leg right -->
+        <rect x="70" y="108" width="12" height="20" rx="6" fill="var(--magenta)"/>
+        <!-- Snout -->
+        <ellipse cx="60" cy="62" rx="12" ry="9" fill="var(--wine)"/>
+        <!-- Nose -->
+        <ellipse cx="60" cy="57" rx="5" ry="3.5" fill="var(--plum)"/>
+        <!-- Eyes -->
+        <circle cx="50" cy="48" r="5" fill="white"/>
+        <circle cx="70" cy="48" r="5" fill="white"/>
+        <circle cx="51" cy="49" r="2.5" fill="var(--plum)"/>
+        <circle cx="71" cy="49" r="2.5" fill="var(--plum)"/>
+      </svg>
+      <div class="icon-label">Dog Silhouette</div>
+    </div>
+
+    <!-- 6. Circular stamp with crown -->
+    <div class="icon-card">
+      <svg viewBox="0 0 120 120" fill="none">
+        <!-- Outer ring -->
+        <circle cx="60" cy="60" r="55" fill="none" stroke="var(--magenta)" stroke-width="3"/>
+        <circle cx="60" cy="60" r="48" fill="none" stroke="var(--magenta)" stroke-width="1" stroke-dasharray="3 3"/>
+        <!-- Crown -->
+        <polygon points="30,52 38,38 48,50 60,32 72,50 82,38 90,52 90,68 30,68" fill="var(--magenta)"/>
+        <!-- Paw below crown -->
+        <ellipse cx="60" cy="86" rx="14" ry="11" fill="var(--magenta)"/>
+        <ellipse cx="42" cy="76" rx="7" ry="8" transform="rotate(-15 42 76)" fill="var(--magenta)"/>
+        <ellipse cx="52" cy="70" rx="7" ry="8" fill="var(--magenta)"/>
+        <ellipse cx="68" cy="70" rx="7" ry="8" fill="var(--magenta)"/>
+        <ellipse cx="78" cy="76" rx="7" ry="8" transform="rotate(15 78 76)" fill="var(--magenta)"/>
+      </svg>
+      <div class="icon-label">Crown + Paw</div>
+    </div>
+
+    <!-- 7. Diamond / gem paw -->
+    <div class="icon-card">
+      <svg viewBox="0 0 120 130" fill="none">
+        <!-- Diamond shape -->
+        <polygon points="60,8 110,45 60,125 10,45" fill="var(--teal)"/>
+        <!-- Diamond facet lines -->
+        <polygon points="60,8 110,45 60,45" fill="rgba(255,255,255,0.2)"/>
+        <polygon points="10,45 60,45 60,125" fill="rgba(0,0,0,0.1)"/>
+        <line x1="60" y1="8" x2="60" y2="45" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+        <!-- Paw inside -->
+        <ellipse cx="60" cy="82" rx="16" ry="14" fill="white" opacity="0.9"/>
+        <ellipse cx="43" cy="66" rx="8" ry="9" transform="rotate(-15 43 66)" fill="white" opacity="0.9"/>
+        <ellipse cx="53" cy="60" rx="8" ry="9" fill="white" opacity="0.9"/>
+        <ellipse cx="67" cy="60" rx="8" ry="9" fill="white" opacity="0.9"/>
+        <ellipse cx="77" cy="66" rx="8" ry="9" transform="rotate(15 77 66)" fill="white" opacity="0.9"/>
+      </svg>
+      <div class="icon-label">Gem + Paw</div>
+    </div>
+
+    <!-- 8. Simple bone -->
+    <div class="icon-card">
+      <svg viewBox="0 0 140 80" fill="none">
+        <!-- Bone -->
+        <circle cx="25" cy="20" r="14" fill="var(--magenta)"/>
+        <circle cx="25" cy="60" r="14" fill="var(--magenta)"/>
+        <circle cx="115" cy="20" r="14" fill="var(--magenta)"/>
+        <circle cx="115" cy="60" r="14" fill="var(--magenta)"/>
+        <!-- Bone shaft -->
+        <rect x="28" y="22" width="84" height="36" rx="0" fill="var(--magenta)"/>
+        <!-- Bone cutout on left -->
+        <ellipse cx="28" cy="40" rx="11" ry="11" fill="#F5F0E8"/>
+        <!-- Bone cutout on right -->
+        <ellipse cx="112" cy="40" rx="11" ry="11" fill="#F5F0E8"/>
+      </svg>
+      <div class="icon-label">Classic Bone</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     PART 3: COMBINED LOCKUPS
+══════════════════════════════════ -->
+<section class="section">
+  <div class="section-tag">Part 03</div>
+  <div class="section-title">Icon + Wordmark Lockups</div>
+  <p class="section-desc">How the icon and type sit together across different backgrounds. These are the real-world logo formats you'd use on packaging, the website, social, and merch.</p>
+
+  <div class="lockup-grid">
+
+    <!-- Lockup 1: Paw + Abril on white -->
+    <div class="lockup-card bg-white">
+      <svg viewBox="0 0 60 60" width="50" height="50" flex-shrink="0">
+        <ellipse cx="30" cy="41" rx="14" ry="12" fill="var(--magenta)"/>
+        <ellipse cx="12" cy="28" rx="6.5" ry="7.5" transform="rotate(-15 12 28)" fill="var(--magenta)"/>
+        <ellipse cx="22" cy="22" rx="6.5" ry="7.5" transform="rotate(-5 22 22)" fill="var(--magenta)"/>
+        <ellipse cx="33" cy="21" rx="6.5" ry="7.5" transform="rotate(5 33 21)" fill="var(--magenta)"/>
+        <ellipse cx="44" cy="26" rx="6.5" ry="7.5" transform="rotate(18 44 26)" fill="var(--magenta)"/>
+      </svg>
+      <div class="lockup-text">
+        <span class="lockup-title" style="font-family:'Abril Fatface',serif;font-size:1.8rem;color:var(--plum)">Real Dogs</span>
+        <span class="lockup-sub" style="color:var(--magenta)">Pupcakes · Australia</span>
+      </div>
+    </div>
+
+    <!-- Lockup 2: Dog face + Bebas on plum -->
+    <div class="lockup-card bg-plum">
+      <svg viewBox="0 0 60 60" width="46" height="46" flex-shrink="0">
+        <ellipse cx="18" cy="20" rx="9" ry="13" transform="rotate(-12 18 20)" fill="var(--wine)"/>
+        <ellipse cx="46" cy="20" rx="9" ry="13" transform="rotate(12 46 20)" fill="var(--wine)"/>
+        <circle cx="30" cy="34" r="20" fill="var(--magenta)"/>
+        <ellipse cx="30" cy="41" rx="9" ry="6.5" fill="var(--wine)"/>
+        <ellipse cx="30" cy="38" rx="4" ry="3" fill="var(--plum)"/>
+        <circle cx="23" cy="30" r="3.5" fill="white"/>
+        <circle cx="37" cy="30" r="3.5" fill="white"/>
+        <circle cx="23.5" cy="30.5" r="1.8" fill="var(--plum)"/>
+        <circle cx="37.5" cy="30.5" r="1.8" fill="var(--plum)"/>
+      </svg>
+      <div class="lockup-text">
+        <span class="lockup-title" style="font-family:'Bebas Neue',sans-serif;font-size:2.2rem;letter-spacing:0.05em;color:#fff">REAL DOGS</span>
+        <span class="lockup-sub" style="color:var(--teal)">Pupcakes · Dog Stories</span>
+      </div>
+    </div>
+
+    <!-- Lockup 3: Crown+Paw + Anton stacked on parchment -->
+    <div class="lockup-card bg-parchment">
+      <svg viewBox="0 0 60 60" width="46" height="46" flex-shrink="0">
+        <polygon points="15,26 19,19 24,25 30,16 36,25 41,19 45,26 45,34 15,34" fill="var(--magenta)"/>
+        <ellipse cx="30" cy="43" rx="7" ry="5.5" fill="var(--magenta)"/>
+        <ellipse cx="21" cy="38" rx="3.5" ry="4" transform="rotate(-15 21 38)" fill="var(--magenta)"/>
+        <ellipse cx="26" cy="35" rx="3.5" ry="4" fill="var(--magenta)"/>
+        <ellipse cx="34" cy="35" rx="3.5" ry="4" fill="var(--magenta)"/>
+        <ellipse cx="39" cy="38" rx="3.5" ry="4" transform="rotate(15 39 38)" fill="var(--magenta)"/>
+      </svg>
+      <div class="lockup-text">
+        <span class="lockup-title" style="font-family:'Anton',sans-serif;font-size:1.8rem;line-height:0.88;color:var(--plum)">REAL<br>DOGS</span>
+        <span class="lockup-sub" style="color:var(--magenta);margin-top:0.4rem">Australia</span>
+      </div>
+    </div>
+
+    <!-- Lockup 4: Gem+Paw + Playfair on teal -->
+    <div class="lockup-card bg-teal">
+      <svg viewBox="0 0 50 65" width="38" height="50" flex-shrink="0">
+        <polygon points="25,4 48,22 25,62 2,22" fill="var(--plum)"/>
+        <polygon points="25,4 48,22 25,22" fill="rgba(255,255,255,0.18)"/>
+        <ellipse cx="25" cy="40" rx="8" ry="7" fill="white" opacity="0.9"/>
+        <ellipse cx="14" cy="31" rx="4" ry="4.5" transform="rotate(-15 14 31)" fill="white" opacity="0.9"/>
+        <ellipse cx="20" cy="27" rx="4" ry="4.5" fill="white" opacity="0.9"/>
+        <ellipse cx="30" cy="27" rx="4" ry="4.5" fill="white" opacity="0.9"/>
+        <ellipse cx="36" cy="31" rx="4" ry="4.5" transform="rotate(15 36 31)" fill="white" opacity="0.9"/>
+      </svg>
+      <div class="lockup-text">
+        <span class="lockup-title" style="font-family:'Playfair Display',serif;font-style:italic;font-weight:900;font-size:1.7rem;color:var(--plum)">Real Dogs</span>
+        <span class="lockup-sub" style="color:rgba(30,10,46,0.5)">Pupcakes · Dog Stories</span>
+      </div>
+    </div>
+
+    <!-- Lockup 5: Bone + Alfa Slab on wine -->
+    <div class="lockup-card bg-wine">
+      <svg viewBox="0 0 70 40" width="60" height="34" flex-shrink="0">
+        <circle cx="12" cy="10" r="7" fill="white" opacity="0.9"/>
+        <circle cx="12" cy="30" r="7" fill="white" opacity="0.9"/>
+        <circle cx="58" cy="10" r="7" fill="white" opacity="0.9"/>
+        <circle cx="58" cy="30" r="7" fill="white" opacity="0.9"/>
+        <rect x="14" y="11" width="42" height="18" fill="white" opacity="0.9"/>
+        <ellipse cx="14" cy="20" rx="5.5" ry="5.5" fill="var(--wine)"/>
+        <ellipse cx="56" cy="20" rx="5.5" ry="5.5" fill="var(--wine)"/>
+      </svg>
+      <div class="lockup-text">
+        <span class="lockup-title" style="font-family:'Alfa Slab One',serif;font-size:1.6rem;color:#fff">Real Dogs</span>
+        <span class="lockup-sub" style="color:rgba(255,255,255,0.45)">Pupcakes · Australia</span>
+      </div>
+    </div>
+
+    <!-- Lockup 6: Star badge + Fraunces on magenta -->
+    <div class="lockup-card bg-magenta">
+      <svg viewBox="0 0 60 60" width="46" height="46" flex-shrink="0">
+        <polygon points="30,3 36,21 56,21 41,33 47,51 30,41 13,51 19,33 4,21 24,21" fill="white" opacity="0.92"/>
+        <ellipse cx="30" cy="35" rx="7" ry="6" fill="var(--magenta)"/>
+        <ellipse cx="20" cy="28" rx="4" ry="4.5" transform="rotate(-15 20 28)" fill="var(--magenta)"/>
+        <ellipse cx="25" cy="24" rx="4" ry="4.5" fill="var(--magenta)"/>
+        <ellipse cx="35" cy="24" rx="4" ry="4.5" fill="var(--magenta)"/>
+        <ellipse cx="40" cy="28" rx="4" ry="4.5" transform="rotate(15 40 28)" fill="var(--magenta)"/>
+      </svg>
+      <div class="lockup-text">
+        <span class="lockup-title" style="font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:1.8rem;color:#fff">Real Dogs</span>
+        <span class="lockup-sub" style="color:rgba(255,255,255,0.5)">Pupcakes · Dog Stories</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     PART 4: STACKED / COMPACT BADGES
+══════════════════════════════════ -->
+<section class="section" style="background:var(--plum)">
+  <div class="section-tag" style="color:var(--teal)">Part 04</div>
+  <div class="section-title" style="color:#fff">Compact Versions</div>
+  <p class="section-desc" style="color:rgba(255,255,255,0.35)">How the mark works stacked vertically — great for packaging stamps, social profile images, and QR code landing pages.</p>
+
+  <div style="display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start">
+
+    <!-- Compact A -->
+    <div style="background:var(--parchment);border-radius:16px;padding:2rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;min-width:160px">
+      <svg viewBox="0 0 80 80" width="70" height="70">
+        <circle cx="40" cy="40" r="36" fill="var(--magenta)"/>
+        <ellipse cx="40" cy="52" rx="16" ry="13" fill="white" opacity="0.92"/>
+        <ellipse cx="21" cy="38" rx="8.5" ry="9.5" transform="rotate(-15 21 38)" fill="white" opacity="0.92"/>
+        <ellipse cx="31" cy="31" rx="8.5" ry="9.5" transform="rotate(-5 31 31)" fill="white" opacity="0.92"/>
+        <ellipse cx="46" cy="30" rx="8.5" ry="9.5" transform="rotate(5 46 30)" fill="white" opacity="0.92"/>
+        <ellipse cx="58" cy="36" rx="8.5" ry="9.5" transform="rotate(18 58 36)" fill="white" opacity="0.92"/>
+      </svg>
+      <div style="font-family:'Abril Fatface',serif;font-size:1.3rem;color:var(--plum);text-align:center;line-height:1">Real Dogs</div>
+      <div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--magenta);font-weight:700">Australia</div>
+    </div>
+
+    <!-- Compact B -->
+    <div style="background:#111;border-radius:16px;padding:2rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;min-width:160px">
+      <svg viewBox="0 0 80 80" width="70" height="70">
+        <ellipse cx="26" cy="22" rx="12" ry="17" transform="rotate(-12 26 22)" fill="var(--wine)"/>
+        <ellipse cx="56" cy="22" rx="12" ry="17" transform="rotate(12 56 22)" fill="var(--wine)"/>
+        <circle cx="40" cy="48" r="26" fill="var(--magenta)"/>
+        <ellipse cx="40" cy="58" rx="12" ry="8.5" fill="var(--wine)"/>
+        <ellipse cx="40" cy="53" rx="5" ry="3.5" fill="var(--plum)"/>
+        <circle cx="31" cy="42" r="4.5" fill="white"/>
+        <circle cx="49" cy="42" r="4.5" fill="white"/>
+        <circle cx="31.5" cy="42.5" r="2.2" fill="var(--plum)"/>
+        <circle cx="49.5" cy="42.5" r="2.2" fill="var(--plum)"/>
+      </svg>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.08em;color:#fff;text-align:center">REAL DOGS</div>
+      <div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--teal);font-weight:700">Pupcakes</div>
+    </div>
+
+    <!-- Compact C - icon only -->
+    <div style="background:var(--teal);border-radius:16px;padding:2rem;display:flex;flex-direction:column;align-items:center;gap:0.75rem;min-width:120px">
+      <svg viewBox="0 0 80 80" width="70" height="70">
+        <ellipse cx="40" cy="52" rx="20" ry="17" fill="var(--plum)"/>
+        <ellipse cx="16" cy="36" rx="10" ry="11.5" transform="rotate(-15 16 36)" fill="var(--plum)"/>
+        <ellipse cx="29" cy="27" rx="10" ry="11.5" transform="rotate(-5 29 27)" fill="var(--plum)"/>
+        <ellipse cx="46" cy="26" rx="10" ry="11.5" transform="rotate(5 46 26)" fill="var(--plum)"/>
+        <ellipse cx="60" cy="33" rx="10" ry="11.5" transform="rotate(18 60 33)" fill="var(--plum)"/>
+      </svg>
+      <div style="font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--plum);font-weight:800;opacity:0.6">Icon only</div>
+    </div>
+
+    <!-- Compact D - horizontal minimal -->
+    <div style="background:var(--parchment);border-radius:16px;padding:1.5rem 2rem;display:flex;align-items:center;gap:1rem;min-width:200px">
+      <svg viewBox="0 0 50 50" width="38" height="38">
+        <ellipse cx="25" cy="32" rx="12" ry="10" fill="var(--plum)"/>
+        <ellipse cx="10" cy="22" rx="6" ry="7" transform="rotate(-15 10 22)" fill="var(--plum)"/>
+        <ellipse cx="19" cy="16" rx="6" ry="7" transform="rotate(-5 19 16)" fill="var(--plum)"/>
+        <ellipse cx="30" cy="16" rx="6" ry="7" transform="rotate(5 30 16)" fill="var(--plum)"/>
+        <ellipse cx="40" cy="21" rx="6" ry="7" transform="rotate(18 40 21)" fill="var(--plum)"/>
+      </svg>
+      <div>
+        <div style="font-family:'Fraunces',serif;font-style:italic;font-weight:900;font-size:1.4rem;color:var(--plum);line-height:1">Real Dogs</div>
+        <div style="font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--magenta);font-weight:700;margin-top:0.2rem">Pupcakes · Au</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer style="padding:2.5rem;background:var(--plum);border-top:1px solid rgba(255,255,255,0.05)">
+  <p style="font-size:0.75rem;color:rgba(255,255,255,0.2);line-height:1.7">All marks are built as clean SVG — they print perfectly at any size, work in single colour for stamps, embroidery or packaging, and can be filled with any colour from the palette. Once you pick a favourite direction, I'll refine it and build the final version.</p>
+</footer>
+
+</body>
+</html>

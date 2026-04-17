@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Dogs — Brand Direction Options</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&family=DM+Sans:wght@400;500;700&family=Fraunces:ital,wght@0,700;0,900;1,700;1,900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'DM Sans', sans-serif; background: #f0f0f0; color: #222; }
+
+    header {
+      background: #fff;
+      padding: 2rem;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+    header h1 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #999; }
+    header p { font-size: 1.8rem; font-weight: 800; color: #222; margin-top: 0.25rem; }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      padding: 1.5rem 1rem;
+      flex-wrap: wrap;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+    }
+    .tab-btn {
+      padding: 0.6rem 1.5rem;
+      border: 2px solid #ddd;
+      background: #fff;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tab-btn.active-1 { border-color: #C84B31; background: #C84B31; color: #fff; }
+    .tab-btn.active-2 { border-color: #FF3E6C; background: #FF3E6C; color: #fff; }
+    .tab-btn.active-3 { border-color: #1B3A5C; background: #1B3A5C; color: #fff; }
+    .tab-btn.active-4 { border-color: #BF5FFF; background: linear-gradient(135deg, #FF2D87, #BF5FFF, #00F0FF); color: #fff; }
+
+    .brand-section { display: none; }
+    .brand-section.active { display: block; }
+
+    /* ===== SHARED COMPONENTS ===== */
+    .palette-section { padding: 3rem 2rem; max-width: 900px; margin: 0 auto; }
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #999; margin-bottom: 1rem; }
+    .swatches { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2.5rem; }
+    .swatch { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+    .swatch-color { width: 72px; height: 72px; border-radius: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.12); }
+    .swatch-name { font-size: 0.68rem; font-weight: 600; color: #666; text-align: center; }
+    .swatch-hex { font-size: 0.62rem; color: #aaa; font-family: monospace; }
+    .strategy-card { background: #fff; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 2px 20px rgba(0,0,0,0.06); }
+    .strategy-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .strategy-card p { color: #555; line-height: 1.7; margin-bottom: 1rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tags span { font-size: 0.82rem; font-weight: 600; padding: 0.35rem 0.9rem; border-radius: 50px; background: #f5f5f5; color: #444; }
+    .mockup-section { padding: 0 2rem 3rem; max-width: 900px; margin: 0 auto; }
+    .mockup-card { border-radius: 20px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.14); }
+    .mockup-nav { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; background: #fff; }
+    .mockup-logo { font-weight: 900; font-size: 1.2rem; }
+    .mockup-links { display: flex; gap: 1.2rem; font-size: 0.82rem; font-weight: 600; color: #888; }
+    .mockup-cta { font-size: 0.82rem; font-weight: 700; padding: 0.5rem 1.2rem; }
+    .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; padding: 1.5rem; }
+    .product-card { border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); background: #fff; }
+    .product-img { height: 110px; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; }
+    .product-info { padding: 0.75rem 0.75rem 0.25rem; }
+    .product-name { font-size: 0.82rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .product-price { font-size: 0.75rem; color: #999; }
+    .product-btn { display: block; text-align: center; margin: 0.5rem; padding: 0.45rem; border-radius: 8px; font-size: 0.75rem; font-weight: 800; color: #fff; cursor: pointer; font-family: 'DM Sans', sans-serif; border: none; }
+
+    /* ===== OPTION 1: WARM BAKERY ===== */
+    .brand-1 { background: #FDF6EC; }
+    .brand-1 .hero { padding: 4rem 2rem; text-align: center; background: linear-gradient(135deg, #C84B31, #E8603C, #E8A87C); }
+    .brand-1 .hero-tag { font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 1rem; }
+    .brand-1 .hero-title { font-family: 'Pacifico', cursive; font-size: clamp(3rem, 8vw, 6rem); color: #fff; line-height: 1.1; text-shadow: 3px 4px 0 rgba(0,0,0,0.12); }
+    .brand-1 .hero-sub { font-family: 'Nunito', sans-serif; font-size: 1.2rem; color: rgba(255,255,255,0.9); margin-top: 1rem; font-weight: 600; }
+    .brand-1 .hero-btn { margin-top: 2rem; display: inline-block; background: #fff; color: #C84B31; font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1rem; padding: 1rem 2.5rem; border-radius: 50px; text-decoration: none; }
+    .brand-1 .strategy-card h3 { color: #C84B31; }
+
+    /* ===== OPTION 2: BOLD POP ===== */
+    .brand-2 { background: #fff; }
+    .brand-2 .hero { padding: 4rem 2rem; text-align: center; background: #1A1A2E; position: relative; overflow: hidden; }
+    .brand-2 .hero::before { content: ''; position: absolute; top: -60px; right: -60px; width: 280px; height: 280px; border-radius: 50%; background: #FF3E6C; opacity: 0.18; }
+    .brand-2 .hero::after { content: ''; position: absolute; bottom: -80px; left: -40px; width: 260px; height: 260px; border-radius: 50%; background: #FFD23F; opacity: 0.13; }
+    .brand-2 .hero-tag { display: inline-block; background: #FF3E6C; color: #fff; font-weight: 800; font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.4rem 1rem; border-radius: 4px; margin-bottom: 1.5rem; position: relative; z-index: 1; }
+    .brand-2 .hero-title { font-family: 'Nunito', sans-serif; font-weight: 900; font-size: clamp(3rem, 8vw, 6rem); color: #fff; line-height: 1; position: relative; z-index: 1; }
+    .brand-2 .hero-title span { color: #FFD23F; }
+    .brand-2 .hero-sub { color: rgba(255,255,255,0.55); margin-top: 1rem; position: relative; z-index: 1; }
+    .brand-2 .hero-btn { margin-top: 2rem; display: inline-block; background: #FF3E6C; color: #fff; font-weight: 800; font-size: 1rem; padding: 1rem 2.5rem; border-radius: 8px; text-decoration: none; position: relative; z-index: 1; }
+    .brand-2 .strategy-card h3 { color: #FF3E6C; }
+
+    /* ===== OPTION 3: PREMIUM ===== */
+    .brand-3 { background: #F8F6F2; }
+    .brand-3 .hero { padding: 4rem 2rem; text-align: center; background: #1B3A5C; position: relative; overflow: hidden; }
+    .brand-3 .hero-decor { position: absolute; top: 0; right: 0; bottom: 0; width: 40%; background: linear-gradient(135deg, transparent, rgba(212,168,83,0.12)); }
+    .brand-3 .hero-tag { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.3em; text-transform: uppercase; color: #D4A853; margin-bottom: 1.5rem; }
+    .brand-3 .hero-title { font-family: 'Fraunces', serif; font-size: clamp(3rem, 8vw, 5.5rem); color: #fff; line-height: 1.1; font-weight: 900; position: relative; z-index: 1; }
+    .brand-3 .hero-title em { font-style: italic; color: #D4A853; }
+    .brand-3 .hero-sub { color: rgba(255,255,255,0.6); margin-top: 1rem; position: relative; z-index: 1; }
+    .brand-3 .hero-btn { margin-top: 2rem; display: inline-block; background: #D4A853; color: #1B3A5C; font-weight: 700; font-size: 1rem; padding: 1rem 2.5rem; border-radius: 4px; text-decoration: none; position: relative; z-index: 1; }
+    .brand-3 .strategy-card h3 { color: #1B3A5C; font-family: 'Fraunces', serif; }
+
+    /* ===== OPTION 4: GRUNGY WARM UNICORN ===== */
+    .brand-4 { background: #F0E6D3; position: relative; }
+
+    /* Grain overlay — applied to the whole brand section */
+    .brand-4::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.055;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 180px;
+    }
+
+    .brand-4 .palette-section { background: #F0E6D3; }
+    .brand-4 .strategy-card {
+      background: #FAF3E6;
+      border: 1.5px solid rgba(94,32,128,0.12);
+      box-shadow: 3px 4px 0 rgba(94,32,128,0.08);
+    }
+    .brand-4 .strategy-card h3 {
+      background: linear-gradient(90deg, #C4006A, #8B1A52, #C8920A);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .brand-4 .strategy-card p { color: #3D1F10; }
+    .brand-4 .tags span { background: rgba(94,32,128,0.07); color: #8B1A52; border: 1.5px solid rgba(94,32,128,0.18); }
+    .brand-4 .mockup-section { background: #F0E6D3; }
+    .brand-4 .section-label { color: #8B6A4A; }
+
+    @keyframes shimmer {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    @keyframes softpulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 0.7; transform: scale(1.05); }
+    }
+
+    .brand-4 .hero {
+      padding: 5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #F0E6D3;
+    }
+
+    .brand-4 .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 10% 35%, rgba(196,0,106,0.22) 0%, transparent 50%),
+        radial-gradient(ellipse at 88% 15%, rgba(139,26,82,0.18) 0%, transparent 48%),
+        radial-gradient(ellipse at 75% 80%, rgba(0,180,166,0.2) 0%, transparent 45%),
+        radial-gradient(ellipse at 40% 55%, rgba(200,146,10,0.14) 0%, transparent 40%);
+    }
+
+    .brand-4 .holo-orb-1 {
+      position: absolute;
+      width: 380px; height: 380px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(196,0,106,0.25), rgba(94,32,128,0.22));
+      top: -100px; right: -100px;
+      animation: softpulse 5s ease-in-out infinite;
+      filter: blur(50px);
+    }
+    .brand-4 .holo-orb-2 {
+      position: absolute;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(196,97,10,0.2), rgba(196,0,106,0.18));
+      bottom: -70px; left: -70px;
+      animation: softpulse 6s ease-in-out infinite reverse;
+      filter: blur(45px);
+    }
+
+    .brand-4 .hero-badge {
+      position: relative;
+      z-index: 2;
+      display: inline-block;
+      background: #1E0A2E;
+      color: rgba(255,255,255,0.85);
+      font-weight: 900;
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      padding: 0.5rem 1.2rem;
+      border-radius: 3px;
+      margin-bottom: 1.5rem;
+      border: 1px solid rgba(196,0,106,0.3);
+    }
+
+    .brand-4 .hero-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      line-height: 0.92;
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(135deg, #C4006A 0%, #8B1A52 30%, #00B4A6 60%, #C8920A 85%, #C4006A 100%);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 5s ease infinite;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-4 .hero-unicorn {
+      font-size: 3.2rem;
+      position: relative;
+      z-index: 2;
+      margin-bottom: 0.75rem;
+      animation: float 3.5s ease-in-out infinite;
+      display: block;
+      filter: drop-shadow(0 4px 12px rgba(196,0,106,0.3));
+    }
+
+    .brand-4 .hero-tagline {
+      position: relative;
+      z-index: 2;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #3D1F10;
+      margin-top: 1rem;
+    }
+    .brand-4 .hero-tagline strong { color: #C4006A; font-weight: 900; }
+
+    .brand-4 .hero-btn {
+      position: relative;
+      z-index: 2;
+      margin-top: 2rem;
+      display: inline-block;
+      background: #1E0A2E;
+      color: #fff;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1rem;
+      padding: 1rem 2.5rem;
+      border-radius: 3px;
+      text-decoration: none;
+      border: 1.5px solid rgba(196,0,106,0.4);
+      letter-spacing: 0.03em;
+    }
+
+    .brand-4 .hero-sub-btn {
+      position: relative;
+      z-index: 2;
+      margin-top: 1rem;
+      display: block;
+      color: #8B5A3A;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* GRUNGY WARM PRODUCT CARDS */
+    .brand-4 .mockup-card { background: #FAF3E6; box-shadow: 4px 6px 0 rgba(30,10,46,0.12); border: 1.5px solid rgba(94,32,128,0.12); border-radius: 16px; }
+    .brand-4 .unav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background: #FAF3E6;
+      border-bottom: 1.5px solid rgba(94,32,128,0.1);
+    }
+    .brand-4 .unav-logo {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: 1.1rem;
+      background: linear-gradient(90deg, #C4006A, #8B1A52);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .brand-4 .unav-links { display: flex; gap: 1.2rem; font-size: 0.8rem; font-weight: 600; color: #8B6A4A; }
+    .brand-4 .unav-cta {
+      font-size: 0.8rem;
+      font-weight: 900;
+      padding: 0.45rem 1.2rem;
+      border-radius: 3px;
+      background: #1E0A2E;
+      color: #fff;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-4 .ugrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding: 1.5rem;
+      background: #F0E6D3;
+    }
+    .ucard {
+      border-radius: 8px;
+      overflow: hidden;
+      background: #FAF3E6;
+      border: 1.5px solid rgba(94,32,128,0.15);
+      position: relative;
+      box-shadow: 3px 4px 0 rgba(30,10,46,0.08);
+    }
+    .ucard::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #C4006A, #8B1A52, #00B4A6, #C8920A, #C4006A);
+      background-size: 200%;
+      animation: shimmer 4s ease infinite;
+    }
+    .ucard-img {
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      background: #F0E6D3;
+    }
+    .ucard-info { padding: 0.75rem 0.75rem 0.25rem; }
+    .ucard-name { font-size: 0.8rem; font-weight: 700; color: #1E0A2E; margin-bottom: 0.2rem; }
+    .ucard-price { font-size: 0.72rem; color: #8B5A3A; font-weight: 600; }
+    .ucard-btn {
+      display: block;
+      text-align: center;
+      margin: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      background: #C4006A;
+      color: #fff;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+    }
+
+    .footer-note { text-align: center; padding: 3rem 2rem; background: #f0f0f0; color: #888; font-size: 0.88rem; }
+    .footer-note strong { color: #333; }
+
+    @media (max-width: 600px) {
+      .product-grid, .brand-4 .ugrid { grid-template-columns: 1fr 1fr; }
+      .mockup-links, .brand-4 .unav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Real Dogs</h1>
+  <p>Choose Your Brand Direction</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn" onclick="showBrand(1, this)">1 — Warm Bakery</button>
+  <button class="tab-btn" onclick="showBrand(2, this)">2 — Bold & Pop</button>
+  <button class="tab-btn" onclick="showBrand(3, this)">3 — Premium</button>
+  <button class="tab-btn active-4" onclick="showBrand(4, this)">✨ 4 — Unicorn Bold ← NEW</button>
+</div>
+
+<!-- ====== OPTION 1 ====== -->
+<div id="brand-1" class="brand-section brand-1">
+  <div class="hero">
+    <div style="font-size:2.5rem;margin-bottom:0.75rem">🐾</div>
+    <div class="hero-tag">Handcrafted with love · Est. 2024</div>
+    <h1 class="hero-title">Real Dogs</h1>
+    <p class="hero-sub">Pupcakes made for real dogs, with real stories</p>
+    <a href="#" class="hero-btn">Shop Pupcakes</a>
+  </div>
+  <div class="palette-section">
+    <div class="section-label">Colour Palette</div>
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-color" style="background:#C84B31"></div><div class="swatch-name">Terracotta Red</div><div class="swatch-hex">#C84B31</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E8A87C"></div><div class="swatch-name">Warm Peach</div><div class="swatch-hex">#E8A87C</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#8B9D6A"></div><div class="swatch-name">Sage Green</div><div class="swatch-hex">#8B9D6A</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FDF6EC;border:1px solid #eee"></div><div class="swatch-name">Cream</div><div class="swatch-hex">#FDF6EC</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#2C1810"></div><div class="swatch-name">Espresso</div><div class="swatch-hex">#2C1810</div></div>
+    </div>
+    <div class="strategy-card">
+      <h3>The Warm Bakery</h3>
+      <p>Feels like your favourite dog-friendly café. Handcrafted, artisanal and cosy. Terracotta and cream feel warm and trustworthy for a food brand. Sage green adds a natural, wholesome edge.</p>
+      <p><strong>Fonts:</strong> Pacifico + Nunito — playful but readable.</p>
+      <div class="tags"><span>🐾 Warm & inviting</span><span>🍰 Artisan bakery</span><span>📸 Instagram-ready</span><span>🌿 Natural feel</span></div>
+    </div>
+  </div>
+  <div class="mockup-section">
+    <div class="section-label">Mini Site Preview</div>
+    <div class="mockup-card">
+      <div class="mockup-nav">
+        <div class="mockup-logo" style="font-family:'Pacifico',cursive;color:#C84B31">Real Dogs</div>
+        <div class="mockup-links"><span>Pupcakes</span><span>Dog Stories</span><span>About</span></div>
+        <div class="mockup-cta" style="background:#C84B31;color:#fff;border-radius:50px">Shop Now</div>
+      </div>
+      <div class="product-grid" style="background:#FDF6EC">
+        <div class="product-card"><div class="product-img" style="background:#FDF0E0">🧁</div><div class="product-info"><div class="product-name">The Birthday Boof</div><div class="product-price">From $12.00</div></div><button class="product-btn" style="background:#C84B31">Add to Cart</button></div>
+        <div class="product-card"><div class="product-img" style="background:#FDF0E0">🎂</div><div class="product-info"><div class="product-name">Party Pack x6</div><div class="product-price">From $65.00</div></div><button class="product-btn" style="background:#C84B31">Add to Cart</button></div>
+        <div class="product-card"><div class="product-img" style="background:#FDF0E0">🐾</div><div class="product-info"><div class="product-name">Custom Portrait</div><div class="product-price">From $25.00</div></div><button class="product-btn" style="background:#C84B31">Add to Cart</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== OPTION 2 ====== -->
+<div id="brand-2" class="brand-section brand-2">
+  <div class="hero">
+    <div style="font-size:2.5rem;margin-bottom:0.5rem;position:relative;z-index:1">🐾</div>
+    <div class="hero-tag">REAL DOGS · REAL TREATS · REAL GOOD</div>
+    <h1 class="hero-title">REAL <span>DOGS</span></h1>
+    <p class="hero-sub">The pupcake brand taking over your dog's Instagram</p>
+    <a href="#" class="hero-btn">Get the Goods</a>
+  </div>
+  <div class="palette-section">
+    <div class="section-label">Colour Palette</div>
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-color" style="background:#FF3E6C"></div><div class="swatch-name">Hot Pink</div><div class="swatch-hex">#FF3E6C</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#FFD23F"></div><div class="swatch-name">Electric Yellow</div><div class="swatch-hex">#FFD23F</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#06D6A0"></div><div class="swatch-name">Mint Green</div><div class="swatch-hex">#06D6A0</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#1A1A2E"></div><div class="swatch-name">Deep Navy</div><div class="swatch-hex">#1A1A2E</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#fff;border:1px solid #eee"></div><div class="swatch-name">White</div><div class="swatch-hex">#FFFFFF</div></div>
+    </div>
+    <div class="strategy-card">
+      <h3 style="color:#FF3E6C">Bold & Pop</h3>
+      <p>High energy, totally unapologetic, built for social media. Think Glossier meets a dog park. Bold contrast of hot pink against deep navy feels premium without being stuffy. Electric yellow pops on packaging.</p>
+      <p><strong>Fonts:</strong> Nunito Black + DM Sans — punchy and modern.</p>
+      <div class="tags"><span>🔥 Viral energy</span><span>📱 Social-first</span><span>🎨 Bold packaging</span><span>💅 Trendy & fun</span></div>
+    </div>
+  </div>
+  <div class="mockup-section">
+    <div class="section-label">Mini Site Preview</div>
+    <div class="mockup-card">
+      <div class="mockup-nav" style="background:#1A1A2E">
+        <div class="mockup-logo" style="color:#FFD23F;font-family:'Nunito',sans-serif;font-weight:900">REAL DOGS</div>
+        <div class="mockup-links" style="color:rgba(255,255,255,0.4)"><span>Pupcakes</span><span>Dog Stories</span><span>About</span></div>
+        <div class="mockup-cta" style="background:#FF3E6C;color:#fff;border-radius:8px">Shop Now</div>
+      </div>
+      <div class="product-grid" style="background:#f5f5f5">
+        <div class="product-card"><div class="product-img" style="background:#FFF0F3">🧁</div><div class="product-info"><div class="product-name">The Birthday Boof</div><div class="product-price">From $12.00</div></div><button class="product-btn" style="background:#FF3E6C">Add to Cart</button></div>
+        <div class="product-card"><div class="product-img" style="background:#FFFBF0">🎂</div><div class="product-info"><div class="product-name">Party Pack x6</div><div class="product-price">From $65.00</div></div><button class="product-btn" style="background:#FF3E6C">Add to Cart</button></div>
+        <div class="product-card"><div class="product-img" style="background:#F0FDF9">🐾</div><div class="product-info"><div class="product-name">Custom Portrait</div><div class="product-price">From $25.00</div></div><button class="product-btn" style="background:#FF3E6C">Add to Cart</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== OPTION 3 ====== -->
+<div id="brand-3" class="brand-section brand-3">
+  <div class="hero">
+    <div class="hero-decor"></div>
+    <div style="font-size:2.5rem;color:#D4A853;margin-bottom:1rem;position:relative;z-index:1">🐾</div>
+    <div class="hero-tag">Artisan Pupcakes · Est. 2024</div>
+    <h1 class="hero-title">Real<br><em>Dogs</em></h1>
+    <p class="hero-sub">Handcrafted treats for the dog who deserves the finest</p>
+    <a href="#" class="hero-btn">Explore Collection</a>
+  </div>
+  <div class="palette-section">
+    <div class="section-label">Colour Palette</div>
+    <div class="swatches">
+      <div class="swatch"><div class="swatch-color" style="background:#1B3A5C"></div><div class="swatch-name">Deep Navy</div><div class="swatch-hex">#1B3A5C</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#D4A853"></div><div class="swatch-name">Brushed Gold</div><div class="swatch-hex">#D4A853</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#E8C4B8"></div><div class="swatch-name">Soft Blush</div><div class="swatch-hex">#E8C4B8</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#F8F6F2;border:1px solid #eee"></div><div class="swatch-name">Warm White</div><div class="swatch-hex">#F8F6F2</div></div>
+      <div class="swatch"><div class="swatch-color" style="background:#0D1F33"></div><div class="swatch-name">Midnight</div><div class="swatch-hex">#0D1F33</div></div>
+    </div>
+    <div class="strategy-card">
+      <h3 style="font-family:'Fraunces',serif;color:#1B3A5C">Premium Dogs</h3>
+      <p>For the dog parent who treats their fur baby like royalty. Navy and gold feel elevated and gift-worthy. Blush softens it so it never feels cold. Dog stories feel like editorial magazine features.</p>
+      <p><strong>Fonts:</strong> Fraunces italic + DM Sans — editorial and sophisticated.</p>
+      <div class="tags"><span>👑 Premium & giftable</span><span>🎁 Gift market</span><span>📖 Editorial storytelling</span><span>✨ Luxury feel</span></div>
+    </div>
+  </div>
+  <div class="mockup-section">
+    <div class="section-label">Mini Site Preview</div>
+    <div class="mockup-card">
+      <div class="mockup-nav">
+        <div class="mockup-logo" style="font-family:'Fraunces',serif;color:#1B3A5C">Real Dogs</div>
+        <div class="mockup-links"><span>Collection</span><span>Dog Stories</span><span>About</span></div>
+        <div class="mockup-cta" style="background:#1B3A5C;color:#fff;border-radius:4px">Shop Now</div>
+      </div>
+      <div class="product-grid" style="background:#F8F6F2">
+        <div class="product-card"><div class="product-img" style="background:#F8F4EE">🧁</div><div class="product-info"><div class="product-name">The Birthday Boof</div><div class="product-price">From $12.00</div></div><button class="product-btn" style="background:#D4A853;color:#1B3A5C">Add to Cart</button></div>
+        <div class="product-card"><div class="product-img" style="background:#F8F4EE">🎂</div><div class="product-info"><div class="product-name">Party Pack x6</div><div class="product-price">From $65.00</div></div><button class="product-btn" style="background:#D4A853;color:#1B3A5C">Add to Cart</button></div>
+        <div class="product-card"><div class="product-img" style="background:#F8F4EE">🐾</div><div class="product-info"><div class="product-name">Custom Portrait</div><div class="product-price">From $25.00</div></div><button class="product-btn" style="background:#D4A853;color:#1B3A5C">Add to Cart</button></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== OPTION 4: UNICORN BOLD ====== -->
+<div id="brand-4" class="brand-section brand-4 active">
+
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="holo-orb-1"></div>
+    <div class="holo-orb-2"></div>
+    <span class="hero-unicorn">🐾</span>
+    <div class="hero-badge">Pupcakes · Dog Stories · Pure Magic</div>
+    <h1 class="hero-title">Real Dogs</h1>
+    <p class="hero-tagline">Celebrating dogs that are <strong>one of a kind</strong></p>
+    <a href="#" class="hero-btn">Shop the Magic</a>
+    <span class="hero-sub-btn">🐾 Meet the Real Dogs →</span>
+  </div>
+
+  <div class="palette-section">
+    <div class="section-label">Colour Palette</div>
+    <div class="swatches">
+      <div class="swatch">
+        <div class="swatch-color" style="background:#F0E6D3;border:1px solid #d4c4a8"></div>
+        <div class="swatch-name">Warm Parchment</div>
+        <div class="swatch-hex">#F0E6D3</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C4006A"></div>
+        <div class="swatch-name">Deep Magenta</div>
+        <div class="swatch-hex">#C4006A</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#8B1A52"></div>
+        <div class="swatch-name">Deep Wine</div>
+        <div class="swatch-hex">#8B1A52</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#C8920A"></div>
+        <div class="swatch-name">Warm Gold</div>
+        <div class="swatch-hex">#C8920A</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#00B4A6"></div>
+        <div class="swatch-name">Warm Teal</div>
+        <div class="swatch-hex">#00B4A6</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background:#1E0A2E"></div>
+        <div class="swatch-name">Charcoal Plum</div>
+        <div class="swatch-hex">#1E0A2E</div>
+      </div>
+    </div>
+
+    <div class="strategy-card">
+      <h3>Grungy Warm Unicorn</h3>
+      <p>Warm, impactful and a little rough around the edges — in the best way. A parchment base gives it texture and heat. Deep magenta and rich plum feel bold without being cold. Burnt amber ties it to something earthy and real. The holographic shimmer on the title says "magical" without screaming it.</p>
+      <p>This is a brand that feels <strong style="color:#C4006A">handmade but confident</strong> — like it was screenprinted in a cool studio. The dog story pages feel like collectible zine spreads. On packaging, the gradient foil strip on raw kraft paper would be iconic.</p>
+      <p><strong>Fonts:</strong> Nunito Black (rounded, punchy) + DM Sans (grounded body text).</p>
+      <div class="tags">
+        <span>🐾 One of a kind</span>
+        <span>🔥 Warm & bold</span>
+        <span>🎨 Tactile & textured</span>
+        <span>📦 Packaging gold</span>
+        <span>📱 Highly shareable</span>
+        <span>🐾 Dog story zines</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup-section">
+    <div class="section-label" style="color:rgba(255,255,255,0.4)">Mini Site Preview</div>
+    <div class="mockup-card">
+      <div class="unav">
+        <div class="unav-logo">Real Dogs</div>
+        <div class="unav-links"><span>Pupcakes</span><span>Dog Stories</span><span>About</span></div>
+        <div class="unav-cta">Shop Now</div>
+      </div>
+      <div class="ugrid">
+        <div class="ucard">
+          <div class="ucard-img">🧁</div>
+          <div class="ucard-info">
+            <div class="ucard-name">The Birthday Boof</div>
+            <div class="ucard-price">From $12.00</div>
+          </div>
+          <div class="ucard-btn">Add to Cart ✨</div>
+        </div>
+        <div class="ucard">
+          <div class="ucard-img">🎂</div>
+          <div class="ucard-info">
+            <div class="ucard-name">Party Pack x6</div>
+            <div class="ucard-price">From $65.00</div>
+          </div>
+          <div class="ucard-btn">Add to Cart ✨</div>
+        </div>
+        <div class="ucard">
+          <div class="ucard-img">🐾</div>
+          <div class="ucard-info">
+            <div class="ucard-name">Custom Portrait</div>
+            <div class="ucard-price">From $25.00</div>
+          </div>
+          <div class="ucard-btn">Add to Cart ✨</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  <strong>Want to mix elements?</strong> We can combine any colours, fonts or vibes across options. Nothing is fixed until you say so.
+</div>
+
+<script>
+  // Generate stars for unicorn hero
+  const starsEl = document.getElementById('stars');
+  if (starsEl) {
+    for (let i = 0; i < 60; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.width = star.style.height = (Math.random() * 3 + 1) + 'px';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      star.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+      starsEl.appendChild(star);
+    }
+  }
+
+  function showBrand(num, btn) {
+    document.querySelectorAll('.brand-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.classList.remove('active-1','active-2','active-3','active-4');
+    });
+    document.getElementById('brand-' + num).classList.add('active');
+    btn.classList.add('active-' + num);
+  }
+</script>
+</body>
+</html>
