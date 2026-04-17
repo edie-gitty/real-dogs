@@ -614,7 +614,7 @@
       background: var(--plum);
       color: var(--parchment-light);
       border-radius: 20px 20px 0 0;
-      padding: 1.5rem 1.25rem 6rem;
+      padding: 0;
       max-height: 75vh;
       overflow-y: auto;
       z-index: 14;
@@ -626,13 +626,15 @@
     .profile-sheet .sheet-header {
       position: sticky;
       top: 0;
-      margin: -1.5rem -1.25rem 1rem;
-      padding: 0.75rem 1.25rem 0.85rem;
+      padding: 0.9rem 1.25rem 0.85rem;
       background: var(--plum);
       border-radius: 20px 20px 0 0;
       border-bottom: 1px solid rgba(247, 239, 224, 0.12);
       z-index: 2;
       text-align: center;
+    }
+    .profile-sheet .sheet-body {
+      padding: 1rem 1.25rem 6rem;
     }
     .profile-sheet .sheet-grip {
       width: 40px; height: 4px;
@@ -1113,7 +1115,7 @@
         <div class="sheet-grip"></div>
         <div class="sheet-title">Tap to close</div>
       </div>
-      <div id="profileCardMobile"></div>
+      <div class="sheet-body"><div id="profileCardMobile"></div></div>
     </div>
 
     <div class="modal-nav">
@@ -1127,7 +1129,6 @@
   const state = {
     dogName: '',
     dogSize: '',
-    allergies: [],
     recipe: '',
     occasion: '',
     wantsCustom: null,
@@ -1149,10 +1150,9 @@
   const steps = [
     { id: 'name',       render: renderName,        validate: () => state.dogName.trim().length >= 1 },
     { id: 'size',       render: renderSize,        validate: () => !!state.dogSize },
-    { id: 'allergies',  render: renderAllergies,   validate: () => state.allergies.length > 0 },
-    { id: 'recipe',     render: renderRecipe,      validate: () => !!state.recipe },
     { id: 'occasion',   render: renderOccasion,    validate: () => !!state.occasion },
     { id: 'custom',     render: renderCustom,      validate: () => state.wantsCustom !== null },
+    { id: 'recipe',     render: renderRecipe,      validate: () => !!state.recipe },
     { id: 'photoOrDogs',render: renderPhotoOrDogs, validate: validatePhotoOrDogs },
     { id: 'contact',    render: renderContact,     validate: validateContact },
     { id: 'story',      render: renderStory,       validate: () => !!state.storyPermission },
@@ -1162,7 +1162,7 @@
     { id: 'result',     render: renderResult,      validate: () => true, isResult: true }
   ];
 
-  const TOTAL_Q = 12; // excluding result step
+  const TOTAL_Q = 11; // excluding result step
 
   // ============ DOG LIBRARY ============
   const dogs = [
@@ -1279,34 +1279,17 @@
     `;
   }
 
-  function renderAllergies() {
-    const list = [
-      ['gluten-free','Gluten-free'],
-      ['dairy-free','Dairy-free'],
-      ['nut-free','Nut-free'],
-      ['vegan','Vegan'],
-      ['egg-free','Egg-free'],
-      ['soy-free','Soy-free'],
-      ['none','No allergies']
-    ];
-    return `
-      <div class="question-number">Question 3 of ${TOTAL_Q}</div>
-      <h3 class="question-title">Does ${escapeHtml(state.dogName)} have any dietary needs?</h3>
-      <p class="question-helper">Select all that apply.</p>
-      <div class="options-grid">
-        ${list.map(([val,label]) => optionCardMulti('allergies', val, label, state.allergies.includes(val))).join('')}
-      </div>
-      <div class="info-badge">
-        <span>🌱</span><div>All our pupcakes are <strong>vegetarian and meat-free</strong>. Made with love, baked with care.</div>
-      </div>
-    `;
-  }
-
   function renderRecipe() {
+    const availabilityNote = state.wantsCustom
+      ? `Custom pupcakes for ${escapeHtml(state.dogName)} can be made in <strong>any flavour</strong> below.`
+      : `Some of our Real Dogs only make certain flavours — we'll match ${escapeHtml(state.dogName)}'s order where we can.`;
     return `
-      <div class="question-number">Question 4 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 5 of ${TOTAL_Q}</div>
       <h3 class="question-title">Which recipe sounds best?</h3>
-      <p class="question-helper">Recipes are placeholders — final flavours coming soon.</p>
+      <div class="info-badge" style="margin-bottom:1rem;">
+        <span>🌱</span>
+        <div>All our recipes are <strong>vegetarian and meat-free</strong>. ${availabilityNote}</div>
+      </div>
       <div class="options-grid">
         ${optionCard('recipe', 'classic-vanilla',  'Classic Vanilla', 'Light, sweet and simple', state.recipe==='classic-vanilla')}
         ${optionCard('recipe', 'peanut-butter',    'Peanut Butter Paws', 'Rich and nutty', state.recipe==='peanut-butter')}
@@ -1318,7 +1301,7 @@
 
   function renderOccasion() {
     return `
-      <div class="question-number">Question 5 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 3 of ${TOTAL_Q}</div>
       <h3 class="question-title">What's the occasion?</h3>
       <div class="options-grid">
         ${optionCard('occasion', 'birthday',    '🎂 Birthday', `It's ${escapeHtml(state.dogName)}'s special day`, state.occasion==='birthday')}
@@ -1331,7 +1314,7 @@
 
   function renderCustom() {
     return `
-      <div class="question-number">Question 6 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 4 of ${TOTAL_Q}</div>
       <h3 class="question-title">Customise with ${escapeHtml(state.dogName)}'s face?</h3>
       <p class="question-helper">Upload photos and we'll use AI to put ${escapeHtml(state.dogName)} on their cupcake. $5 one-time art fee. Reorder anytime for free!</p>
       <div class="options-grid">
@@ -1355,7 +1338,7 @@
     `).join('');
 
     return `
-      <div class="question-number">Question 7 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 6 of ${TOTAL_Q}</div>
       <h3 class="question-title">Upload photos of ${escapeHtml(state.dogName)}</h3>
       <p class="question-helper">Upload up to 3 photos. We'll pick the best one and generate ${escapeHtml(state.dogName)}'s cupcake with AI.</p>
       <label class="upload-zone" for="photoInput">
@@ -1378,6 +1361,24 @@
   }
 
   function renderDogLibrary() {
+    const anyQty = state.randomSelections['dealers-choice'] || 0;
+    const anyCard = `
+      <div class="dog-card" style="border-color:var(--teal);background:rgba(0,180,166,0.06);">
+        <div class="dog-card-header">
+          <div class="dog-avatar" style="background:var(--teal);">🐾</div>
+          <div>
+            <div class="dog-name">Any dog photo is cute</div>
+            <div class="dog-breed">Dealer's choice — surprise us!</div>
+          </div>
+        </div>
+        <div class="qty-controls">
+          <button class="qty-btn" onclick="changeQty('dealers-choice', -1)" ${anyQty === 0 ? 'disabled' : ''}>−</button>
+          <div class="qty-value">${anyQty}</div>
+          <button class="qty-btn" onclick="changeQty('dealers-choice', 1)">+</button>
+        </div>
+      </div>
+    `;
+
     const cards = dogs.map(d => {
       const qty = state.randomSelections[d.slug] || 0;
       return `
@@ -1400,11 +1401,15 @@
     }).join('');
 
     return `
-      <div class="question-number">Question 7 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 6 of ${TOTAL_Q}</div>
       <h3 class="question-title">Pick your Real Dogs</h3>
       <p class="question-helper">Add any of our featured dogs to ${escapeHtml(state.dogName)}'s order. Mix and match!</p>
       ${renderDiscountNudge()}
-      <div class="dog-library">${cards}</div>
+      <div class="dog-library">${anyCard}${cards}</div>
+      <div class="info-badge" style="margin-top:1rem;">
+        <span>ℹ️</span>
+        <div>We'll do our best to include the dogs you picked, but there may be <strong>substitutions based on stock availability</strong>.</div>
+      </div>
     `;
   }
 
@@ -1464,7 +1469,7 @@
 
   function renderContact() {
     return `
-      <div class="question-number">Question 8 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 7 of ${TOTAL_Q}</div>
       <h3 class="question-title">How can we reach you?</h3>
       <p class="question-helper">We'll only contact you about your order or ${escapeHtml(state.dogName)}'s story.</p>
 
@@ -1503,7 +1508,7 @@
 
   function renderStory() {
     return `
-      <div class="question-number">Question 9 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 8 of ${TOTAL_Q}</div>
       <h3 class="question-title">Publish ${escapeHtml(state.dogName)}'s Real Dog Story?</h3>
       <p class="question-helper">We'll email you to chat about ${escapeHtml(state.dogName)}'s story and use AI to help write it. Then ${escapeHtml(state.dogName)} gets their own page with a QR code!</p>
       <div class="options-grid">
@@ -1516,7 +1521,7 @@
 
   function renderMarketing() {
     return `
-      <div class="question-number">Question 10 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 9 of ${TOTAL_Q}</div>
       <h3 class="question-title">Can we feature ${escapeHtml(state.dogName)} in our marketing?</h3>
       <p class="question-helper">We'd love to share ${escapeHtml(state.dogName)} in our marketing or on products. Where possible, we'll link back to ${escapeHtml(state.dogName)}'s Real Dog Story via QR codes.</p>
       <div class="options-grid">
@@ -1531,7 +1536,7 @@
     const min = new Date(today.getTime() + 14 * 24 * 60 * 60 * 1000);
     const minStr = min.toISOString().slice(0,10);
     return `
-      <div class="question-number">Question 11 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 10 of ${TOTAL_Q}</div>
       <h3 class="question-title">When do you need your order?</h3>
       <p class="question-helper">We need at least 2 weeks' notice so everything's baked fresh.</p>
       <div class="form-field">
@@ -1543,7 +1548,7 @@
 
   function renderEmail() {
     return `
-      <div class="question-number">Question 12 of ${TOTAL_Q}</div>
+      <div class="question-number">Question 11 of ${TOTAL_Q}</div>
       <h3 class="question-title">Last thing — what's your email?</h3>
       <p class="question-helper">We'll save ${escapeHtml(state.dogName)}'s profile so you can reorder easily, and follow up about the story if you opted in.</p>
       <div class="form-field">
@@ -1562,8 +1567,7 @@
         <div class="rec-summary">
           <ul>
             <li>${state.dogSize === 'small' ? 'Small' : 'Large'} cupcakes</li>
-            <li>${state.allergies.filter(a=>a!=='none').map(a => a.replace('-',' ')).join(', ') || 'Standard recipe'}</li>
-            <li>Recipe: ${state.recipe.replace('-',' ')}</li>
+            <li>Recipe: ${state.recipe.replace('-',' ')} <span style="color:var(--teal);">· vegetarian</span></li>
             <li>Occasion: ${state.occasion.replace('-',' ')}</li>
             <li>${state.wantsCustom ? `Custom photo of ${escapeHtml(state.dogName)}` : `${rec.totalCupcakes} Real Dogs selected`}</li>
             <li>Needed by: ${state.orderDate}</li>
@@ -1727,10 +1731,6 @@
       </div>
     `;
 
-    const allergyTxt = state.allergies.length
-      ? (state.allergies.includes('none') ? 'None' : state.allergies.map(a=>a.replace('-',' ')).join(', '))
-      : '';
-
     const contactTxt = state.contactPref
       ? (state.contactPref === 'instagram'
           ? `IG ${state.instagramHandle || '…'}`
@@ -1742,6 +1742,7 @@
       : state.wantsCustom === false
         ? (Object.keys(state.randomSelections).length
             ? Object.entries(state.randomSelections).map(([s,q])=>{
+                if (s === 'dealers-choice') return `Any dog × ${q}`;
                 const d = dogs.find(d=>d.slug===s);
                 return `${d?.name} × ${q}`;
               }).join(', ')
@@ -1753,10 +1754,9 @@
       <div class="profile-card-name">${escapeHtml(state.dogName) || 'Your pup'}</div>
 
       ${field('Size',       state.dogSize ? (state.dogSize==='small'?'Small (<10kg)':'Large (10kg+)') : '', !state.dogSize)}
-      ${field('Allergies',  allergyTxt, !allergyTxt)}
-      ${field('Recipe',     state.recipe ? state.recipe.replace('-',' ') : '', !state.recipe)}
       ${field('Occasion',   state.occasion ? state.occasion.replace('-',' ') : '', !state.occasion)}
       ${field('Photo',      state.wantsCustom === null ? '' : (state.wantsCustom ? 'Custom upload' : 'Real Dogs'), state.wantsCustom === null)}
+      ${field('Recipe',     state.recipe ? state.recipe.replace('-',' ') : '', !state.recipe)}
       ${field('Selection',  selectionText, !selectionText)}
       ${field('Contact',    contactTxt, !contactTxt)}
       ${field('Story',      state.storyPermission, !state.storyPermission)}
