@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Write Your Dog's Story — Real Dogs</title>
+  <style>
+    :root {
+      --cream: #fff8f0;
+      --red:   #c0392b;
+      --red-d: #a93226;
+      --brown: #2c1810;
+      --muted: #8a7570;
+      --border:#e8d5c8;
+      --white: #ffffff;
+      --shadow: 0 2px 16px rgba(44,24,16,0.09);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { background: var(--cream); font-family: Georgia, serif; color: var(--brown); min-height: 100vh; }
+
+    /* ── Top progress line ── */
+    .top-bar { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: var(--border); z-index: 100; }
+    .top-bar-fill { height: 100%; background: var(--red); transition: width 0.35s ease; }
+
+    /* ── Header ── */
+    .site-header { text-align: center; padding: 1.6rem 1rem 0.4rem; }
+    .site-header a { text-decoration: none; color: var(--red); font-size: 1.35rem; }
+
+    /* ── Step indicator ── */
+    .step-indicator {
+      display: flex; flex-direction: column; align-items: center;
+      margin-bottom: 1.8rem; gap: 0.15rem;
+    }
+    .step-num  { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-family: -apple-system, sans-serif; }
+    .step-name { font-size: 1.0rem; color: var(--red); font-weight: normal; }
+
+    /* ── Layout ── */
+    .wizard-wrap { max-width: 640px; margin: 0 auto; padding: 0 1.25rem 5rem; }
+
+    /* ── Steps ── */
+    .step { display: none; }
+    .step.active { display: block; animation: fadeUp 0.25s ease; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+    .step-title    { font-size: 1.55rem; color: var(--red); margin-bottom: 0.2rem; }
+    .step-subtitle { font-size: 0.87rem; color: var(--muted); font-family: -apple-system,sans-serif; margin-bottom: 1.8rem; }
+
+    /* ── Field groups ── */
+    .field-group { margin-bottom: 1.6rem; }
+    .field-label {
+      display: block; font-size: 0.78rem; font-weight: bold;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      font-family: -apple-system, sans-serif; margin-bottom: 0.45rem;
+    }
+    .field-hint { font-size: 0.77rem; color: var(--muted); font-family: -apple-system,sans-serif; margin-bottom: 0.45rem; }
+    .req { color: var(--red); }
+
+    /* ── Inputs ── */
+    .inp {
+      padding: 0.55rem 0.85rem; border: 2px solid var(--border);
+      border-radius: 10px; font-size: 0.95rem; font-family: Georgia,serif;
+      background: var(--white); color: var(--brown); outline: none;
+      transition: border-color 0.2s; width: 100%;
+    }
+    .inp:focus { border-color: var(--red); }
+    .inp.sm    { max-width: 300px; }
+    .inp.xs    { max-width: 160px; }
+
+    textarea.inp { resize: vertical; min-height: 64px; line-height: 1.5; }
+
+    /* ── Instagram prefix ── */
+    .ig-wrap { display: flex; align-items: center; gap: 0; max-width: 280px; }
+    .ig-at {
+      padding: 0.55rem 0.6rem 0.55rem 0.85rem;
+      border: 2px solid var(--border); border-right: none;
+      border-radius: 10px 0 0 10px; background: #fdf0e8;
+      color: var(--muted); font-size: 0.95rem; font-family: Georgia,serif;
+      line-height: 1;
+    }
+    .ig-wrap .inp { border-radius: 0 10px 10px 0; border-left: none; }
+    .ig-wrap .inp:focus { border-color: var(--red); }
+
+    /* ── Chips ── */
+    .btn-grid { display: flex; flex-wrap: wrap; gap: 0.42rem; }
+    .chip {
+      padding: 0.4rem 0.82rem; border: 2px solid var(--border); border-radius: 20px;
+      background: var(--white); color: var(--brown); font-size: 0.81rem;
+      font-family: -apple-system,sans-serif; cursor: pointer;
+      transition: all 0.14s; user-select: none; white-space: nowrap; line-height: 1.4;
+    }
+    .chip:hover { border-color: var(--red); color: var(--red); }
+    .chip.on    { background: var(--red); border-color: var(--red); color: #fff; }
+    .chip.hidden { display: none; }
+    .chip.lg    { padding: 0.5rem 1rem; font-size: 0.86rem; }
+
+    .show-more-btn {
+      margin-top: 0.5rem; padding: 0.35rem 0.85rem;
+      border: 2px dashed var(--border); border-radius: 20px;
+      background: transparent; color: var(--muted);
+      font-size: 0.78rem; font-family: -apple-system,sans-serif;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .show-more-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── Optional write-in field ── */
+    .write-in-wrap { margin-top: 0.7rem; }
+    .write-in-label { font-size: 0.77rem; color: var(--muted); font-family: -apple-system,sans-serif; margin-bottom: 0.3rem; display: block; }
+
+    /* ── Style cards ── */
+    .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
+    @media(max-width:460px){ .style-grid{ grid-template-columns:1fr; } }
+    .style-card {
+      padding: 0.9rem 1rem; border: 2px solid var(--border); border-radius: 14px;
+      background: var(--white); cursor: pointer; transition: all 0.2s; text-align: left;
+    }
+    .style-card:hover { border-color: var(--red); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .style-card.on    { border-color: var(--red); background: #fff0ec; }
+    .s-emoji { font-size: 1.4rem; display: block; margin-bottom: 0.3rem; }
+    .s-name  { font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 0.18rem; }
+    .style-card.on .s-name { color: var(--red); }
+    .s-desc  { font-size: 0.75rem; color: var(--muted); font-family: -apple-system,sans-serif; line-height: 1.4; }
+
+    /* ── Photo upload ── */
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: 12px; padding: 1.6rem;
+      text-align: center; background: var(--white); cursor: pointer; transition: border-color 0.2s;
+    }
+    .drop-zone:hover, .drop-zone.over { border-color: var(--red); }
+    .drop-zone input[type=file] { display: none; }
+    .upload-icon { font-size: 1.7rem; display: block; margin-bottom: 0.35rem; }
+    .upload-text { font-size: 0.83rem; color: var(--muted); font-family: -apple-system,sans-serif; line-height: 1.55; }
+    .upload-text strong { color: var(--red); }
+
+    .photo-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.8rem; }
+    .p-thumb { position: relative; width: 78px; height: 78px; }
+    .p-thumb img { width:78px; height:78px; object-fit:cover; border-radius:9px; border:2px solid var(--border); display:block; }
+    .p-thumb .rm {
+      position:absolute; top:-6px; right:-6px; width:20px; height:20px;
+      background:var(--red); color:#fff; border:none; border-radius:50%;
+      font-size:0.68rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    }
+
+    /* ── Nav buttons ── */
+    .nav-row { display:flex; justify-content:space-between; align-items:center; margin-top:2rem; }
+    .btn-primary {
+      padding: 0.7rem 1.85rem; background: var(--red); color: #fff;
+      border: none; border-radius: 24px; font-size: 0.97rem; font-family: Georgia,serif;
+      cursor: pointer; transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--red-d); transform: translateY(-1px); }
+    .btn-back {
+      padding: 0.7rem 1.35rem; background: transparent; color: var(--muted);
+      border: 2px solid var(--border); border-radius: 24px;
+      font-size: 0.88rem; font-family: Georgia,serif; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-back:hover { border-color: var(--red); color: var(--red); }
+    .btn-skip {
+      padding: 0.7rem 1.85rem; background: transparent; color: var(--muted);
+      border: 2px solid var(--border); border-radius: 24px;
+      font-size: 0.97rem; font-family: Georgia,serif; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-skip.has-input { background: var(--red); border-color: var(--red); color: #fff; }
+    .btn-skip.has-input:hover { background: var(--red-d); }
+
+    /* ── Error ── */
+    .err { display:none; margin-top:0.9rem; padding:0.7rem 1rem; background:#fff0ee; border:1px solid #f5b8b0; border-radius:8px; color:var(--red); font-family:-apple-system,sans-serif; font-size:0.82rem; }
+    .err.show { display:block; }
+
+    /* ── Loading ── */
+    .loading { display:none; text-align:center; padding:4rem 1rem; }
+    .loading.show { display:block; }
+    .paw { font-size:2.8rem; display:block; margin-bottom:1rem; animation:bounce 0.75s infinite alternate; }
+    @keyframes bounce { from{transform:translateY(0)} to{transform:translateY(-13px)} }
+    .loading h2 { font-size:1.35rem; color:var(--red); margin-bottom:0.4rem; }
+    .loading p  { font-size:0.87rem; color:var(--muted); font-family:-apple-system,sans-serif; }
+
+    /* ── Story display ── */
+    .story { display:none; }
+    .story.show { display:block; animation:fadeUp 0.3s ease; }
+    .story-photos { display:flex; gap:0.65rem; justify-content:center; flex-wrap:wrap; margin-bottom:1.3rem; }
+    .story-photos img { width:105px; height:105px; object-fit:cover; border-radius:11px; border:3px solid var(--border); }
+    .story-card { background:var(--white); border-radius:16px; padding:1.8rem 2rem; box-shadow:var(--shadow); margin-bottom:1.3rem; }
+    .story-title { font-size:1.85rem; color:var(--red); margin-bottom:0.2rem; }
+    .story-tag   { font-size:0.77rem; color:var(--muted); font-family:-apple-system,sans-serif; margin-bottom:1.35rem; display:block; }
+    .story-body  { font-size:1rem; line-height:1.85; color:var(--brown); white-space:pre-wrap; }
+    .story-actions { display:flex; gap:0.55rem; flex-wrap:wrap; }
+    .btn-action {
+      padding:0.52rem 1.05rem; border:2px solid var(--border); border-radius:20px;
+      background:var(--white); color:var(--brown); font-family:-apple-system,sans-serif;
+      font-size:0.81rem; cursor:pointer; transition:all 0.18s; display:flex; align-items:center; gap:0.32rem;
+    }
+    .btn-action:hover { border-color:var(--red); color:var(--red); }
+    .btn-action.copied { border-color:#27ae60; color:#27ae60; }
+
+    /* ── Optional step lone field ── */
+    .solo-field { margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+
+<div class="top-bar"><div class="top-bar-fill" id="topFill"></div></div>
+
+<header class="site-header"><a href="/">Real Dogs 🐾</a></header>
+
+<main class="wizard-wrap">
+
+  <div class="step-indicator">
+    <span class="step-num"  id="sNum">Step 1 of 7</span>
+    <span class="step-name" id="sName">Story &amp; Photos</span>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       STEP 1 — Story style + photos
+  ════════════════════════════════════════ -->
+  <section class="step active" id="step1">
+    <h1 class="step-title">What kind of story?</h1>
+    <p class="step-subtitle">Pick a style — this shapes everything the AI writes.</p>
+
+    <div class="field-group">
+      <label class="field-label">Story style <span class="req">*</span></label>
+      <div class="style-grid">
+        <div class="style-card" data-style="adventure_log" onclick="pickStyle(this)">
+          <span class="s-emoji">🗺️</span>
+          <span class="s-name">The Adventure Log</span>
+          <span class="s-desc">Energetic, travel-blog style. Third person, vivid and full of action.</span>
+        </div>
+        <div class="style-card" data-style="origin_story" onclick="pickStyle(this)">
+          <span class="s-emoji">❤️</span>
+          <span class="s-name">The Origin Story</span>
+          <span class="s-desc">Heartwarming and emotional. Starts from how they came to you, builds to now.</span>
+        </div>
+        <div class="style-card" data-style="day_in_my_life" onclick="pickStyle(this)">
+          <span class="s-emoji">🐾</span>
+          <span class="s-name">A Day in My Life</span>
+          <span class="s-desc">Funny and playful. Told in first person from the dog's own point of view.</span>
+        </div>
+        <div class="style-card" data-style="the_legend" onclick="pickStyle(this)">
+          <span class="s-emoji">⚔️</span>
+          <span class="s-name">The Legend of [Name]</span>
+          <span class="s-desc">Mythic, epic and wonderfully over the top. Your dog as a tall tale hero.</span>
+        </div>
+        <div class="style-card" data-style="best_friend" onclick="pickStyle(this)">
+          <span class="s-emoji">🌟</span>
+          <span class="s-name">The Best Friend</span>
+          <span class="s-desc">Warm and nostalgic. Told from the owner's perspective — the bond that changes everything.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Photos <span style="font-weight:normal;text-transform:none;letter-spacing:0;font-size:0.77rem;color:var(--muted)">(optional — up to 8)</span></label>
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('photoInput').click()">
+        <input type="file" id="photoInput" accept="image/*" multiple>
+        <span class="upload-icon">📸</span>
+        <p class="upload-text"><strong>Choose photos</strong> or drag and drop<br>Upload up to 8 — we'll feature the best 3–4 in your story</p>
+      </div>
+      <div class="photo-row" id="photoRow"></div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Instagram <span style="font-weight:normal;text-transform:none;letter-spacing:0;font-size:0.77rem;color:var(--muted)">(optional)</span></label>
+      <p class="field-hint">Want more people to discover your dog? Add your handle and we'll give you a shoutout.</p>
+      <div class="ig-wrap">
+        <span class="ig-at">@</span>
+        <input class="inp" id="instagram" type="text" placeholder="yourdoghandle" maxlength="40" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <span></span>
+      <button class="btn-primary" onclick="advance(2)">Next →</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STEP 2 — About your dog
+  ════════════════════════════════════════ -->
+  <section class="step" id="step2">
+    <h1 class="step-title">About your dog</h1>
+    <p class="step-subtitle">Just a few taps — no essays required.</p>
+
+    <div class="field-group">
+      <label class="field-label" for="dogName">Their name <span class="req">*</span></label>
+      <input class="inp sm" id="dogName" type="text" placeholder="e.g. Biscuit" maxlength="30" autocomplete="off">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="dogBreed">Breed</label>
+      <input class="inp sm" id="dogBreed" type="text" placeholder="e.g. Cavoodle, Kelpie, Mixed breed" maxlength="50" list="breedList" autocomplete="off">
+      <datalist id="breedList">
+        <!-- Australian crossbreeds first -->
+        <option value="Cavoodle"><option value="Moodle"><option value="Groodle">
+        <option value="Labradoodle"><option value="Schnoodle"><option value="Bordoodle">
+        <option value="Spoodle"><option value="Shoodle"><option value="Poochon">
+        <option value="Beaglier"><option value="Pugalier"><option value="Cockador">
+        <option value="Jackador"><option value="Maltese Shih Tzu"><option value="Mixed breed">
+        <option value="Unknown / Street dog">
+        <!-- Pure breeds -->
+        <option value="Australian Shepherd"><option value="Australian Cattle Dog (Blue Heeler)">
+        <option value="Kelpie"><option value="Labrador Retriever"><option value="Golden Retriever">
+        <option value="German Shepherd"><option value="Border Collie"><option value="Staffordshire Bull Terrier">
+        <option value="Bull Terrier"><option value="French Bulldog"><option value="Bulldog">
+        <option value="Poodle"><option value="Beagle"><option value="Rottweiler">
+        <option value="Dachshund"><option value="Siberian Husky"><option value="Cavalier King Charles Spaniel">
+        <option value="Shih Tzu"><option value="Doberman"><option value="Miniature Schnauzer">
+        <option value="Cocker Spaniel"><option value="Jack Russell Terrier"><option value="Boxer">
+        <option value="Maltese"><option value="Chihuahua"><option value="Pomeranian">
+        <option value="Weimaraner"><option value="Vizsla"><option value="Dalmatian">
+        <option value="Whippet"><option value="Greyhound"><option value="Basset Hound">
+        <option value="Great Dane"><option value="Bernese Mountain Dog"><option value="Samoyed">
+        <option value="Corgi"><option value="Shiba Inu"><option value="Belgian Malinois">
+        <option value="Chow Chow"><option value="Bichon Frise">
+      </datalist>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="dogAge">Age</label>
+      <input class="inp xs" id="dogAge" type="text" placeholder="e.g. 3 years, 8 months" maxlength="30" autocomplete="off">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label">Sex</label>
+      <div class="btn-grid" data-group="sex">
+        <button class="chip lg" data-val="girl">🎀 Girl</button>
+        <button class="chip lg" data-val="boy">💙 Boy</button>
+      </div>
+    </div>
+
+    <!-- Origin + location blended -->
+    <div class="field-group">
+      <label class="field-label">How did they come to you?</label>
+      <div class="btn-grid" data-group="origin">
+        <button class="chip" data-val="rescued from a shelter">🏠 Rescue / Shelter</button>
+        <button class="chip" data-val="adopted from a breeder">🐾 Breeder</button>
+        <button class="chip" data-val="found as a stray on the street">🌿 Found as a stray</button>
+        <button class="chip" data-val="a gift from someone special">🎁 A gift</button>
+        <button class="chip" data-val="a family dog they grew up with">👨‍👩‍👧 Family dog</button>
+        <button class="chip" data-val="born at home in our litter">🏡 Born at home</button>
+        <button class="chip" data-val="adopted from another state">🚗 Interstate adoption</button>
+        <button class="chip" data-val="adopted from overseas">✈️ Overseas adoption</button>
+      </div>
+
+      <div style="margin-top:1rem">
+        <label class="field-label">Where are they from?</label>
+        <div class="btn-grid" data-group="location">
+          <button class="chip" data-val="local to where we live now">📍 Local</button>
+          <button class="chip" data-val="another state or region">🗺️ Another state</button>
+          <button class="chip" data-val="another country">🌏 Another country</button>
+          <button class="chip" data-val="the streets — origin unknown">🌙 The streets</button>
+          <button class="chip" data-val="unknown origins">❓ Unknown</button>
+        </div>
+      </div>
+
+      <div class="write-in-wrap" style="margin-top:1rem">
+        <label class="write-in-label">Tell us more about how they came to you (optional)</label>
+        <textarea class="inp" id="originStory" placeholder="e.g. We drove 6 hours to pick her up, she was the last of the litter. He was found on the side of a highway, skin and bones." maxlength="250"></textarea>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="postcode">Postcode <span style="font-weight:normal;text-transform:none;letter-spacing:0;font-size:0.77rem;color:var(--muted)">(optional)</span></label>
+      <p class="field-hint">Where do they spend most of their time? We use this to feature dogs in your area.</p>
+      <input class="inp xs" id="postcode" type="text" placeholder="e.g. 2010" maxlength="10" inputmode="numeric">
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="advance(1)">← Back</button>
+      <button class="btn-primary" onclick="advance(3)">Next →</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STEP 3 — Personality & favourites
+  ════════════════════════════════════════ -->
+  <section class="step" id="step3">
+    <h1 class="step-title">Personality &amp; favourites</h1>
+    <p class="step-subtitle">Pick everything that fits — this becomes the heart of the story.</p>
+
+    <!-- Personality -->
+    <div class="field-group">
+      <label class="field-label">Personality <span class="req">*</span></label>
+      <p class="field-hint">Pick up to 5</p>
+      <div class="btn-grid" data-group="personality" data-multi="true" data-max="5">
+        <button class="chip" data-val="goofy">😂 Goofy</button>
+        <button class="chip" data-val="cuddly">🤗 Cuddly</button>
+        <button class="chip" data-val="endlessly energetic">⚡ Energetic</button>
+        <button class="chip" data-val="playful">🎾 Playful</button>
+        <button class="chip" data-val="fiercely loyal">❤️ Loyal</button>
+        <button class="chip" data-val="mischievous">😈 Mischievous</button>
+        <button class="chip" data-val="gentle">🌸 Gentle</button>
+        <button class="chip" data-val="brave">🦁 Brave</button>
+        <button class="chip" data-val="gloriously stubborn">🐂 Stubborn</button>
+        <button class="chip" data-val="blissfully lazy">😴 Lazy</button>
+        <!-- Hidden — revealed on show more -->
+        <button class="chip hidden" data-val="shy">🙈 Shy</button>
+        <button class="chip hidden" data-val="protective">🛡️ Protective</button>
+        <button class="chip hidden" data-val="a total foodie">🍗 Total foodie</button>
+        <button class="chip hidden" data-val="wonderfully dramatic">🎭 Dramatic</button>
+        <button class="chip hidden" data-val="incredibly intelligent">🧠 Intelligent</button>
+        <button class="chip hidden" data-val="sweet and gentle">🍯 Sweet</button>
+        <button class="chip hidden" data-val="delightfully cheeky">😜 Cheeky</button>
+        <button class="chip hidden" data-val="a total social butterfly">🦋 Social butterfly</button>
+        <button class="chip hidden" data-val="adventurous">🧭 Adventurous</button>
+        <button class="chip hidden" data-val="the class clown">🃏 Class clown</button>
+      </div>
+      <button class="show-more-btn" data-target="personality" data-inc="0">Show 10 more</button>
+      <div class="write-in-wrap">
+        <label class="write-in-label">Describe them in your own words (optional)</label>
+        <input class="inp" type="text" id="personalityExtra" placeholder="e.g. She's a total velcro dog, never leaves my side" maxlength="100">
+      </div>
+    </div>
+
+    <!-- Activities -->
+    <div class="field-group">
+      <label class="field-label">Favourite activities <span class="req">*</span></label>
+      <p class="field-hint">Pick up to 5</p>
+      <div class="btn-grid" data-group="activities" data-multi="true" data-max="5">
+        <button class="chip" data-val="playing fetch">🎾 Fetch</button>
+        <button class="chip" data-val="swimming">🏊 Swimming</button>
+        <button class="chip" data-val="getting the zoomies">💨 Zoomies</button>
+        <button class="chip" data-val="cuddles on the couch">🛋️ Cuddles</button>
+        <button class="chip" data-val="car rides with the window down">🚗 Car rides</button>
+        <button class="chip" data-val="napping in the sun">💤 Napping</button>
+        <button class="chip" data-val="hiking">🥾 Hiking</button>
+        <button class="chip" data-val="beach trips">🏖️ Beach trips</button>
+        <button class="chip" data-val="running at full speed">🏃 Running</button>
+        <button class="chip" data-val="meeting dogs at the park">🐕 Dog park</button>
+        <!-- Hidden -->
+        <button class="chip hidden" data-val="chasing birds">🐦 Chasing birds</button>
+        <button class="chip hidden" data-val="digging holes">⛏️ Digging</button>
+        <button class="chip hidden" data-val="chasing a ball">⚽ Ball games</button>
+        <button class="chip hidden" data-val="frisbee">🥏 Frisbee</button>
+        <button class="chip hidden" data-val="backyard patrol">🌿 Backyard patrol</button>
+        <button class="chip hidden" data-val="eating everything in sight">🍖 Eating</button>
+        <button class="chip hidden" data-val="sunbathing">☀️ Sunbathing</button>
+        <button class="chip hidden" data-val="agility training">🏅 Agility</button>
+        <button class="chip hidden" data-val="sniffing absolutely everything">👃 Sniffing everything</button>
+      </div>
+      <button class="show-more-btn" data-target="activities" data-inc="0">Show more</button>
+      <div class="write-in-wrap">
+        <label class="write-in-label">Anything else they love to do? (optional)</label>
+        <input class="inp" type="text" id="activitiesExtra" placeholder="e.g. Helps me in the garden, obsessed with chasing the sprinkler" maxlength="100">
+      </div>
+    </div>
+
+    <!-- Treats — optional (skip/continue) -->
+    <div class="field-group">
+      <label class="field-label">Favourite treats &amp; foods <span style="font-weight:normal;text-transform:none;letter-spacing:0;font-size:0.77rem;color:var(--muted)">(optional)</span></label>
+      <div class="btn-grid" data-group="treats" data-multi="true">
+        <button class="chip" data-val="chicken">🍗 Chicken</button>
+        <button class="chip" data-val="cheese">🧀 Cheese</button>
+        <button class="chip" data-val="peanut butter">🥜 Peanut butter</button>
+        <button class="chip" data-val="steak">🥩 Steak</button>
+        <button class="chip" data-val="dog biscuits">🦴 Biscuits</button>
+        <!-- Hidden -->
+        <button class="chip hidden" data-val="carrots">🥕 Carrots</button>
+        <button class="chip hidden" data-val="sausage">🌭 Sausage</button>
+        <button class="chip hidden" data-val="fruit">🍓 Fruit</button>
+        <button class="chip hidden" data-val="ice cubes">🧊 Ice cubes</button>
+        <button class="chip hidden" data-val="watermelon">🍉 Watermelon</button>
+        <button class="chip hidden" data-val="literally anything they can find">😋 Anything &amp; everything</button>
+      </div>
+      <button class="show-more-btn" data-target="treats" data-inc="0">Show more</button>
+      <div class="write-in-wrap">
+        <label class="write-in-label">Any other strange things they love to eat? (optional)</label>
+        <input class="inp" type="text" id="treatsExtra" placeholder="e.g. Steals lemons off the tree, obsessed with plain rice" maxlength="100">
+      </div>
+    </div>
+
+    <!-- Best friends — optional (skip/continue) -->
+    <div class="field-group">
+      <label class="field-label">Best friends <span style="font-weight:normal;text-transform:none;letter-spacing:0;font-size:0.77rem;color:var(--muted)">(optional)</span></label>
+      <div class="btn-grid" data-group="friends" data-multi="true">
+        <button class="chip" data-val="their human (their absolute favourite person)">🧑 Their human</button>
+        <button class="chip" data-val="other dogs">🐕 Other dogs</button>
+        <button class="chip" data-val="the family cat">🐱 The cat</button>
+        <button class="chip" data-val="kids">👧 Kids</button>
+        <button class="chip" data-val="literally everyone they meet">👋 Absolutely everyone</button>
+        <button class="chip" data-val="a beloved stuffed toy">🧸 A stuffed toy</button>
+      </div>
+      <div class="write-in-wrap">
+        <label class="write-in-label">Any names to include? (dogs, cats, people — optional)</label>
+        <input class="inp" type="text" id="friendNames" placeholder="e.g. Milo the golden next door, our cat Pickle" maxlength="120">
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="advance(2)">← Back</button>
+      <button class="btn-primary" onclick="advance(4)">Next →</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STEP 4 — Adventures (optional)
+  ════════════════════════════════════════ -->
+  <section class="step" id="step4">
+    <h1 class="step-title">Greatest adventures</h1>
+    <p class="step-subtitle">Where has life taken them? Pick all that apply — or skip if you'd rather.</p>
+
+    <div class="field-group">
+      <div class="btn-grid" data-group="adventures" data-multi="true">
+        <button class="chip" data-val="epic beach days">🏖️ Beach days</button>
+        <button class="chip" data-val="mountain hikes">⛰️ Mountain hikes</button>
+        <button class="chip" data-val="road trips">🚗 Road trips</button>
+        <button class="chip" data-val="camping under the stars">⛺ Camping</button>
+        <button class="chip" data-val="swimming in the ocean">🌊 Ocean swimming</button>
+        <!-- Hidden — show 5 at a time -->
+        <button class="chip hidden" data-val="exploring new parks and trails">🌲 Park exploring</button>
+        <button class="chip hidden" data-val="city adventures">🏙️ City adventures</button>
+        <button class="chip hidden" data-val="legendary backyard escapades">🌻 Backyard adventures</button>
+        <button class="chip hidden" data-val="dog park social events">🐕 Dog park hangouts</button>
+        <button class="chip hidden" data-val="farm and country visits">🐄 Farm visits</button>
+        <button class="chip hidden" data-val="overseas travel">✈️ Overseas travel</button>
+        <button class="chip hidden" data-val="interstate trips">🗺️ Interstate trips</button>
+        <button class="chip hidden" data-val="sneaky neighbourhood escapes">🏃 Neighbourhood escapes</button>
+        <button class="chip hidden" data-val="swimming in rivers and creeks">🏞️ Rivers &amp; creeks</button>
+      </div>
+      <button class="show-more-btn" data-target="adventures" data-inc="5">Show 5 more</button>
+      <div class="write-in-wrap">
+        <label class="write-in-label">Any adventures not listed? (optional)</label>
+        <input class="inp" type="text" id="adventuresExtra" placeholder="e.g. Competed in a local agility comp, survived a snake bite" maxlength="120">
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="advance(3)">← Back</button>
+      <button class="btn-skip" id="skip4" onclick="advance(5)">Skip →</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STEP 5 — Funniest habit (optional)
+  ════════════════════════════════════════ -->
+  <section class="step" id="step5">
+    <h1 class="step-title">Funniest habit or quirk</h1>
+    <p class="step-subtitle">The weird, the wonderful, the inexplicable. What do they do that makes you laugh?</p>
+
+    <div class="field-group solo-field">
+      <textarea class="inp" id="funnyHabit" rows="3"
+        placeholder="e.g. Steals single socks and buries them in the garden. Barks at his own reflection every single morning. Sits in the shower voluntarily."
+        maxlength="200" oninput="updateSkip('skip5','funnyHabit')"></textarea>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="advance(4)">← Back</button>
+      <button class="btn-skip" id="skip5" onclick="advance(6)">Skip →</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STEP 6 — Special talent (optional)
+  ════════════════════════════════════════ -->
+  <section class="step" id="step6">
+    <h1 class="step-title">Special talent</h1>
+    <p class="step-subtitle">Can they do something remarkable, unusual, or completely useless but impressive?</p>
+
+    <div class="field-group solo-field">
+      <textarea class="inp" id="specialTalent" rows="3"
+        placeholder="e.g. Knows 40 tricks. Can open the fridge. Catches frisbees one-handed from 30 metres. Senses when you're sad before you even know it."
+        maxlength="200" oninput="updateSkip('skip6','specialTalent')"></textarea>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="advance(5)">← Back</button>
+      <button class="btn-skip" id="skip6" onclick="advance(7)">Skip →</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       STEP 7 — One more thing (optional)
+  ════════════════════════════════════════ -->
+  <section class="step" id="step7">
+    <h1 class="step-title">One more thing</h1>
+    <p class="step-subtitle">Anything else you want woven into the story? A health journey, a person they love, a fear of butterflies…</p>
+
+    <div class="field-group solo-field">
+      <textarea class="inp" id="extraDetails" rows="3"
+        placeholder="e.g. She survived parvo as a puppy and came out even more spirited. He's named after a character in a book. She's afraid of her own farts."
+        maxlength="250" oninput="updateSkip('skip7','extraDetails')"></textarea>
+    </div>
+
+    <div class="err" id="errBox">Something went wrong. Please check your connection and try again.</div>
+
+    <div class="nav-row">
+      <button class="btn-back" onclick="advance(6)">← Back</button>
+      <button class="btn-skip" id="skip7" onclick="generate()">Skip &amp; write story ✨</button>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════
+       LOADING
+  ════════════════════════════════════════ -->
+  <div class="loading" id="loadingScreen">
+    <span class="paw">🐾</span>
+    <h2>Writing the story…</h2>
+    <p>Crafting something special for <span id="loadingName">your dog</span></p>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       STORY DISPLAY
+  ════════════════════════════════════════ -->
+  <div class="story" id="storyDisplay">
+    <div class="story-photos" id="storyPhotoRow"></div>
+    <div class="story-card">
+      <h2 class="story-title" id="storyTitle"></h2>
+      <span class="story-tag"  id="storyTag"></span>
+      <div class="story-body"  id="storyBody"></div>
+    </div>
+    <div class="story-actions">
+      <button class="btn-action" id="copyBtn" onclick="copyStory()">📋 Copy story</button>
+      <button class="btn-action" onclick="location.reload()">🔄 Write another</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // ─── Config ──────────────────────────────────────────────────
+  const WORKER_URL = 'https://real-dogs-worker.edithc.workers.dev';
+
+  // ─── State ───────────────────────────────────────────────────
+  const sel  = {};
+  const imgs = [];
+  let storyStyle = null;
+
+  const STEP_NAMES = {
+    1: 'Story &amp; Photos',
+    2: 'About Your Dog',
+    3: 'Personality',
+    4: 'Adventures',
+    5: 'Habits &amp; Quirks',
+    6: 'Talents',
+    7: 'Final Details'
+  };
+
+  // ─── Progress ────────────────────────────────────────────────
+  function setProgress(n) {
+    document.getElementById('topFill').style.width = ((n / 7) * 100) + '%';
+    document.getElementById('sNum').textContent = 'Step ' + n + ' of 7';
+    document.getElementById('sName').innerHTML  = STEP_NAMES[n] || '';
+  }
+
+  // ─── Chip toggle ─────────────────────────────────────────────
+  document.querySelectorAll('[data-group]').forEach(grid => {
+    const group = grid.dataset.group;
+    const multi = grid.dataset.multi === 'true';
+    const max   = parseInt(grid.dataset.max) || Infinity;
+
+    grid.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (multi) {
+          const cur = sel[group] || [];
+          if (btn.classList.contains('on')) {
+            btn.classList.remove('on');
+            sel[group] = cur.filter(v => v !== btn.dataset.val);
+          } else {
+            if (cur.length >= max) return;
+            btn.classList.add('on');
+            sel[group] = [...cur, btn.dataset.val];
+          }
+        } else {
+          grid.querySelectorAll('.chip').forEach(b => b.classList.remove('on'));
+          btn.classList.add('on');
+          sel[group] = btn.dataset.val;
+        }
+        // Update skip/continue for optional steps
+        updateSkipFromChips('skip4', 'adventures');
+      });
+    });
+  });
+
+  // ─── Show more ───────────────────────────────────────────────
+  document.querySelectorAll('.show-more-btn').forEach(btn => {
+    const inc = parseInt(btn.dataset.inc) || 0; // 0 = show all at once
+
+    btn.addEventListener('click', () => {
+      const grid    = document.querySelector(`[data-group="${btn.dataset.target}"]`);
+      const hidden  = Array.from(grid.querySelectorAll('.chip.hidden'));
+      if (hidden.length === 0) { btn.style.display = 'none'; return; }
+
+      if (inc === 0) {
+        hidden.forEach(c => c.classList.remove('hidden'));
+        btn.style.display = 'none';
+      } else {
+        hidden.slice(0, inc).forEach(c => c.classList.remove('hidden'));
+        const remaining = grid.querySelectorAll('.chip.hidden').length;
+        if (remaining === 0) btn.style.display = 'none';
+        else btn.textContent = 'Show ' + Math.min(inc, remaining) + ' more';
+      }
+    });
+  });
+
+  // ─── Skip / Continue logic ────────────────────────────────────
+  function updateSkip(btnId, fieldId) {
+    const val = document.getElementById(fieldId).value.trim();
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    const isLast = btnId === 'skip7';
+    if (val) {
+      btn.classList.add('has-input');
+      btn.textContent = isLast ? 'Write my story ✨' : 'Continue →';
+    } else {
+      btn.classList.remove('has-input');
+      btn.textContent = isLast ? 'Skip & write story ✨' : 'Skip →';
+    }
+  }
+
+  function updateSkipFromChips(btnId, group) {
+    if (btnId !== 'skip4') return;
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    const hasChips  = (sel[group] || []).length > 0;
+    const hasText   = (document.getElementById('adventuresExtra')?.value.trim().length || 0) > 0;
+    if (hasChips || hasText) {
+      btn.classList.add('has-input');
+      btn.textContent = 'Continue →';
+    } else {
+      btn.classList.remove('has-input');
+      btn.textContent = 'Skip →';
+    }
+  }
+
+  // Also wire adventuresExtra input to update skip4
+  document.getElementById('adventuresExtra')?.addEventListener('input', () => {
+    updateSkipFromChips('skip4', 'adventures');
+  });
+
+  // ─── Style selection ─────────────────────────────────────────
+  function pickStyle(card) {
+    document.querySelectorAll('.style-card').forEach(c => c.classList.remove('on'));
+    card.classList.add('on');
+    storyStyle = card.dataset.style;
+  }
+
+  // ─── Navigation ──────────────────────────────────────────────
+  function currentStep() {
+    for (let i = 1; i <= 7; i++)
+      if (document.getElementById('step' + i)?.classList.contains('active')) return i;
+    return 1;
+  }
+
+  function advance(n) {
+    const from = currentStep();
+    if (n > from && !validate(from)) return;
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    const next = document.getElementById('step' + n);
+    if (next) {
+      next.classList.add('active');
+      setProgress(n);
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ─── Validation ──────────────────────────────────────────────
+  function validate(step) {
+    if (step === 1) {
+      if (!storyStyle) { alert('Please choose a story style to continue.'); return false; }
+    }
+    if (step === 2) {
+      if (!document.getElementById('dogName').value.trim()) {
+        alert("Please enter your dog's name to continue.");
+        document.getElementById('dogName').focus();
+        return false;
+      }
+    }
+    if (step === 3) {
+      if (!(sel.personality?.length)) { alert('Please select at least one personality trait.'); return false; }
+      if (!(sel.activities?.length))  { alert('Please select at least one favourite activity.'); return false; }
+    }
+    return true;
+  }
+
+  // ─── Photo upload ─────────────────────────────────────────────
+  const dropZone   = document.getElementById('dropZone');
+  const photoInput = document.getElementById('photoInput');
+
+  photoInput.addEventListener('change', e => processFiles(e.target.files));
+  dropZone.addEventListener('dragover',  e => { e.preventDefault(); dropZone.classList.add('over'); });
+  dropZone.addEventListener('dragleave', ()  => dropZone.classList.remove('over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('over');
+    processFiles(e.dataTransfer.files);
+  });
+
+  async function processFiles(fileList) {
+    for (const file of fileList) {
+      if (!file.type.startsWith('image/') || imgs.length >= 8) continue;
+      const dataUrl = await resizeImage(file);
+      imgs.push({ dataUrl });
+      renderThumbs();
+    }
+  }
+
+  function resizeImage(file, maxPx = 1024) {
+    return new Promise(resolve => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = new Image();
+        img.onload = () => {
+          let { width: w, height: h } = img;
+          if (w > maxPx || h > maxPx) {
+            if (w >= h) { h = Math.round(h * maxPx / w); w = maxPx; }
+            else        { w = Math.round(w * maxPx / h); h = maxPx; }
+          }
+          const c = document.createElement('canvas');
+          c.width = w; c.height = h;
+          c.getContext('2d').drawImage(img, 0, 0, w, h);
+          resolve(c.toDataURL('image/jpeg', 0.82));
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function renderThumbs() {
+    const row = document.getElementById('photoRow');
+    row.innerHTML = '';
+    imgs.forEach((p, i) => {
+      const d = document.createElement('div');
+      d.className = 'p-thumb';
+      d.innerHTML = `<img src="${p.dataUrl}" alt="Photo ${i+1}">
+        <button class="rm" onclick="removeImg(${i})" title="Remove">×</button>`;
+      row.appendChild(d);
+    });
+  }
+
+  function removeImg(i) { imgs.splice(i, 1); renderThumbs(); }
+
+  // ─── Generate ─────────────────────────────────────────────────
+  async function generate() {
+    if (WORKER_URL === 'REPLACE_WITH_YOUR_WORKER_URL') {
+      alert('The story generator is not yet configured. Set up the Cloudflare Worker first.');
+      return;
+    }
+
+    const dogName = document.getElementById('dogName').value.trim();
+
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.querySelector('.step-indicator').style.visibility = 'hidden';
+    document.getElementById('topFill').style.width = '100%';
+    document.getElementById('loadingScreen').classList.add('show');
+    document.getElementById('loadingName').textContent = dogName || 'your dog';
+    document.getElementById('errBox').classList.remove('show');
+
+    const payload = {
+      dogName,
+      dogBreed:         document.getElementById('dogBreed').value.trim(),
+      age:              document.getElementById('dogAge').value.trim(),
+      sex:              sel.sex       || '',
+      origin:           sel.origin    || '',
+      location:         sel.location  || '',
+      originStory:      document.getElementById('originStory').value.trim(),
+      postcode:         document.getElementById('postcode').value.trim(),
+      personality:      sel.personality  || [],
+      personalityExtra: document.getElementById('personalityExtra').value.trim(),
+      activities:       sel.activities   || [],
+      activitiesExtra:  document.getElementById('activitiesExtra').value.trim(),
+      treats:           sel.treats       || [],
+      treatsExtra:      document.getElementById('treatsExtra').value.trim(),
+      friends:          sel.friends      || [],
+      friendNames:      document.getElementById('friendNames').value.trim(),
+      adventures:       sel.adventures   || [],
+      adventuresExtra:  document.getElementById('adventuresExtra').value.trim(),
+      funnyHabit:       document.getElementById('funnyHabit').value.trim(),
+      specialTalent:    document.getElementById('specialTalent').value.trim(),
+      extraDetails:     document.getElementById('extraDetails').value.trim(),
+      instagram:        document.getElementById('instagram').value.trim(),
+      storyStyle,
+      photos: imgs.map(p => p.dataUrl)
+    };
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const { story } = await res.json();
+      showStory(story, dogName);
+    } catch (err) {
+      console.error(err);
+      document.getElementById('loadingScreen').classList.remove('show');
+      document.getElementById('step7').classList.add('active');
+      document.querySelector('.step-indicator').style.visibility = 'visible';
+      document.getElementById('topFill').style.width = ((7 / 7) * 100) + '%';
+      document.getElementById('errBox').classList.add('show');
+    }
+  }
+
+  function showStory(story, dogName) {
+    document.getElementById('loadingScreen').classList.remove('show');
+
+    const photoRow = document.getElementById('storyPhotoRow');
+    photoRow.innerHTML = '';
+    imgs.forEach((p, i) => {
+      const img = document.createElement('img');
+      img.src = p.dataUrl;
+      img.alt = (dogName || 'Dog') + ' photo ' + (i + 1);
+      photoRow.appendChild(img);
+    });
+
+    const tags = {
+      adventure_log:  '🗺️ The Adventure Log',
+      origin_story:   '❤️ The Origin Story',
+      day_in_my_life: '🐾 A Day in My Life',
+      the_legend:     '⚔️ The Legend',
+      best_friend:    '🌟 The Best Friend'
+    };
+
+    document.getElementById('storyTitle').textContent = dogName || 'Your Dog';
+    document.getElementById('storyTag').textContent   = tags[storyStyle] || '';
+    document.getElementById('storyBody').textContent  = story;
+    document.getElementById('storyDisplay').classList.add('show');
+  }
+
+  async function copyStory() {
+    const text = document.getElementById('storyBody').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✅ Copied!'; btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 Copy story'; btn.classList.remove('copied'); }, 2200);
+    } catch {}
+  }
+</script>
+</body>
+</html>

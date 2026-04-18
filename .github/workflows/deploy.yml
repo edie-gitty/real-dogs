@@ -22,4 +22,5 @@ jobs:
             **/.git*
             **/.git*/**
             **/node_modules/**
+            **/worker/**
             .DS_Store
