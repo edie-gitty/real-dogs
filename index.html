@@ -1129,7 +1129,7 @@
   const state = {
     dogName: '',
     dogSize: '',
-    recipe: '',
+    recipes: [],
     occasion: '',
     wantsCustom: null,
     photos: [],
@@ -1141,8 +1141,11 @@
     followsRealDogs: false,
     storyPermission: '',
     marketingPermission: '',
+    marketingOffersConsent: false,
     orderDate: '',
     email: '',
+    uatFeedback: '',
+    responseSubmitted: false,
     currentStep: 0
   };
 
@@ -1152,17 +1155,19 @@
     { id: 'size',       render: renderSize,        validate: () => !!state.dogSize },
     { id: 'occasion',   render: renderOccasion,    validate: () => !!state.occasion },
     { id: 'custom',     render: renderCustom,      validate: () => state.wantsCustom !== null },
-    { id: 'recipe',     render: renderRecipe,      validate: () => !!state.recipe },
+    { id: 'recipe',     render: renderRecipe,      validate: () => state.recipes.length > 0 },
     { id: 'photoOrDogs',render: renderPhotoOrDogs, validate: validatePhotoOrDogs },
     { id: 'contact',    render: renderContact,     validate: validateContact },
     { id: 'story',      render: renderStory,       validate: () => !!state.storyPermission },
     { id: 'marketing',  render: renderMarketing,   validate: () => !!state.marketingPermission },
     { id: 'orderDate',  render: renderOrderDate,   validate: () => !!state.orderDate },
-    { id: 'email',      render: renderEmail,       validate: () => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email) },
     { id: 'result',     render: renderResult,      validate: () => true, isResult: true }
   ];
 
-  const TOTAL_Q = 11; // excluding result step
+  const TOTAL_Q = 10; // excluding result step
+  const EMAIL_RE = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const PHONE_RE = /^[+\d][\d\s()\-]{7,19}$/;
+  const IG_RE    = /^@?[a-zA-Z0-9._]{1,30}$/;
 
   // ============ DOG LIBRARY ============
   const dogs = [
@@ -1282,21 +1287,48 @@
   function renderRecipe() {
     const availabilityNote = state.wantsCustom
       ? `Custom pupcakes for ${escapeHtml(state.dogName)} can be made in <strong>any flavour</strong> below.`
-      : `Some of our Real Dogs only make certain flavours — we'll match ${escapeHtml(state.dogName)}'s order where we can.`;
+      : `Some of our Real Dogs only make certain flavours — we'll match ${escapeHtml(state.dogName)}'s order where we can. Pick as many as you'd like.`;
+    const recipeOpt = (val, label, sub) => {
+      const selected = state.recipes.includes(val);
+      return `
+        <label class="option-card ${selected ? 'selected' : ''}" onclick="toggleRecipe('${val}')">
+          <div class="check"></div>
+          <div class="option-main">
+            <div>${label}</div>
+            ${sub ? `<span class="option-sub">${sub}</span>` : ''}
+          </div>
+        </label>
+      `;
+    };
     return `
       <div class="question-number">Question 5 of ${TOTAL_Q}</div>
-      <h3 class="question-title">Which recipe sounds best?</h3>
+      <h3 class="question-title">Which recipe${state.wantsCustom ? '' : 's'} sound${state.wantsCustom ? 's' : ''} best?</h3>
       <div class="info-badge" style="margin-bottom:1rem;">
         <span>🌱</span>
         <div>All our recipes are <strong>vegetarian and meat-free</strong>. ${availabilityNote}</div>
       </div>
       <div class="options-grid">
-        ${optionCard('recipe', 'classic-vanilla',  'Classic Vanilla', 'Light, sweet and simple', state.recipe==='classic-vanilla')}
-        ${optionCard('recipe', 'peanut-butter',    'Peanut Butter Paws', 'Rich and nutty', state.recipe==='peanut-butter')}
-        ${optionCard('recipe', 'carob-chip',       'Carob Chip', 'Chocolate-style, dog-safe', state.recipe==='carob-chip')}
-        ${optionCard('recipe', 'pumpkin-spice',    'Pumpkin Spice', 'Seasonal and warming', state.recipe==='pumpkin-spice')}
+        ${recipeOpt('surprise-me',     '🎲 Surprise me!',       "Baker's choice — go with the flow")}
+        ${recipeOpt('classic-vanilla', 'Classic Vanilla',       'Light, sweet and simple')}
+        ${recipeOpt('peanut-butter',   'Peanut Butter Paws',    'Rich and nutty')}
+        ${recipeOpt('carob-chip',      'Carob Chip',            'Chocolate-style, dog-safe')}
+        ${recipeOpt('pumpkin-spice',   'Pumpkin Spice',         'Seasonal and warming')}
       </div>
     `;
+  }
+
+  function toggleRecipe(val) {
+    const arr = state.recipes;
+    if (val === 'surprise-me') {
+      state.recipes = arr.includes('surprise-me') ? [] : ['surprise-me'];
+    } else {
+      state.recipes = arr.filter(v => v !== 'surprise-me');
+      const i = state.recipes.indexOf(val);
+      if (i >= 0) state.recipes.splice(i, 1);
+      else state.recipes.push(val);
+    }
+    acknowledgeUpdate();
+    render();
   }
 
   function renderOccasion() {
@@ -1390,7 +1422,6 @@
               <div class="dog-breed">${d.breed}</div>
             </div>
           </div>
-          <a href="/dogs/${d.slug}" class="dog-story-link" onclick="event.preventDefault()">Read ${d.name}'s story →</a>
           <div class="qty-controls">
             <button class="qty-btn" onclick="changeQty('${d.slug}', -1)" ${qty === 0 ? 'disabled' : ''}>−</button>
             <div class="qty-value">${qty}</div>
@@ -1468,6 +1499,10 @@
   }
 
   function renderContact() {
+    const phoneValid   = !state.mobile || PHONE_RE.test(state.mobile.trim());
+    const emailValid   = !state.email  || EMAIL_RE.test(state.email.trim());
+    const igValid      = !state.instagramHandle || IG_RE.test(state.instagramHandle.trim());
+    const showIgField  = state.contactPref === 'instagram';
     return `
       <div class="question-number">Question 7 of ${TOTAL_Q}</div>
       <h3 class="question-title">How can we reach you?</h3>
@@ -1475,34 +1510,35 @@
 
       <div class="form-field">
         <label>Mobile number</label>
-        <input type="tel" value="${escapeHtml(state.mobile)}" placeholder="+61 400 000 000" oninput="state.mobile=this.value;acknowledgeUpdate()">
+        <input type="tel" inputmode="tel" value="${escapeHtml(state.mobile)}" placeholder="+61 400 000 000" oninput="state.mobile=this.value;acknowledgeUpdate();render()">
+        ${!phoneValid ? `<div class="field-error">Enter a valid phone number (digits, spaces, +, -, ()).</div>` : ''}
+      </div>
+
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" inputmode="email" autocomplete="email" value="${escapeHtml(state.email)}" placeholder="you@example.com" oninput="state.email=this.value;acknowledgeUpdate();render()">
+        ${!emailValid ? `<div class="field-error">Enter a valid email address.</div>` : ''}
       </div>
 
       <label style="font-weight:700;font-size:0.85rem;color:var(--wine);display:block;margin-bottom:0.5rem;">Preferred DM method</label>
       <div class="options-grid">
         ${optionCard('contactPref', 'whatsapp',  '💬 WhatsApp',  "We'll use your mobile number", state.contactPref==='whatsapp')}
-        ${optionCard('contactPref', 'instagram', '📸 Instagram', 'We can DM you on Insta', state.contactPref==='instagram')}
+        ${optionCard('contactPref', 'sms',       '📱 SMS / Text', "We'll text your mobile number", state.contactPref==='sms')}
+        ${optionCard('contactPref', 'instagram', '📸 Instagram DM', 'We can DM you on Insta', state.contactPref==='instagram')}
       </div>
 
-      <div class="ig-follow-box" style="margin-top:1rem;">
-        <h4>📸 Add your Instagram (optional)</h4>
-        <p style="margin:0.25rem 0 0.75rem;font-size:0.85rem;color:var(--muted);">
-          ${state.contactPref === 'instagram'
-            ? 'Required for Instagram DMs.'
-            : `Share your handle and we'll tag ${escapeHtml(state.dogName)} when we post pupcakes!`}
-        </p>
-        <div class="form-field" style="margin-bottom:0.75rem;">
-          <input type="text" value="${escapeHtml(state.instagramHandle)}" placeholder="@yourhandle" oninput="state.instagramHandle=this.value;acknowledgeUpdate()">
-        </div>
-        <div style="background:rgba(247,239,224,0.5);border-radius:10px;padding:0.75rem;">
-          <p style="margin:0 0 0.5rem;font-size:0.9rem;"><strong>Follow us</strong> at <span class="ig-handle">@realdogs</span></p>
-          <a href="https://instagram.com/realdogs" target="_blank" rel="noopener" style="display:inline-block;background:var(--magenta);color:var(--parchment-light);padding:0.5rem 0.9rem;border-radius:8px;font-weight:700;font-size:0.85rem;text-decoration:none;margin-bottom:0.5rem;">Open Instagram →</a>
-          <label style="display:flex;gap:0.5rem;align-items:center;cursor:pointer;font-size:0.9rem;">
-            <input type="checkbox" ${state.followsRealDogs ? 'checked' : ''} onchange="state.followsRealDogs=this.checked;acknowledgeUpdate();render()">
-            I've followed @realdogs
-          </label>
-        </div>
-      </div>
+      ${showIgField ? `
+        <div class="form-field" style="margin-top:1rem;">
+          <label>Instagram handle <span style="color:var(--magenta);">*</span></label>
+          <input type="text" value="${escapeHtml(state.instagramHandle)}" placeholder="@yourhandle" oninput="state.instagramHandle=this.value;acknowledgeUpdate();render()">
+          ${!igValid ? `<div class="field-error">Handles use letters, numbers, dots and underscores.</div>` : ''}
+        </div>` : ''
+      }
+
+      <label style="display:flex;gap:0.6rem;align-items:flex-start;cursor:pointer;margin-top:1rem;background:rgba(247,239,224,0.5);border-radius:10px;padding:0.75rem;">
+        <input type="checkbox" style="margin-top:0.2rem;" ${state.marketingOffersConsent ? 'checked' : ''} onchange="state.marketingOffersConsent=this.checked;acknowledgeUpdate()">
+        <span style="font-size:0.88rem;">Yes, I'd like to hear about new recipes, launches and offers from Real Dogs. You can unsubscribe any time.</span>
+      </label>
     `;
   }
 

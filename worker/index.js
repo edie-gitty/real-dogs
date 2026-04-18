@@ -146,11 +146,16 @@ async function handleGenerate(request, env) {
 // ─── Route: POST /submit ─────────────────────────────────────────────────────
 async function handleSubmit(request, env) {
   const body = await request.json();
-  const { dogName, story, storyStyle, email, phone, instagram, photos = [], ...formData } = body;
+  const { dogName, story, storyStyle, email, phone, instagram, photos = [], slug: providedSlug, ...formData } = body;
 
   if (!story || !dogName) return resp({ error: 'missing_fields' }, 400);
 
-  const slug = makeSlug(dogName);
+  const slug = providedSlug || makeSlug(dogName);
+  const existing = await env.STORIES.get(`story:${slug}`);
+  if (existing) {
+    return resp({ id: slug, slug });
+  }
+
   const record = {
     id: slug,
     slug,
@@ -210,16 +215,27 @@ async function handleStory(slug, env) {
 // ─── Route: GET /admin/stories ───────────────────────────────────────────────
 async function handleAdminList(request, env) {
   if (!isAuthed(request, env)) return resp({ error: 'unauthorized' }, 401);
-  const list = await env.STORIES.list({ prefix: 'story:' });
   const stories = [];
-  for (const key of list.keys) {
-    const raw = await env.STORIES.get(key.name);
-    if (!raw) continue;
-    const s = JSON.parse(raw);
-    const { photos, ...meta } = s;
-    meta.firstPhoto = s.firstPhoto;
-    stories.push(meta);
+  let cursor = undefined;
+  
+  // Handle pagination — KV list() returns max 1000 items per call
+  while (true) {
+    const list = await env.STORIES.list({ prefix: 'story:', cursor, limit: 1000 });
+    
+    for (const key of list.keys) {
+      const raw = await env.STORIES.get(key.name);
+      if (!raw) continue;
+      const s = JSON.parse(raw);
+      const { photos, ...meta } = s;
+      meta.firstPhoto = s.firstPhoto;
+      stories.push(meta);
+    }
+    
+    // If there are no more results, break
+    if (!list.cursor) break;
+    cursor = list.cursor;
   }
+  
   stories.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   return resp({ stories });
 }

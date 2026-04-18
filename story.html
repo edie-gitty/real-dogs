@@ -70,15 +70,23 @@
     textarea.inp { resize: vertical; min-height: 64px; line-height: 1.5; }
 
     /* ── Instagram prefix ── */
-    .ig-wrap { display: flex; align-items: center; gap: 0; max-width: 280px; }
+    .ig-wrap { display: flex; align-items: center; gap: 0; width: 100%; min-width: 0; flex-wrap: nowrap; }
     .ig-at {
       padding: 0.55rem 0.6rem 0.55rem 0.85rem;
       border: 2px solid var(--border); border-right: none;
       border-radius: 10px 0 0 10px; background: #fdf0e8;
       color: var(--muted); font-size: 0.95rem; font-family: Georgia,serif;
       line-height: 1;
+      flex: 0 0 auto;
+      white-space: nowrap;
     }
-    .ig-wrap .inp { border-radius: 0 10px 10px 0; border-left: none; }
+    .ig-wrap .inp {
+      border-radius: 0 10px 10px 0;
+      border-left: none;
+      flex: 1 1 0;
+      min-width: 0;
+      width: auto;
+    }
     .ig-wrap .inp:focus { border-color: var(--red); }
 
     /* ── Chips ── */
@@ -120,6 +128,26 @@
     .s-name  { font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 0.18rem; }
     .style-card.on .s-name { color: var(--red); }
     .s-desc  { font-size: 0.75rem; color: var(--muted); font-family: -apple-system,sans-serif; line-height: 1.4; }
+
+    @media (max-width: 560px) {
+      .wizard-wrap { padding: 0 0.9rem 4rem; }
+      .ig-wrap { flex-direction: row; align-items: center; gap: 0; max-width: 100%; }
+      .ig-wrap .ig-at { padding: 0.55rem 0.4rem; font-size: 0.9rem; flex: 0 0 auto; }
+      .ig-wrap .inp { flex: 1 1 auto; min-width: 0; font-size: 0.9rem; padding: 0.5rem 0.7rem; }
+      .btn-grid { justify-content: center; }
+      .drop-zone { padding: 1.4rem 1rem; }
+      .photo-row { justify-content: center; }
+      .p-thumb { width: 68px; height: 68px; }
+      .nav-row { flex-direction: column; gap: 0.85rem; }
+      .btn-primary, .btn-back, .btn-skip { width: 100%; }
+      .story-card { padding: 1.5rem 1.4rem; }
+      .story-photos img { width: 85px; height: 85px; }
+      .story-actions { flex-direction: column; }
+      .submit-status { font-size: 0.92rem; }
+      .field-label, .field-hint { font-size: 0.82rem; }
+      .step-title { font-size: 1.4rem; }
+      .step-subtitle { font-size: 0.8rem; }
+    }
 
     /* ── Photo upload ── */
     .drop-zone {
@@ -192,6 +220,17 @@
     }
     .btn-action:hover { border-color:var(--red); color:var(--red); }
     .btn-action.copied { border-color:#27ae60; color:#27ae60; }
+
+    .submit-status {
+      margin: 1.2rem 0 0;
+      padding: 1rem 1.1rem;
+      border-radius: 16px;
+      background: #fff4e8;
+      border: 1px solid #f2d5c1;
+      color: #7f4f2e;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
 
     /* ── Optional step lone field ── */
     .solo-field { margin-bottom: 0.5rem; }
@@ -649,6 +688,7 @@
       <button class="btn-action" id="copyBtn" onclick="copyStory()">📋 Copy story</button>
       <button class="btn-action" onclick="location.reload()">🔄 Write another</button>
     </div>
+    <div class="submit-status" id="submitStatus"></div>
   </div>
 
 </main>
@@ -657,6 +697,7 @@
   // ─── Config ───────────────────────────────────────────────────
   const WORKER_URL = 'https://real-dogs-worker.edithc.workers.dev';
   const SAVE_KEY   = 'realdogs_story_v1';
+  const SUBMIT_QUEUE_KEY = 'realdogs_submit_queue_v1';
 
   // ─── State ────────────────────────────────────────────────────
   const sel  = {};
@@ -703,6 +744,80 @@
       };
       localStorage.setItem(SAVE_KEY, JSON.stringify(state));
     } catch(e) {}
+  }
+
+  function loadSubmitQueue() {
+    try {
+      const raw = localStorage.getItem(SUBMIT_QUEUE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveSubmitQueue(queue) {
+    try {
+      localStorage.setItem(SUBMIT_QUEUE_KEY, JSON.stringify(queue));
+    } catch (e) {}
+  }
+
+  function enqueueSubmission(payload) {
+    const queue = loadSubmitQueue();
+    queue.push(payload);
+    saveSubmitQueue(queue);
+  }
+
+  function makeClientSlug(name) {
+    const base = (name || 'dog')
+      .toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').slice(0, 20).replace(/-$/, '');
+    const rand = Math.random().toString(36).slice(2, 7);
+    return `${base}-${rand}`;
+  }
+
+  function clearSubmitStatus() {
+    const el = document.getElementById('submitStatus');
+    if (el) el.textContent = '';
+  }
+
+  function showSubmitStatus(message) {
+    const el = document.getElementById('submitStatus');
+    if (!el) return;
+    el.textContent = message;
+  }
+
+  async function submitStory(payload) {
+    try {
+      const res = await fetch(WORKER_URL + '/submit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) throw new Error(data.error || 'HTTP ' + res.status);
+      return true;
+    } catch (err) {
+      console.error('Story submit failed:', err.message || err);
+      return false;
+    }
+  }
+
+  async function drainSubmitQueue() {
+    const queue = loadSubmitQueue();
+    if (!queue.length) return;
+
+    const remaining = [];
+    for (const item of queue) {
+      const ok = await submitStory(item);
+      if (!ok) {
+        remaining.push(item);
+      }
+    }
+    saveSubmitQueue(remaining);
+    if (!remaining.length) {
+      showSubmitStatus('All pending stories have been saved.');
+      setTimeout(clearSubmitStatus, 4000);
+    } else {
+      showSubmitStatus('Some stories are still pending. We will retry automatically later.');
+    }
   }
 
   function loadSaved() {
@@ -995,12 +1110,17 @@
       if (!genRes.ok || genData.error) throw new Error(genData.error || 'HTTP ' + genRes.status);
 
       const story = genData.story;
+      const submission = { ...payload, story, slug: makeClientSlug(dogName) };
 
-      // Step 2: submit for approval (fire-and-forget — don't block the UI)
-      fetch(WORKER_URL + '/submit', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, story })
-      }).catch(e => console.warn('Submit failed (non-fatal):', e));
+      // Step 2: submit for approval and retry if needed
+      const saved = await submitStory(submission);
+      if (!saved) {
+        enqueueSubmission(submission);
+        showSubmitStatus('Story generated but not saved yet. We will retry automatically.');
+      } else {
+        showSubmitStatus('Your story has been saved and is waiting for approval.');
+        setTimeout(clearSubmitStatus, 5000);
+      }
 
       saveState();
       showStory(story, dogName);
@@ -1071,7 +1191,10 @@
   }
 
   // ─── Restore on load ──────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', loadSaved);
+  document.addEventListener('DOMContentLoaded', () => {
+    loadSaved();
+    drainSubmitQueue();
+  });
 </script>
 </body>
 </html>
