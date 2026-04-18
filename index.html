@@ -14,14 +14,27 @@
       background: #fff8f0;
       font-family: Georgia, serif;
     }
-    h1 { font-size: 3rem; color: #c0392b; margin: 0; }
-    p { color: #888; font-size: 1.2rem; text-align: center; }
+    .hero { text-align: center; padding: 2rem; }
+    h1 { font-size: 3rem; color: #c0392b; margin: 0 0 0.5rem; }
+    .tagline { color: #888; font-size: 1.2rem; margin-bottom: 2rem; }
+    .cta {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: #c0392b;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 28px;
+      font-size: 1.05rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .cta:hover { background: #a93226; transform: translateY(-2px); }
   </style>
 </head>
 <body>
-  <div>
+  <div class="hero">
     <h1>Real Dogs 🐾</h1>
-    <p>Something delicious is coming soon.</p>
+    <p class="tagline">Stories about real dogs, written with love.</p>
+    <a class="cta" href="/story.html">✨ Write your dog's story</a>
   </div>
 </body>
 </html>
