@@ -129,7 +129,7 @@ async function handleGenerate(request, env) {
   const apiRes = await fetch(ANTHROPIC_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-3-5-sonnet-20241022', max_tokens: 900, system: styleConfig.system, messages: [{ role: 'user', content }] })
+    body: JSON.stringify({ model: 'claude-sonnet-4-5', max_tokens: 900, system: styleConfig.system, messages: [{ role: 'user', content }] })
   });
 
   if (!apiRes.ok) {
