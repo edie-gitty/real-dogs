@@ -1,0 +1,5 @@
+Options -Indexes
+RewriteEngine On
+
+# Clean URLs: /dogs/{slug} → /dog-story.html?id={slug}
+RewriteRule ^dogs/([a-z0-9-]+)/?$ /dog-story.html?id=$1 [L,QSA]

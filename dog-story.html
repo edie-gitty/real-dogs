@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Dog Story — Real Dogs</title>
+  <style>
+    :root {
+      --cream: #fff8f0; --red: #c0392b; --red-d: #a93226;
+      --brown: #2c1810; --muted: #8a7570; --border: #e8d5c8;
+      --white: #ffffff; --shadow: 0 2px 16px rgba(44,24,16,0.09);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--cream); font-family: Georgia, serif; color: var(--brown); min-height: 100vh; }
+
+    .site-header { text-align: center; padding: 1.6rem 1rem 0; border-bottom: 1px solid var(--border); }
+    .site-header a { text-decoration: none; color: var(--red); font-size: 1.35rem; }
+    .site-nav { display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 0 0; font-family: -apple-system, sans-serif; font-size: 0.83rem; }
+    .site-nav a { color: var(--muted); text-decoration: none; padding-bottom: 0.6rem; border-bottom: 2px solid transparent; }
+    .site-nav a:hover { color: var(--red); }
+
+    .page-wrap { max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem 5rem; }
+
+    .back-link {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      color: var(--muted); text-decoration: none; font-family: -apple-system, sans-serif;
+      font-size: 0.83rem; margin-bottom: 1.75rem;
+    }
+    .back-link:hover { color: var(--red); }
+
+    /* Photos */
+    .story-photos { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.75rem; }
+    .story-photo  {
+      flex: 1; min-width: 140px; max-width: 220px;
+      aspect-ratio: 1; object-fit: cover;
+      border-radius: 14px; border: 3px solid var(--border);
+    }
+
+    /* Story card */
+    .story-card { background: var(--white); border-radius: 18px; padding: 2rem; box-shadow: var(--shadow); margin-bottom: 1.5rem; }
+    .dog-name  { font-size: 2.1rem; color: var(--red); margin-bottom: 0.2rem; }
+    .style-tag {
+      display: inline-block; font-size: 0.75rem; font-family: -apple-system, sans-serif;
+      color: var(--muted); margin-bottom: 1.5rem;
+    }
+    .story-body { font-size: 1.02rem; line-height: 1.9; color: var(--brown); white-space: pre-wrap; }
+
+    /* Instagram credit */
+    .ig-credit {
+      font-size: 0.82rem; color: var(--muted); font-family: -apple-system, sans-serif;
+      margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border);
+    }
+    .ig-credit a { color: var(--red); text-decoration: none; }
+    .ig-credit a:hover { text-decoration: underline; }
+
+    /* Actions */
+    .story-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .btn-action {
+      padding: 0.55rem 1.1rem; border: 2px solid var(--border); border-radius: 20px;
+      background: var(--white); color: var(--brown); font-family: -apple-system, sans-serif;
+      font-size: 0.82rem; cursor: pointer; transition: all 0.18s;
+      display: flex; align-items: center; gap: 0.35rem; text-decoration: none;
+    }
+    .btn-action:hover { border-color: var(--red); color: var(--red); }
+    .btn-action.copied { border-color: #27ae60; color: #27ae60; }
+
+    /* States */
+    .state { text-align: center; padding: 5rem 1rem; color: var(--muted); font-family: -apple-system, sans-serif; }
+    .state-icon { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; }
+    .spinner {
+      width: 32px; height: 32px; border: 3px solid var(--border);
+      border-top-color: var(--red); border-radius: 50%;
+      animation: spin 0.7s linear infinite; margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .tag-adventure_log  { background: #fff3e0; color: #e65100; border-radius: 10px; padding: 0.2rem 0.6rem; }
+    .tag-origin_story   { background: #fce4ec; color: #c2185b; border-radius: 10px; padding: 0.2rem 0.6rem; }
+    .tag-day_in_my_life { background: #e8f5e9; color: #2e7d32; border-radius: 10px; padding: 0.2rem 0.6rem; }
+    .tag-the_legend     { background: #ede7f6; color: #4527a0; border-radius: 10px; padding: 0.2rem 0.6rem; }
+    .tag-best_friend    { background: #e3f2fd; color: #1565c0; border-radius: 10px; padding: 0.2rem 0.6rem; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/">Real Dogs 🐾</a>
+  <nav class="site-nav">
+    <a href="/">Home</a>
+    <a href="/gallery.html">Stories</a>
+    <a href="/story.html">Write yours</a>
+  </nav>
+</header>
+
+<main class="page-wrap">
+  <a class="back-link" href="/gallery.html">← Back to all stories</a>
+
+  <div id="loadingState" class="state">
+    <div class="spinner"></div>
+    <p>Loading story…</p>
+  </div>
+
+  <div id="storyContent" style="display:none">
+    <div class="story-photos" id="storyPhotos"></div>
+    <div class="story-card">
+      <h1 class="dog-name"  id="dogName"></h1>
+      <span class="style-tag" id="styleTag"></span>
+      <div class="story-body" id="storyBody"></div>
+      <div class="ig-credit"  id="igCredit" style="display:none"></div>
+    </div>
+    <div class="story-actions">
+      <button class="btn-action" id="copyBtn" onclick="copyStory()">📋 Copy story</button>
+      <button class="btn-action" onclick="shareStory()">🔗 Share</button>
+      <a class="btn-action" href="/story.html">✨ Write your dog's story</a>
+    </div>
+  </div>
+</main>
+
+<script>
+  const WORKER_URL = 'https://real-dogs-worker.edithc.workers.dev';
+
+  const STYLE_LABELS = {
+    adventure_log:  '🗺️ The Adventure Log',
+    origin_story:   '❤️ The Origin Story',
+    day_in_my_life: '🐾 A Day in My Life',
+    the_legend:     '⚔️ The Legend',
+    best_friend:    '🌟 The Best Friend'
+  };
+
+  function getSlug() {
+    // Supports /dogs/slug (via .htaccess rewrite) and ?id=slug
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('id')) return params.get('id');
+    // If accessed directly as /dog-story.html?id=...
+    return params.get('id') || '';
+  }
+
+  async function loadStory() {
+    const slug = getSlug();
+    if (!slug) {
+      showError('No story found. <a href="/gallery.html">Browse all stories →</a>');
+      return;
+    }
+
+    try {
+      const res  = await fetch(`${WORKER_URL}/story/${slug}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        const msg = data.error === 'not_published'
+          ? 'This story hasn\'t been published yet.'
+          : 'Story not found. <a href="/gallery.html">Browse all stories →</a>';
+        showError(msg); return;
+      }
+
+      // Set page title
+      document.title = `${data.dogName}'s Story — Real Dogs`;
+
+      // Photos
+      const photoWrap = document.getElementById('storyPhotos');
+      (data.photos || []).slice(0, 4).forEach((p, i) => {
+        const img = document.createElement('img');
+        img.src = p; img.className = 'story-photo';
+        img.alt = `${data.dogName} photo ${i + 1}`;
+        photoWrap.appendChild(img);
+      });
+
+      // Story
+      document.getElementById('dogName').textContent  = data.dogName;
+      document.getElementById('storyBody').textContent = data.story;
+
+      const tag = document.getElementById('styleTag');
+      tag.textContent = STYLE_LABELS[data.storyStyle] || data.storyStyle;
+      tag.className   = `style-tag tag-${data.storyStyle}`;
+
+      // Instagram credit
+      if (data.instagram) {
+        const ig = document.getElementById('igCredit');
+        ig.innerHTML = `Follow ${data.dogName} on Instagram: <a href="https://instagram.com/${data.instagram}" target="_blank" rel="noopener">@${data.instagram}</a>`;
+        ig.style.display = 'block';
+      }
+
+      document.getElementById('loadingState').style.display  = 'none';
+      document.getElementById('storyContent').style.display  = 'block';
+
+    } catch (err) {
+      showError('Couldn\'t load this story right now. Try refreshing.');
+    }
+  }
+
+  function showError(msg) {
+    document.getElementById('loadingState').innerHTML =
+      `<span class="state-icon">😕</span><p>${msg}</p>`;
+  }
+
+  async function copyStory() {
+    const text = `${document.getElementById('dogName').textContent}\n\n${document.getElementById('storyBody').textContent}`;
+    try {
+      await navigator.clipboard.writeText(text);
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✅ Copied!'; btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = '📋 Copy story'; btn.classList.remove('copied'); }, 2200);
+    } catch {}
+  }
+
+  async function shareStory() {
+    const url  = window.location.href;
+    const name = document.getElementById('dogName').textContent;
+    if (navigator.share) {
+      navigator.share({ title: `${name}'s Real Dog Story`, url }).catch(() => {});
+    } else {
+      await navigator.clipboard.writeText(url);
+      alert('Link copied to clipboard!');
+    }
+  }
+
+  loadStory();
+</script>
+</body>
+</html>

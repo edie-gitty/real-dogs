@@ -986,15 +986,24 @@
     };
 
     try {
-      const res = await fetch(WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      // Step 1: generate the story
+      const genRes  = await fetch(WORKER_URL + '/generate', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
-      const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error || 'HTTP ' + res.status);
-      saveState(); // final save before showing story
-      showStory(data.story, dogName);
+      const genData = await genRes.json();
+      if (!genRes.ok || genData.error) throw new Error(genData.error || 'HTTP ' + genRes.status);
+
+      const story = genData.story;
+
+      // Step 2: submit for approval (fire-and-forget — don't block the UI)
+      fetch(WORKER_URL + '/submit', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...payload, story })
+      }).catch(e => console.warn('Submit failed (non-fatal):', e));
+
+      saveState();
+      showStory(story, dogName);
     } catch (err) {
       console.error(err);
       document.getElementById('loadingScreen').classList.remove('show');
@@ -1002,9 +1011,9 @@
       document.querySelector('.step-indicator').style.visibility = 'visible';
       document.getElementById('topFill').style.width = '100%';
       const errEl = document.getElementById('errBox');
-      const msg = err.message?.includes('api_key') || err.message?.includes('auth')
+      const msg = err.message === 'invalid_api_key'
         ? 'API key error — please check your Cloudflare Worker secret is set correctly.'
-        : 'Something went wrong. Your answers are saved — just try again.';
+        : 'Something went wrong. Your answers are saved — just hit try again.';
       errEl.textContent = msg;
       errEl.classList.add('show');
     }
