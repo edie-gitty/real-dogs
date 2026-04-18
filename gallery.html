@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real Dog Stories — Real Dogs</title>
+  <style>
+    :root {
+      --cream: #fff8f0; --red: #c0392b; --red-d: #a93226;
+      --brown: #2c1810; --muted: #8a7570; --border: #e8d5c8;
+      --white: #ffffff; --shadow: 0 2px 16px rgba(44,24,16,0.09);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--cream); font-family: Georgia, serif; color: var(--brown); min-height: 100vh; }
+
+    /* ── Header ── */
+    .site-header { text-align: center; padding: 1.6rem 1rem 0; border-bottom: 1px solid var(--border); }
+    .site-header a { text-decoration: none; color: var(--red); font-size: 1.35rem; }
+    .site-nav { display: flex; justify-content: center; gap: 1.5rem; padding: 0.75rem 0 0; font-family: -apple-system, sans-serif; font-size: 0.83rem; }
+    .site-nav a { color: var(--muted); text-decoration: none; padding-bottom: 0.6rem; border-bottom: 2px solid transparent; }
+    .site-nav a:hover { color: var(--red); }
+    .site-nav a.active { color: var(--red); border-bottom-color: var(--red); }
+
+    /* ── Hero ── */
+    .hero { text-align: center; padding: 2.5rem 1.25rem 2rem; max-width: 560px; margin: 0 auto; }
+    .hero h1 { font-size: 2rem; color: var(--red); margin-bottom: 0.5rem; }
+    .hero p  { font-size: 0.95rem; color: var(--muted); font-family: -apple-system, sans-serif; line-height: 1.6; margin-bottom: 1.5rem; }
+    .btn-cta {
+      display: inline-block; padding: 0.7rem 1.8rem;
+      background: var(--red); color: #fff; text-decoration: none;
+      border-radius: 24px; font-size: 0.95rem; font-family: Georgia, serif;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-cta:hover { background: var(--red-d); transform: translateY(-1px); }
+
+    /* ── Grid ── */
+    .gallery-wrap { max-width: 1040px; margin: 0 auto; padding: 0 1.25rem 4rem; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    /* ── Story card ── */
+    .story-card {
+      background: var(--white); border-radius: 16px;
+      box-shadow: var(--shadow); overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none; color: inherit;
+    }
+    .story-card:hover { transform: translateY(-3px); box-shadow: 0 6px 24px rgba(44,24,16,0.14); }
+
+    .card-photo {
+      width: 100%; height: 200px; object-fit: cover;
+      background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3rem; color: var(--border);
+    }
+    .card-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .card-photo-placeholder { width: 100%; height: 200px; background: linear-gradient(135deg,#f5e6d8,#e8d0bc); display:flex; align-items:center; justify-content:center; font-size:3rem; }
+
+    .card-body { padding: 1.1rem 1.2rem 1.3rem; flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
+    .card-tag {
+      font-size: 0.72rem; font-family: -apple-system, sans-serif;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--red); font-weight: bold;
+    }
+    .card-name  { font-size: 1.25rem; color: var(--brown); }
+    .card-excerpt { font-size: 0.84rem; color: var(--muted); font-family: -apple-system, sans-serif; line-height: 1.55; flex: 1; }
+    .card-link { font-size: 0.82rem; color: var(--red); font-family: -apple-system, sans-serif; margin-top: 0.6rem; }
+
+    /* ── States ── */
+    .state { text-align: center; padding: 4rem 1rem; color: var(--muted); font-family: -apple-system, sans-serif; }
+    .state-icon { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; }
+    .spinner {
+      width: 32px; height: 32px; border: 3px solid var(--border);
+      border-top-color: var(--red); border-radius: 50%;
+      animation: spin 0.7s linear infinite; margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Style tag labels ── */
+    .tag-label {
+      display: inline-block; padding: 0.2rem 0.6rem;
+      border-radius: 10px; font-size: 0.7rem;
+      font-family: -apple-system, sans-serif;
+      font-weight: 600; letter-spacing: 0.04em;
+    }
+    .tag-adventure_log  { background: #fff3e0; color: #e65100; }
+    .tag-origin_story   { background: #fce4ec; color: #c2185b; }
+    .tag-day_in_my_life { background: #e8f5e9; color: #2e7d32; }
+    .tag-the_legend     { background: #ede7f6; color: #4527a0; }
+    .tag-best_friend    { background: #e3f2fd; color: #1565c0; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="/">Real Dogs 🐾</a>
+  <nav class="site-nav">
+    <a href="/">Home</a>
+    <a href="/gallery.html" class="active">Stories</a>
+    <a href="/story.html">Write yours</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Real Dog Stories</h1>
+  <p>Meet the real dogs of Australia — their adventures, origins, quirks, and the humans who love them.</p>
+  <a href="/story.html" class="btn-cta">✨ Write your dog's story</a>
+</section>
+
+<main class="gallery-wrap">
+  <div id="galleryState" class="state">
+    <div class="spinner"></div>
+    <p>Loading stories…</p>
+  </div>
+  <div class="gallery-grid" id="galleryGrid" style="display:none"></div>
+</main>
+
+<script>
+  const WORKER_URL = 'https://real-dogs-worker.edithc.workers.dev';
+
+  const STYLE_LABELS = {
+    adventure_log:  '🗺️ Adventure Log',
+    origin_story:   '❤️ Origin Story',
+    day_in_my_life: '🐾 A Day in My Life',
+    the_legend:     '⚔️ The Legend',
+    best_friend:    '🌟 Best Friend'
+  };
+
+  async function loadGallery() {
+    try {
+      const res  = await fetch(WORKER_URL + '/gallery');
+      const data = await res.json();
+
+      const grid  = document.getElementById('galleryGrid');
+      const state = document.getElementById('galleryState');
+
+      if (!data.stories?.length) {
+        state.innerHTML = '<span class="state-icon">🐾</span><p>No stories published yet — be the first!</p>';
+        return;
+      }
+
+      data.stories.forEach(s => {
+        const card = document.createElement('a');
+        card.className = 'story-card';
+        card.href = `/dogs/${s.slug}`;
+
+        const photoHtml = s.firstPhoto
+          ? `<div class="card-photo"><img src="${s.firstPhoto}" alt="${s.dogName}"></div>`
+          : `<div class="card-photo-placeholder">🐶</div>`;
+
+        const tagClass = `tag-${s.storyStyle}`;
+        card.innerHTML = `
+          ${photoHtml}
+          <div class="card-body">
+            <span class="tag-label ${tagClass}">${STYLE_LABELS[s.storyStyle] || s.storyStyle}</span>
+            <div class="card-name">${s.dogName}</div>
+            <div class="card-excerpt">${s.excerpt}</div>
+            <div class="card-link">Read ${s.dogName}'s story →</div>
+          </div>`;
+        grid.appendChild(card);
+      });
+
+      state.style.display = 'none';
+      grid.style.display  = 'grid';
+    } catch (err) {
+      document.getElementById('galleryState').innerHTML =
+        '<span class="state-icon">😕</span><p>Couldn\'t load stories right now. Try refreshing.</p>';
+    }
+  }
+
+  loadGallery();
+</script>
+</body>
+</html>

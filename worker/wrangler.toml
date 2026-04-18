@@ -2,5 +2,13 @@ name = "real-dogs-worker"
 main = "index.js"
 compatibility_date = "2024-09-23"
 
-# The ANTHROPIC_API_KEY secret is NOT stored here.
-# Add it by running:  wrangler secret put ANTHROPIC_API_KEY
+# ── KV Storage for stories ──────────────────────────────────────────────────
+# Run this once to create the namespace, then paste the id below:
+#   wrangler kv namespace create STORIES
+[[kv_namespaces]]
+binding = "STORIES"
+id = "1edebfb46632493f98a4c77226545f3a"
+
+# ── Secrets (set via CLI, never stored here) ────────────────────────────────
+# wrangler secret put ANTHROPIC_API_KEY
+# wrangler secret put ADMIN_PASSWORD

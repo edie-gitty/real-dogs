@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Real Dogs</title>
+  <style>
+    :root {
+      --cream: #fff8f0; --red: #c0392b; --red-d: #a93226;
+      --brown: #2c1810; --muted: #8a7570; --border: #e8d5c8;
+      --white: #ffffff; --shadow: 0 2px 16px rgba(44,24,16,0.09);
+      --green: #27ae60; --orange: #e67e22; --grey: #95a5a6;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--cream); font-family: -apple-system, sans-serif; color: var(--brown); min-height: 100vh; }
+
+    /* Login */
+    .login-wrap {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; padding: 1rem;
+    }
+    .login-card {
+      background: var(--white); border-radius: 18px; padding: 2.5rem 2rem;
+      box-shadow: var(--shadow); width: 100%; max-width: 380px; text-align: center;
+    }
+    .login-card h1 { font-size: 1.5rem; color: var(--red); margin-bottom: 0.4rem; font-family: Georgia, serif; }
+    .login-card p  { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.75rem; }
+    .login-input {
+      width: 100%; padding: 0.75rem 1rem; border: 2px solid var(--border);
+      border-radius: 10px; font-size: 0.95rem; margin-bottom: 1rem;
+      outline: none; font-family: inherit;
+    }
+    .login-input:focus { border-color: var(--red); }
+    .login-btn {
+      width: 100%; padding: 0.8rem; background: var(--red); color: #fff;
+      border: none; border-radius: 12px; font-size: 1rem; cursor: pointer;
+      font-family: Georgia, serif; transition: background 0.2s;
+    }
+    .login-btn:hover { background: var(--red-d); }
+    .login-error { color: var(--red); font-size: 0.83rem; margin-top: 0.75rem; display: none; }
+
+    /* App shell */
+    .app { display: none; }
+    .app-header {
+      background: var(--white); border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between;
+    }
+    .app-header h1 { font-size: 1.2rem; color: var(--red); font-family: Georgia, serif; }
+    .logout-btn {
+      background: none; border: 1px solid var(--border); border-radius: 8px;
+      padding: 0.35rem 0.85rem; color: var(--muted); font-size: 0.8rem;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
+    }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* Tabs */
+    .tabs {
+      display: flex; gap: 0; border-bottom: 1px solid var(--border);
+      background: var(--white); padding: 0 1.5rem;
+    }
+    .tab-btn {
+      padding: 0.75rem 1.25rem; background: none; border: none;
+      border-bottom: 3px solid transparent; color: var(--muted);
+      font-size: 0.88rem; cursor: pointer; font-family: inherit;
+      transition: all 0.15s; margin-bottom: -1px;
+    }
+    .tab-btn.active { color: var(--red); border-bottom-color: var(--red); font-weight: 600; }
+    .tab-btn .count {
+      display: inline-block; background: var(--border); color: var(--muted);
+      border-radius: 10px; padding: 0.1rem 0.45rem; font-size: 0.72rem;
+      margin-left: 0.4rem; font-weight: normal;
+    }
+    .tab-btn.active .count { background: #fce4ec; color: var(--red); }
+
+    /* Main content */
+    .content { max-width: 960px; margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+
+    .state { text-align: center; padding: 4rem 1rem; color: var(--muted); }
+    .spinner {
+      width: 28px; height: 28px; border: 3px solid var(--border);
+      border-top-color: var(--red); border-radius: 50%;
+      animation: spin 0.7s linear infinite; margin: 0 auto 1rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Story list */
+    .story-list { display: flex; flex-direction: column; gap: 1rem; }
+
+    .story-row {
+      background: var(--white); border-radius: 14px; padding: 1.25rem 1.5rem;
+      box-shadow: var(--shadow); display: flex; gap: 1.25rem; align-items: flex-start;
+    }
+    .story-thumb {
+      width: 80px; height: 80px; border-radius: 10px; object-fit: cover;
+      border: 2px solid var(--border); flex-shrink: 0;
+    }
+    .story-thumb-placeholder {
+      width: 80px; height: 80px; border-radius: 10px; background: linear-gradient(135deg,#f5e6d8,#e8d0bc);
+      display: flex; align-items: center; justify-content: center; font-size: 1.75rem; flex-shrink: 0;
+    }
+    .story-meta { flex: 1; min-width: 0; }
+    .story-meta-top { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.35rem; }
+    .story-name { font-size: 1.1rem; color: var(--brown); font-family: Georgia, serif; }
+    .status-badge {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 0.2rem 0.55rem; border-radius: 8px;
+    }
+    .status-pending  { background: #fff3e0; color: #e65100; }
+    .status-approved { background: #e8f5e9; color: #2e7d32; }
+    .status-rejected { background: #fce4ec; color: #c2185b; }
+
+    .story-style { font-size: 0.75rem; color: var(--muted); }
+    .story-excerpt { font-size: 0.84rem; color: var(--muted); line-height: 1.55; margin-bottom: 0.6rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .story-contacts { font-size: 0.78rem; color: var(--muted); display: flex; gap: 1rem; flex-wrap: wrap; }
+    .story-contacts span { display: flex; align-items: center; gap: 0.3rem; }
+    .story-date { font-size: 0.75rem; color: var(--muted); }
+
+    .story-actions { display: flex; flex-direction: column; gap: 0.5rem; flex-shrink: 0; }
+    .action-btn {
+      padding: 0.45rem 1rem; border-radius: 8px; font-size: 0.82rem;
+      cursor: pointer; font-family: inherit; border: none; font-weight: 600;
+      transition: opacity 0.15s; white-space: nowrap;
+    }
+    .action-btn:hover { opacity: 0.85; }
+    .btn-approve { background: var(--green); color: #fff; }
+    .btn-reject  { background: #fce4ec; color: #c2185b; }
+    .btn-view    { background: var(--cream); color: var(--brown); border: 1px solid var(--border); font-weight: normal; }
+    .action-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* Style tag colours */
+    .tag-adventure_log  { color: #e65100; }
+    .tag-origin_story   { color: #c2185b; }
+    .tag-day_in_my_life { color: #2e7d32; }
+    .tag-the_legend     { color: #4527a0; }
+    .tag-best_friend    { color: #1565c0; }
+
+    /* Full story expand */
+    .story-full {
+      margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border);
+      font-size: 0.9rem; line-height: 1.8; color: var(--brown); white-space: pre-wrap;
+      display: none;
+    }
+    .story-full.open { display: block; }
+    .toggle-story {
+      background: none; border: none; color: var(--red); font-size: 0.8rem;
+      cursor: pointer; padding: 0; font-family: inherit; margin-top: 0.3rem;
+    }
+    .toggle-story:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .story-row { flex-direction: column; }
+      .story-actions { flex-direction: row; }
+      .story-thumb, .story-thumb-placeholder { width: 60px; height: 60px; font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Login screen -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <h1>Real Dogs 🐾</h1>
+    <p>Admin — story moderation</p>
+    <input class="login-input" type="password" id="passwordInput" placeholder="Admin password" autocomplete="current-password">
+    <button class="login-btn" onclick="login()">Sign in</button>
+    <p class="login-error" id="loginError">Incorrect password. Try again.</p>
+  </div>
+</div>
+
+<!-- App shell -->
+<div class="app" id="app">
+  <div class="app-header">
+    <h1>Real Dogs Admin 🐾</h1>
+    <button class="logout-btn" onclick="logout()">Sign out</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tabPending" onclick="switchTab('pending')">
+      Pending <span class="count" id="countPending">—</span>
+    </button>
+    <button class="tab-btn" id="tabApproved" onclick="switchTab('approved')">
+      Approved <span class="count" id="countApproved">—</span>
+    </button>
+    <button class="tab-btn" id="tabRejected" onclick="switchTab('rejected')">
+      Rejected <span class="count" id="countRejected">—</span>
+    </button>
+  </div>
+
+  <div class="content">
+    <div id="listState" class="state">
+      <div class="spinner"></div>
+      <p>Loading stories…</p>
+    </div>
+    <div id="storyList" class="story-list" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+  const WORKER_URL = 'https://real-dogs-worker.edithc.workers.dev';
+  const STYLE_LABELS = {
+    adventure_log:  '🗺️ Adventure Log',
+    origin_story:   '❤️ Origin Story',
+    day_in_my_life: '🐾 A Day in My Life',
+    the_legend:     '⚔️ The Legend',
+    best_friend:    '🌟 Best Friend'
+  };
+
+  let token = '';
+  let allStories = [];
+  let currentTab = 'pending';
+
+  // ── Auth ──────────────────────────────────────────────────────────────────
+
+  function login() {
+    const pw = document.getElementById('passwordInput').value.trim();
+    if (!pw) return;
+    token = pw;
+    loadStories();
+  }
+
+  document.getElementById('passwordInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') login();
+  });
+
+  function logout() {
+    token = '';
+    allStories = [];
+    document.getElementById('loginWrap').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('passwordInput').value = '';
+    document.getElementById('loginError').style.display = 'none';
+  }
+
+  // ── Load stories ──────────────────────────────────────────────────────────
+
+  async function loadStories() {
+    document.getElementById('listState').style.display = 'block';
+    document.getElementById('storyList').style.display = 'none';
+    document.getElementById('listState').innerHTML = '<div class="spinner"></div><p>Loading stories…</p>';
+
+    try {
+      const res = await fetch(`${WORKER_URL}/admin/stories`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (res.status === 401) {
+        document.getElementById('loginError').style.display = 'block';
+        document.getElementById('listState').style.display = 'none';
+        return;
+      }
+
+      const data = await res.json();
+      allStories = data.stories || [];
+
+      // Show app shell on first successful auth
+      document.getElementById('loginWrap').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+
+      updateCounts();
+      renderTab(currentTab);
+    } catch (err) {
+      document.getElementById('listState').innerHTML =
+        '<p>Couldn\'t load stories. Check your connection.</p>';
+    }
+  }
+
+  function updateCounts() {
+    ['pending', 'approved', 'rejected'].forEach(s => {
+      document.getElementById(`count${s.charAt(0).toUpperCase() + s.slice(1)}`).textContent =
+        allStories.filter(x => x.status === s).length;
+    });
+  }
+
+  // ── Tab switching ─────────────────────────────────────────────────────────
+
+  function switchTab(tab) {
+    currentTab = tab;
+    ['pending', 'approved', 'rejected'].forEach(t => {
+      document.getElementById(`tab${t.charAt(0).toUpperCase() + t.slice(1)}`).classList.toggle('active', t === tab);
+    });
+    renderTab(tab);
+  }
+
+  function renderTab(tab) {
+    const filtered = allStories.filter(s => s.status === tab);
+    const list = document.getElementById('storyList');
+    const state = document.getElementById('listState');
+
+    if (!filtered.length) {
+      const labels = { pending: 'No pending stories', approved: 'No approved stories yet', rejected: 'No rejected stories' };
+      state.innerHTML = `<p>${labels[tab]}</p>`;
+      state.style.display = 'block';
+      list.style.display = 'none';
+      return;
+    }
+
+    list.innerHTML = '';
+    filtered.forEach(s => list.appendChild(buildCard(s)));
+    state.style.display = 'none';
+    list.style.display = 'flex';
+  }
+
+  // ── Build story card ──────────────────────────────────────────────────────
+
+  function buildCard(s) {
+    const div = document.createElement('div');
+    div.className = 'story-row';
+    div.id = `row-${s.slug}`;
+
+    const photoHtml = s.firstPhoto
+      ? `<img class="story-thumb" src="${s.firstPhoto}" alt="${s.dogName}">`
+      : `<div class="story-thumb-placeholder">🐶</div>`;
+
+    const styleLabel = STYLE_LABELS[s.storyStyle] || s.storyStyle;
+    const styleClass = `tag-${s.storyStyle}`;
+    const date = s.createdAt ? new Date(s.createdAt).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+    const contacts = [
+      s.email    ? `<span>✉️ ${s.email}</span>` : '',
+      s.phone    ? `<span>📱 ${s.phone}</span>` : '',
+      s.instagram ? `<span>📸 @${s.instagram}</span>` : '',
+    ].filter(Boolean).join('');
+
+    const isPending  = s.status === 'pending';
+    const isApproved = s.status === 'approved';
+    const approveDisabled = isApproved ? 'disabled' : '';
+    const rejectDisabled  = s.status === 'rejected' ? 'disabled' : '';
+
+    div.innerHTML = `
+      ${photoHtml}
+      <div class="story-meta">
+        <div class="story-meta-top">
+          <span class="story-name">${s.dogName}</span>
+          <span class="status-badge status-${s.status}">${s.status}</span>
+          <span class="story-style ${styleClass}">${styleLabel}</span>
+        </div>
+        <div class="story-excerpt">${s.excerpt || ''}</div>
+        ${contacts ? `<div class="story-contacts">${contacts}</div>` : ''}
+        <div style="display:flex;align-items:center;gap:1rem;margin-top:0.4rem;">
+          <button class="toggle-story" onclick="toggleStory('${s.slug}')">Read full story ▾</button>
+          <span class="story-date">${date}</span>
+        </div>
+        <div class="story-full" id="full-${s.slug}">${s.story || ''}</div>
+      </div>
+      <div class="story-actions">
+        ${isApproved ? `<a class="action-btn btn-view" href="/dogs/${s.slug}" target="_blank">View live ↗</a>` : ''}
+        <button class="action-btn btn-approve" ${approveDisabled} onclick="approve('${s.slug}', this)">✓ Approve</button>
+        <button class="action-btn btn-reject"  ${rejectDisabled}  onclick="reject('${s.slug}', this)">✗ Reject</button>
+      </div>`;
+
+    return div;
+  }
+
+  function toggleStory(slug) {
+    const el = document.getElementById(`full-${slug}`);
+    const btn = el.previousElementSibling.querySelector('.toggle-story');
+    const open = el.classList.toggle('open');
+    btn.textContent = open ? 'Hide story ▴' : 'Read full story ▾';
+  }
+
+  // ── Approve / Reject ──────────────────────────────────────────────────────
+
+  async function approve(slug, btn) {
+    btn.disabled = true;
+    btn.textContent = '…';
+    try {
+      const res = await fetch(`${WORKER_URL}/admin/approve/${slug}`, {
+        method: 'POST', headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error();
+      updateStoryStatus(slug, 'approved');
+    } catch {
+      btn.disabled = false;
+      btn.textContent = '✓ Approve';
+      alert('Failed to approve. Try again.');
+    }
+  }
+
+  async function reject(slug, btn) {
+    btn.disabled = true;
+    btn.textContent = '…';
+    try {
+      const res = await fetch(`${WORKER_URL}/admin/reject/${slug}`, {
+        method: 'POST', headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error();
+      updateStoryStatus(slug, 'rejected');
+    } catch {
+      btn.disabled = false;
+      btn.textContent = '✗ Reject';
+      alert('Failed to reject. Try again.');
+    }
+  }
+
+  function updateStoryStatus(slug, newStatus) {
+    const story = allStories.find(s => s.slug === slug);
+    if (story) {
+      story.status = newStatus;
+      if (newStatus === 'approved') story.approvedAt = new Date().toISOString();
+    }
+    updateCounts();
+    renderTab(currentTab);
+  }
+</script>
+</body>
+</html>
