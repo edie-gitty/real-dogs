@@ -262,8 +262,8 @@ export default {
       if (method === 'GET'  && path === '/gallery')              return handleGallery(env);
       if (method === 'GET'  && path.startsWith('/story/'))       return handleStory(path.slice(7), env);
       if (method === 'GET'  && path === '/admin/stories')        return handleAdminList(request, env);
-      if (method === 'POST' && path.startsWith('/admin/approve/')) return handleApprove(path.slice(16), request, env);
-      if (method === 'POST' && path.startsWith('/admin/reject/'))  return handleReject(path.slice(15), request, env);
+      if (method === 'POST' && path.startsWith('/admin/approve/')) return handleApprove(path.slice(15), request, env);
+      if (method === 'POST' && path.startsWith('/admin/reject/'))  return handleReject(path.slice(14), request, env);
       if (path === '/') return new Response('Real Dogs Worker ✓', { headers: CORS });
       return resp({ error: 'not_found' }, 404);
     } catch (err) {
