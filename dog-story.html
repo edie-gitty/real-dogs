@@ -131,8 +131,8 @@
     // Supports /dogs/slug (via .htaccess rewrite) and ?id=slug
     const params = new URLSearchParams(window.location.search);
     if (params.get('id')) return params.get('id');
-    // If accessed directly as /dog-story.html?id=...
-    return params.get('id') || '';
+    const m = window.location.pathname.match(/^\/dogs\/([a-z0-9-]+)/i);
+    return m ? m[1] : '';
   }
 
   async function loadStory() {
