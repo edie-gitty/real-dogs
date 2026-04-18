@@ -134,7 +134,7 @@ async function handleGenerate(request, env) {
 
   if (!apiRes.ok) {
     const err = await apiRes.text();
-    console.error('Anthropic error:', err);
+    console.error('Anthropic error:', apiRes.status, err);
     const isAuth = apiRes.status === 401;
     return resp({ error: isAuth ? 'invalid_api_key' : 'generation_failed' }, 502);
   }
