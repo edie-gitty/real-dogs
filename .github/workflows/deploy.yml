@@ -18,9 +18,13 @@ jobs:
           username: u443086656
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /domains/realdogs.com.au/public_html/
+          protocol: ftp
+          port: 21
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
             **/worker/**
+            **/.claude/**
             .DS_Store
+            VS Code Stuff.code-workspace
