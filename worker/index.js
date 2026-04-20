@@ -217,25 +217,33 @@ async function handleAdminList(request, env) {
   if (!isAuthed(request, env)) return resp({ error: 'unauthorized' }, 401);
   const stories = [];
   let cursor = undefined;
-  
+
   // Handle pagination — KV list() returns max 1000 items per call
   while (true) {
     const list = await env.STORIES.list({ prefix: 'story:', cursor, limit: 1000 });
-    
+
     for (const key of list.keys) {
       const raw = await env.STORIES.get(key.name);
       if (!raw) continue;
       const s = JSON.parse(raw);
-      const { photos, ...meta } = s;
-      meta.firstPhoto = s.firstPhoto;
-      stories.push(meta);
+      // Strip base64 photo data — firstPhoto can be 300-500KB per story.
+      // Sending it for every row in the list makes the response multi-MB and
+      // times out on mobile (especially iOS Safari). Use hasPhoto flag instead.
+      stories.push({
+        id: s.id, slug: s.slug, dogName: s.dogName,
+        storyStyle: s.storyStyle, excerpt: s.excerpt,
+        status: s.status, story: s.story,
+        email: s.email, phone: s.phone, instagram: s.instagram,
+        hasPhoto: !!(s.firstPhoto || (s.photos && s.photos.length)),
+        createdAt: s.createdAt, approvedAt: s.approvedAt,
+      });
     }
-    
+
     // If there are no more results, break
     if (!list.cursor) break;
     cursor = list.cursor;
   }
-  
+
   stories.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
   return resp({ stories });
 }

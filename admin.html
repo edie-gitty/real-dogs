@@ -307,8 +307,8 @@
     div.className = 'story-row';
     div.id = `row-${s.slug}`;
 
-    const photoHtml = s.firstPhoto
-      ? `<img class="story-thumb" src="${s.firstPhoto}" alt="${s.dogName}">`
+    const photoHtml = s.hasPhoto
+      ? `<div class="story-thumb-placeholder" style="background:linear-gradient(135deg,#f5e6d8,#e8d0bc)">📸</div>`
       : `<div class="story-thumb-placeholder">🐶</div>`;
 
     const styleLabel = STYLE_LABELS[s.storyStyle] || s.storyStyle;

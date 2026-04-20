@@ -686,6 +686,7 @@
     </div>
     <div class="story-actions">
       <button class="btn-action" id="copyBtn" onclick="copyStory()">📋 Copy story</button>
+      <button class="btn-action" id="downloadBtn" onclick="downloadStory()">⬇️ Download</button>
       <button class="btn-action" onclick="location.reload()">🔄 Write another</button>
     </div>
     <div class="submit-status" id="submitStatus"></div>
@@ -1101,11 +1102,18 @@
     };
 
     try {
-      // Step 1: generate the story
-      const genRes  = await fetch(WORKER_URL + '/generate', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
+      // Step 1: generate the story (45s timeout — covers slow mobile connections)
+      const genCtrl = new AbortController();
+      const genTimer = setTimeout(() => genCtrl.abort(), 45000);
+      let genRes;
+      try {
+        genRes = await fetch(WORKER_URL + '/generate', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload), signal: genCtrl.signal
+        });
+      } finally {
+        clearTimeout(genTimer);
+      }
       const genData = await genRes.json();
       if (!genRes.ok || genData.error) throw new Error(genData.error || 'HTTP ' + genRes.status);
 
@@ -1116,12 +1124,13 @@
       const saved = await submitStory(submission);
       if (!saved) {
         enqueueSubmission(submission);
-        showSubmitStatus('Story generated but not saved yet. We will retry automatically.');
+        showSubmitStatus('Story generated but not saved yet — we\'ll retry automatically when you\'re back online.');
       } else {
-        showSubmitStatus('Your story has been saved and is waiting for approval.');
-        setTimeout(clearSubmitStatus, 5000);
+        showSubmitStatus('✅ Story saved! It\'s waiting for our team to approve and publish it.');
       }
 
+      // Keep status visible — don't auto-clear so mobile users don't miss it
+      saveStoryForDownload(story, dogName);
       saveState();
       showStory(story, dogName);
     } catch (err) {
@@ -1131,9 +1140,14 @@
       document.querySelector('.step-indicator').style.visibility = 'visible';
       document.getElementById('topFill').style.width = '100%';
       const errEl = document.getElementById('errBox');
-      const msg = err.message === 'invalid_api_key'
-        ? 'API key error — please check your Cloudflare Worker secret is set correctly.'
-        : 'Something went wrong. Your answers are saved — just hit try again.';
+      let msg;
+      if (err.name === 'AbortError') {
+        msg = 'The request timed out — your connection may be slow. Your answers are saved, just tap try again.';
+      } else if (err.message === 'invalid_api_key') {
+        msg = 'API key error — please check your Cloudflare Worker secret is set correctly.';
+      } else {
+        msg = 'Something went wrong. Your answers are saved — just tap try again.';
+      }
       errEl.textContent = msg;
       errEl.classList.add('show');
     }
@@ -1158,26 +1172,48 @@
     document.getElementById('storyTag').textContent   = tags[storyStyle] || '';
     document.getElementById('storyBody').textContent  = story;
     document.getElementById('storyDisplay').classList.add('show');
-    // Auto-download story as a text file
-    downloadStory(story, dogName);
   }
 
-  // ─── Download story to local file ─────────────────────────────
-  function downloadStory(story, dogName) {
+  // ─── Save story content for manual download ────────────────────
+  let _downloadContent = '';
+  let _downloadFilename = '';
+
+  function saveStoryForDownload(story, dogName) {
     const safeName = (dogName || 'dog').replace(/[^a-z0-9]/gi, '_').toLowerCase();
     const date     = new Date().toISOString().slice(0, 10);
-    const filename = `real_dogs_${safeName}_${date}.txt`;
-    const content  = [
+    _downloadFilename = `real_dogs_${safeName}_${date}.txt`;
+    _downloadContent  = [
       `Real Dog Story — ${dogName || 'Your Dog'}`,
       `Style: ${storyStyle || ''}`,
       `Date:  ${new Date().toLocaleDateString('en-AU')}`,
       '', '─'.repeat(40), '',
       story
     ].join('\n');
-    const a = document.createElement('a');
-    a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
-    a.download = filename;
-    a.click();
+  }
+
+  // ─── Manual download triggered by button click ─────────────────
+  function downloadStory() {
+    if (!_downloadContent) return;
+    try {
+      // Use Blob + object URL — works on iOS Safari unlike data: URI clicks
+      const blob = new Blob([_downloadContent], { type: 'text/plain' });
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement('a');
+      a.href = url; a.download = _downloadFilename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch (e) {
+      // Fallback: open in new tab (works everywhere including old iOS)
+      const a = document.createElement('a');
+      a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(_downloadContent);
+      a.target = '_blank';
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
   }
 
   async function copyStory() {
