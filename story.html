@@ -312,11 +312,11 @@
     </div>
 
     <div class="field-group">
-      <label class="field-label">Photos <span style="font-weight:normal;text-transform:none;letter-spacing:0;font-size:0.77rem;color:var(--muted)">(optional — up to 8)</span></label>
+      <label class="field-label">Photos <span style="font-weight:normal;text-transform:none;letter-spacing:0;font-size:0.77rem;color:var(--muted)">(optional — up to 3)</span></label>
       <div class="drop-zone" id="dropZone" onclick="document.getElementById('photoInput').click()">
         <input type="file" id="photoInput" accept="image/*" multiple>
         <span class="upload-icon">📸</span>
-        <p class="upload-text"><strong>Choose photos</strong> or drag and drop<br>Upload up to 8 — we'll feature the best 3–4 in your story</p>
+        <p class="upload-text"><strong>Choose photos</strong> or drag and drop<br>Upload up to 3 photos of your dog</p>
       </div>
       <div class="photo-row" id="photoRow"></div>
     </div>
@@ -1034,7 +1034,7 @@
 
   async function processFiles(fileList) {
     for (const file of fileList) {
-      if (!file.type.startsWith('image/') || imgs.length >= 8) continue;
+      if (!file.type.startsWith('image/') || imgs.length >= 3) continue;
       imgs.push({ dataUrl: await resizeImage(file) });
       renderThumbs();
     }
